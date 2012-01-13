@@ -1,0 +1,62 @@
+
+TR.deviceCommandList { 
+    /* margin-top: 5px; */
+    padding-top: 5px;
+}
+
+/* command labels */
+LABEL.deviceCommandLabel { /* for command description (following radio button) */
+    margin-left: 4px;
+}
+DIV.deviceCommandArgDiv { /* for command argument description */
+    margin-left: 12px;
+    margin-top: 2px;
+}
+
+/* command group separator */
+TR.deviceCommandSep { 
+    height: 25px;
+    padding-top: 3px;
+    border-top: solid 1px black;
+    /* border-bottom: solid 1px black; */
+}
+TD.deviceCommandSep { 
+    height: 25px;
+    padding-top: 3px;
+    border-top: solid 1px black;
+    /* border-bottom: solid 1px black; */
+}
+
+/* commands with no argument */
+TR.deviceCommandNoArg { 
+    height: 20px;
+}
+TD.deviceCommandNoArg { 
+    height: 20px;
+    padding-bottom: 4px;
+    vertical-align: top;
+    text-align: left;
+}
+
+/* commands with arguments */
+TR.deviceCommandWithArg {
+    height: 25px;
+    /* border-top: solid 1px black; */
+    /* border-bottom: solid 1px black; */
+}
+TD.deviceCommandWithArg {
+    height: 25px;
+    /* border-top: solid 1px black; */
+    /* border-bottom: solid 1px black; */
+    padding-bottom: 4px;
+    vertical-align: top;
+    text-align: left;
+}
+
+/* spacer following command group */
+TR.deviceCommandSpacer { 
+    height: 3px;
+}
+TD.deviceCommandSpacer { 
+    height: 3px;
+}

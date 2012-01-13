@@ -1,0 +1,60 @@
+
+/* Pushpin Chooser */
+DIV.PushpinChooser {
+    height: 300px;
+    max-height: 300px; */
+    /* max-width: 400px; */
+    /* width: expression("400px"); */ /* IE */
+    /* height: expression("83px"); */ /* IE */
+    overflow-x: hidden;
+    overflow-y: scroll; /* visible|hidden|scroll|auto */
+    background-color: #FFFFFF;
+    border: ridge 4px #5555AA;
+    border: expression("ridge 2px #5555AA");
+    /* border: outset 4px #5555AA; */
+}
+
+TABLE.PushpinChooser {
+    /* width: 100%; */
+}
+
+TR.PushpinChooser {
+    background-color: #FFFFFF;
+}
+
+TD.PushpinChooser_icon {
+    text-align: center;
+    vertical-align: top;
+    font-size: 9pt;
+    padding: 3px 3px 3px 3px;
+}
+TD.PushpinChooser_icon:hover {
+    text-align: center;
+    vertical-align: top;
+    font-size: 9pt;
+    padding: 3px 3px 3px 3px;
+    background-color: #EEEEFF;
+    cursor: pointer;
+}
+
+TD.PushpinChooser_eval {
+    text-align: center;
+    vertical-align: top;
+    font-size: 9pt;
+    padding: 3px 3px 3px 3px;
+    background-color: #EEEEEE;
+}
+TD.PushpinChooser_eval:hover {
+    text-align: center;
+    vertical-align: top;
+    font-size: 9pt;
+    padding: 3px 3px 3px 3px;
+    background-color: #EEEEFF;
+    cursor: pointer;
+}
+
+SPAN.PushpinChooser {
+    min-width: 25px;
+    vertical-align: bottom;
+}
+

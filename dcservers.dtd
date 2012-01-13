@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+ 
+<!ELEMENT DCServerConfig (DCServer+, Include*)>
+	<!ATTLIST DCServerConfig bindAddress CDATA #IMPLIED>
+	<!ATTLIST DCServerConfig backlog CDATA #IMPLIED>
+	<!ATTLIST DCServerConfig portOffset CDATA #IMPLIED>
+
+<!ELEMENT DCServer (Description, ModelNames?, Attributes?, ListenPorts, UniqueIDPrefix?, Properties?, GlobalProperties?, EventCodeMap?, Commands?)>
+	<!ATTLIST DCServer name     CDATA #REQUIRED>
+	<!ATTLIST DCServer protocol CDATA #REQUIRED>
+
+<!ELEMENT ModelNames (#PCDATA)>
+
+<!ELEMENT Attributes (#PCDATA)>
+
+<!ELEMENT ListenPorts (#PCDATA)>
+	<!ATTLIST ListenPorts tcpPort CDATA #IMPLIED>
+	<!ATTLIST ListenPorts udpPort CDATA #IMPLIED>
+
+<!ELEMENT UniqueIDPrefix (#PCDATA)>
+
+<!ELEMENT Properties (Property+)>
+
+<!ELEMENT GlobalProperties (Property+)>
+
+<!ELEMENT Property (#PCDATA)>
+	<!ATTLIST Property key CDATA #IMPLIED>
+
+<!ELEMENT EventCodeMap (Code+)>
+	<!ATTLIST EventCodeMap enabled CDATA #IMPLIED>
+
+<!ELEMENT Code (#PCDATA)>
+	<!ATTLIST Code key CDATA #IMPLIED>
+
+<!ELEMENT Commands (AclName?, Command+)>
+	<!ATTLIST Commands dispatchHost CDATA #IMPLIED>
+	<!ATTLIST Commands dispatchPort CDATA #IMPLIED>
+
+<!ELEMENT Command (AclName?, Type, Description, String, StatusCode?)>
+	<!ATTLIST Command name      CDATA #IMPLIED>
+	<!ATTLIST Command hasArgs   CDATA #IMPLIED>
+	<!ATTLIST Command expectAck CDATA #IMPLIED>
+	<!ATTLIST Command enabled   CDATA #IMPLIED>
+
+<!ELEMENT Type (#PCDATA)>
+
+<!ELEMENT Description (#PCDATA)>
+
+<!ELEMENT AclName (#PCDATA)>
+	<!ATTLIST AclName default CDATA #IMPLIED>
+
+<!ELEMENT String (#PCDATA)>
+	<!ATTLIST String protocol CDATA #IMPLIED>
+
+<!ELEMENT StatusCode (#PCDATA)>
+
+<!ELEMENT Include (#PCDATA)>
+	<!ATTLIST Include dir CDATA #IMPLIED>
+	<!ATTLIST Include file CDATA #IMPLIED>
+	<!ATTLIST Include optional CDATA #IMPLIED>

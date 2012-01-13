@@ -1,0 +1,310 @@
+#!/usr/bin/perl 
+# -----------------------------------------------------------------------------
+# Project: OpenGTS - Open GPS Tracking System
+# URL    : http://www.opengts.org
+# File   : psjava
+# -----------------------------------------------------------------------------
+# Description:
+#   'psjava' is a command-line tool for displaying all Java processes.
+# -----------------------------------------------------------------------------
+
+# --- constants
+$true     = 1;
+$false    = 0;
+
+# --- OS
+$UNAME_OS = `uname -s`; chomp $UNAME_OS;
+
+# --- commands
+$cmd_ps   = &findCmd("ps");
+$cmd_grep = &findCmd("grep");
+$cmd_kill = &findCmd("kill"); 
+$cmd_sort = &findCmd("sort"); 
+
+# --- options
+use Getopt::Long;
+%argctl = (
+    #"main"      => \$opt_main,
+    "sub"       => \$opt_sub,
+    "class:s"   => \$opt_class,
+    "jar:s"     => \$opt_jar,
+    "args"      => \$opt_args,
+    "noargs"    => \$opt_noargs,
+    "na"        => \$opt_noargs,
+    "kill:s"    => \$opt_kill,
+    "kill_"     => \$opt_ambiguous,
+    "quiet"     => \$opt_quiet,
+    "verbose"   => \$opt_verbose,
+    "help"      => \$opt_help,
+    "display:s" => \$opt_display, # - "class"/"jar", "pid", "user"
+);
+$optok = &GetOptions(%argctl);
+if (!$optok || $opt_help) {
+    usage:;
+    print "Usage: $0 [-sub] [-class=<class> [-kill]] [-help]\n";
+    print "  -a[rgs]           Show command-line arguments\n";
+    print "  -s[ub]            Include sub-processes/threads (level 2+) in output\n";
+    print "  -c[lass]=<class>  Java class\n";
+    print "  -j[ar]=<jar>      JAR file\n";
+    print "  -kill[=<class>]   Kill matching pids\n";
+    print "  -q[uiet]          Don't print anything\n";
+    print "  -h[elp]           This help\n";
+    exit(1);
+}
+
+# --- class name specified on 'kill' overrides 'class'
+if ((defined $opt_kill) && ($opt_kill ne "")) {
+    $opt_class = $opt_kill;
+    $opt_jar   = $opt_kill;
+}
+
+# --- "-noargs" specified?
+if (defined $opt_noargs) {
+    undef $opt_args;
+}
+
+# -----------------------------------------------------------------------------
+
+# --- exec command
+# - "e" - select all processes
+# - "H" - show process heirarchy
+# - "o" - order format
+#$PS_OPT = ("$UNAME_OS" eq "Darwin")? "-eo 'user,ppid,pid,command'" : "-eHo 'user,ppid,pid,cmd'";
+$PS_OPT = "";
+$PS_ENV = "export COLUMNS=5000";
+if      ("$UNAME_OS" eq "Darwin") {
+    $PS_OPT = "-eo 'user,ppid,pid,command'";
+} elsif ("$UNAME_OS" eq "HP-UX") {
+    $PS_OPT = "-eHxo 'user,ppid,pid,comm'";
+    $PS_ENV = "$PS_ENV; export UNIX_STD=2003";
+} else {
+    $PS_OPT = "-eHo 'user,ppid,pid,cmd'";
+}
+$PS_CMD = "( $PS_ENV; $cmd_ps $PS_OPT | $cmd_grep java )"; # | $cmd_sort --key=1,20 )";
+@RCDS = split('\n', `$PS_CMD`);
+
+# --- header
+if (!(defined $opt_quiet) && !(defined $opt_display)) {
+    print "\n";
+    print "  PID  Parent  L User     Java class/jar\n";
+    print "------ ------  - -------- -------------------------------------------------------\n";
+}
+
+# --- display 
+$FOUND = 0;
+@PID_TREE = ();
+$PID_LEVEL = 0;
+foreach ( @RCDS ) {
+    my $trace = (defined $opt_verbose)? $true : $false;
+
+    # --- parse
+    my ($USER,$PPID,$PID,$CMD,$ARGS) = &parseRcd($_);
+    
+    # --- 'root' user?
+    if ($USER eq "root") {
+        $USER = "*ROOT*";
+    }
+    
+    # --- Java command?
+    if (($CMD ne "java") && !($CMD =~ /\/java$/)) {
+        if (!(defined $opt_quiet)) {
+            print "Rejecting: $_ ...\n" if $trace;
+        }
+        next; 
+    }
+    #print "ARGS=$_\n";
+    my $PPI = 0;
+
+    # - find parent pid (this assumes that the PIDs are appropriately sorted - parents arrive first)
+    my $PPID_ndx = -1;
+    for ($PPI = 0; $PPI < $PID_LEVEL; $PPI++) {
+        if ($PPID eq $PID_TREE[$PPI]) {
+            $PPID_ndx = $PPI;
+            last;
+        }
+    }
+    if ($PPID_ndx >= 0) {
+        # - parent 'java' PID was found
+        @PID_TREE  = @PID_TREE[0..$PPID_ndx]; # - trim tree
+        $PID_LEVEL = $PPID_ndx + 1;
+    } else {
+        # - no parent 'java' PID
+        @PID_TREE  = (); # - clear tree
+        $PID_LEVEL = 0;
+    }
+    
+    # - push this pid on to the tree
+    push @PID_TREE, $PID;
+    $PID_LEVEL++;
+   
+    # - skip over java command arguments to find class name
+    my $IsJAR = $false;
+    my @J = split(' ', $ARGS);
+    my $I = 0; # --- start at second argument
+    while ($I < scalar(@J)) {
+        my $F = $J[$I];
+        # - classpath
+        if (($F eq "-cp") || ($F eq "-classpath")) {
+            $I += 2;
+            next;
+        }
+        # - jar
+        if ($F eq "-jar") {
+            $IsJAR = $true;
+            $I += 1;
+            next;
+        }
+        # - '-' argument
+        if ($F =~ /^-/) {
+            $I += 1;
+            next;
+        }
+        # - found class/jar
+        last;
+    }
+        
+    # - class name (or JAR file name)
+    my $CLASS = ($I < scalar(@J))? $J[$I++] : "?";
+    if (($CLASS eq "?") && ($ARGS =~ /com\.sun\.aas\./)) {
+        # - this is necessary because the java command-line is truncated at 4K, the max
+        # - length, and the java class is therefore not able to be parsed.
+        $CLASS= "(SUNWappserver)"; # - "com.sun.enterprise.cli.framework.CLIMain"
+    }
+    # - check class name
+    if ((defined $opt_class) && ($opt_class ne $CLASS)) {
+        # - skip to next class
+        if (!(defined $opt_quiet)) {
+            print "Skipping: $_ ...\n" if $trace;
+        }
+        next; 
+    }
+    # - check jar file
+    if ((defined $opt_jar) && ($opt_jar ne &getFileName(${CLASS}))) {
+        # - skip to next class
+        if (!(defined $opt_quiet)) {
+            print "Skipping: $_ ...\n" if $trace;
+        }
+        next; 
+    }
+
+    # - arguments 
+    my @A = ($I < scalar(@J))? @J[$I..(scalar @J)] : ();
+    my $JARGS = (defined $opt_args)? join(' ',@A) : "";
+    
+    # - print
+    if (!(defined $opt_quiet) && ((defined $opt_sub) || ($PID_LEVEL <= 1))) {
+        my $U  = $USER;
+        my $PP = $PPID;
+        my $P  = $PID;
+        my $L  = $PID_LEVEL;
+        my $C  = $CLASS;
+        if      (!(defined $opt_display) || ($opt_display eq "all")) {
+            my $i;
+            while (length($U ) <  8) { $U  = "$U " ; } # - align left
+            while (length($P ) <  6) { $P  = " $P" ; } # - align right
+            while (length($PP) <  6) { $PP = " $PP"; } # - align right
+            for ($i = 1; $i < $L; $i++) { $C = "  $C"; } # - indent
+            #while (length($C) < 40) { $C = "$C "; } # - align left
+            print "$P($PP) $L $U $C  $JARGS\n";
+        } elsif ($opt_display eq "pid") {
+            print "$P\n";
+        } elsif ($opt_display eq "user") {
+            print "$U\n";
+        } elsif ($opt_display eq "name") {
+            if (defined $opt_args) {
+                print "$C $JARGS\n";
+            } else {
+                print "$C\n";
+            }
+        } elsif ($opt_display eq "args") {
+            print "$JARGS\n";
+        }
+    } else {
+        print "Not printing: $_ ...\n" if $trace;
+    }
+    
+    # - kill
+    if ((defined $opt_class) && (defined $opt_kill)) {
+        if (!(defined $opt_quiet)) { 
+            print "Killing pid $PID ...\n";
+        }
+        my $KILL_CMD = "$cmd_kill -9 $PID";
+        &sysCmd($KILL_CMD);
+    }
+    
+    # - done with this command
+    $FOUND++;
+    # next;
+
+}
+if (!(defined $opt_quiet) && !(defined $opt_display)) {
+    print "\n";
+}
+
+# --- return status
+exit(($FOUND > 0)? 0 : 1);
+
+# -----------------------------------------------------------------------------
+
+sub sysCmd(\$\$) {
+    my ($cmd, $verbose) = @_;
+    if ($verbose) { print "$cmd\n"; }
+    my $rtn = system("$cmd") / 256;
+    return $rtn;
+}
+
+sub findCmd(\$) {
+    my ($cmdLine) = @_;
+    if ($cmdLine =~ /^\//) {
+        return $cmdLine;
+    } else {
+        my @CPATH = (
+            "/sbin",
+            "/bin",
+            "/usr/bin",
+            "/usr/local/bin",
+        );
+        my @cmdArgs = split(' ', $cmdLine);
+        my $cmd = $cmdArgs[0];
+        foreach ( @CPATH ) {
+            if (-x "$_/$cmd") {
+                $cmdArgs[0] = "$_/$cmd";
+                return join(' ', @cmdArgs);
+            }
+        }
+        #&println("Not found: $cmd");
+        return $cmdLine;
+    }
+}
+
+sub findParent(\$\$) {
+    my ($ARGPID, @RCDS) = @_;
+    my $I;
+    for ($I = 0; $I < scalar(@RCDS); $I++) {
+        my ($USER,$PPID,$PID,$CMD,$ARGS) = &parseRcd($RCD[$I]);
+        if ($ARGPID eq $PID) {
+            return $I;
+        }
+    }
+    return "";
+}
+
+sub parseRcd(\$) {
+    my ($RCD) = @_;
+    my @R = split(' ', $_, 5);
+    my $USER  = $R[0];
+    my $PPID  = $R[1]; # - Parent PID
+    my $PID   = $R[2]; # - PID
+    my $CMD   = $R[3];
+    my $ARGS  = $R[4];
+    return $USER,$PPID,$PID,$CMD,$ARGS;
+}
+
+sub getFileName(\$) {
+    my ($x) = @_;
+    $x =~ s/^(.*)\/(.*)$/$2/;
+    return $x;
+}
+
+# -----------------------------------------------------------------------------
+

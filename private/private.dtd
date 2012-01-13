@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!ELEMENT PrivateLabels (SupportedLocales, TimeZones, Properties*, Pushpins*, Domain+)>
+
+<!-- SupportedLocales -->
+<!ELEMENT SupportedLocales (Locale+)>
+<!ELEMENT Locale (#PCDATA)>
+	<!ATTLIST Locale id   CDATA #REQUIRED>
+	<!ATTLIST Locale i18n CDATA #IMPLIED>
+
+<!-- Timezones -->
+<!ELEMENT TimeZones (#PCDATA)>
+
+<!-- Domain -->
+<!ELEMENT Domain (BaseURL?, Alias*, DefaultLoginAccount?, DefaultLoginUser?, I18N*, Copyright, PageTitle, DateFormat, TimeFormat, TimeZones?, EMailAddresses+, Properties*, Pushpins*, MapProvider+, ReverseGeocodeProvider*, GeocodeProvider*, MobileLocationProvider*, Acls, JSPEntries?, WebPages, Reports?, EventNotificationEMail?, StandardRules?, StatusCodes?, MapShapes*, Include*)>
+	<!ATTLIST Domain name CDATA #REQUIRED>
+	<!ATTLIST Domain host CDATA #REQUIRED>
+	<!ATTLIST Domain allowLogin   (true | false) #IMPLIED>
+	<!ATTLIST Domain accountLogin (true | false) #IMPLIED>
+	<!ATTLIST Domain userLogin    (true | false) #IMPLIED>
+	<!ATTLIST Domain emailLogin   (true | false) #IMPLIED>
+	<!ATTLIST Domain showPassword (true | false) #IMPLIED>
+	<!ATTLIST Domain restricted   (true | false) #IMPLIED>
+	<!ATTLIST Domain demo         (true | false) #IMPLIED>
+	<!ATTLIST Domain locale CDATA #IMPLIED>
+    
+<!-- BaseURL -->
+<!ELEMENT BaseURL (#PCDATA)>
+
+<!-- Alias -->
+<!ELEMENT Alias (#PCDATA)>
+	<!ATTLIST Alias host CDATA #REQUIRED>
+
+<!-- DefaultLoginAccount -->
+<!ELEMENT DefaultLoginAccount (#PCDATA)>
+
+<!-- DefaultLoginUser -->
+<!ELEMENT DefaultLoginUser (#PCDATA)>
+
+<!-- Copyright -->
+<!ELEMENT Copyright (#PCDATA)>
+
+<!-- PageTitle -->
+<!ELEMENT PageTitle (#PCDATA)>
+	<!ATTLIST PageTitle i18n CDATA #IMPLIED>
+
+<!-- DateFormat/TimeFormat -->
+<!ELEMENT DateFormat (#PCDATA)>
+<!ELEMENT TimeFormat (#PCDATA)>
+
+<!-- EMailAddresses/EMailAddress -->
+<!ELEMENT EMailAddresses (EMailAddress*)>
+	<!ATTLIST EMailAddresses domain CDATA #IMPLIED>
+<!ELEMENT EMailAddress (#PCDATA)>
+	<!ATTLIST EMailAddress type (password | accounts| support | notify) #IMPLIED>
+
+<!-- I18N/String -->
+<!ELEMENT I18N (String*)>
+<!ELEMENT String (#PCDATA)>
+	<!ATTLIST String key CDATA #REQUIRED>
+	<!ATTLIST String i18n CDATA #REQUIRED>
+
+<!-- Properties/Property -->
+<!ELEMENT Properties (Property*)>
+	<!ATTLIST Properties rtPropPrefix CDATA #IMPLIED>
+
+<!ELEMENT Property (#PCDATA)>
+	<!ATTLIST Property key   CDATA #REQUIRED>
+	<!ATTLIST Property rtKey CDATA #REQUIRED>
+
+<!-- MapProvider -->
+<!ELEMENT MapProvider (Property*, Pushpins*, IconSelector*, Legend*)>
+	<!ATTLIST MapProvider name CDATA #REQUIRED>
+	<!ATTLIST MapProvider active (true | false) #REQUIRED>
+	<!ATTLIST MapProvider class CDATA #REQUIRED>
+	<!ATTLIST MapProvider key CDATA #IMPLIED>
+	<!ATTLIST MapProvider rtPropPrefix CDATA #IMPLIED>
+
+<!-- MapProvider/IconSelector -->
+<!ELEMENT IconSelector (#PCDATA)>
+	<!ATTLIST IconSelector type (device | fleet) #REQUIRED>
+	<!ATTLIST IconSelector ruleFactoryName CDATA #REQUIRED>
+
+<!-- MapProvider/Legend -->
+<!ELEMENT Legend (Title?, Icon*)>
+	<!ATTLIST Legend type (device | fleet) #REQUIRED>
+
+<!-- Pushpins/Pushpin -->
+<!ELEMENT Pushpins (Pushpin*)>
+    <!ATTLIST Pushpins baseURL        CDATA #IMPLIED>
+    <!ATTLIST Pushpins includeDefault (true | false) #IMPLIED>
+<!ELEMENT Pushpin EMPTY>
+    <!ATTLIST Pushpin key             CDATA #REQUIRED>
+    <!ATTLIST Pushpin alias           CDATA #IMPLIED>
+    <!ATTLIST Pushpin icon            CDATA #IMPLIED>
+    <!ATTLIST Pushpin eval            CDATA #IMPLIED>
+    <!ATTLIST Pushpin iconSize        CDATA #IMPLIED>
+    <!ATTLIST Pushpin iconOffset      CDATA #IMPLIED>
+    <!ATTLIST Pushpin iconEval (true | false) #IMPLIED>
+    <!ATTLIST Pushpin shadow          CDATA #IMPLIED>
+    <!ATTLIST Pushpin shadowSize      CDATA #IMPLIED>
+    <!ATTLIST Pushpin back            CDATA #IMPLIED>
+    <!ATTLIST Pushpin backSize        CDATA #IMPLIED>
+    <!ATTLIST Pushpin backOffset      CDATA #IMPLIED>
+    <!ATTLIST Pushpin image           CDATA #IMPLIED>
+
+<!-- ReverseGeocodeProvider -->
+<!ELEMENT ReverseGeocodeProvider (Property*)>
+	<!ATTLIST ReverseGeocodeProvider name CDATA #REQUIRED>
+	<!ATTLIST ReverseGeocodeProvider active (true | false) #REQUIRED>
+	<!ATTLIST ReverseGeocodeProvider geocode (true | false) #IMPLIED>
+	<!ATTLIST ReverseGeocodeProvider class CDATA #REQUIRED>
+	<!ATTLIST ReverseGeocodeProvider key CDATA #IMPLIED>
+	<!ATTLIST ReverseGeocodeProvider rtPropPrefix CDATA #IMPLIED>
+
+<!-- GeocodeProvider -->
+<!ELEMENT GeocodeProvider (Property*)>
+	<!ATTLIST GeocodeProvider name CDATA #REQUIRED>
+	<!ATTLIST GeocodeProvider active (true | false) #REQUIRED>
+	<!ATTLIST GeocodeProvider class CDATA #REQUIRED>
+	<!ATTLIST GeocodeProvider key CDATA #IMPLIED>
+	<!ATTLIST GeocodeProvider rtPropPrefix CDATA #IMPLIED>
+
+<!-- MobileLocationProvider -->
+<!ELEMENT MobileLocationProvider (Property*)>
+	<!ATTLIST MobileLocationProvider name CDATA #REQUIRED>
+	<!ATTLIST MobileLocationProvider active (true | false) #REQUIRED>
+	<!ATTLIST MobileLocationProvider class CDATA #REQUIRED>
+	<!ATTLIST MobileLocationProvider key CDATA #IMPLIED>
+	<!ATTLIST MobileLocationProvider rtPropPrefix CDATA #IMPLIED>
+
+<!-- Acls/Acl -->
+<!ELEMENT Acls (Acl+)>
+	<!ATTLIST Acls default (0 | 1 | 2| 3) #REQUIRED>
+<!ELEMENT Acl (#PCDATA)>
+	<!ATTLIST Acl name CDATA #REQUIRED>
+	<!ATTLIST Acl maximum (0 | 1 | 2 | 3) #REQUIRED>
+	<!ATTLIST Acl default (0 | 1 | 2 | 3) #REQUIRED>
+	<!ATTLIST Acl i18n CDATA #IMPLIED>
+
+<!-- JSPEntries/JSP -->
+<!ELEMENT JSPEntries (JSP+)>
+	<!ATTLIST JSPEntriese rtPropPrefix CDATA #IMPLIED>
+
+<!ELEMENT JSP (#PCDATA)>
+	<!ATTLIST JSP name  CDATA #IMPLIED>
+	<!ATTLIST JSP rtKey CDATA #IMPLIED>
+	<!ATTLIST JSP file  CDATA #IMPLIED>
+
+<!-- WebPages/Page/Link/MenuGroup/Title/Description -->
+<!ELEMENT WebPages (Page+, MenuGroup+)>
+	<!ATTLIST WebPages jsp          CDATA #IMPLIED>
+	<!ATTLIST WebPages cssDir       CDATA #IMPLIED>
+	<!ATTLIST WebPages iconDir      CDATA #IMPLIED>
+	<!ATTLIST WebPages rtPropPrefix CDATA #IMPLIED>
+    
+<!ELEMENT Page (AclName?, NavigationDescription?, MenuDescrption?, MenuHelp?, Icon?, AltIcon?, Property?)>
+	<!ATTLIST Page name     CDATA #REQUIRED>
+	<!ATTLIST Page rtKey    CDATA #REQUIRED>
+	<!ATTLIST Page class    CDATA #REQUIRED>
+	<!ATTLIST Page jsp      CDATA #IMPLIED>
+	<!ATTLIST Page aclName  CDATA #IMPLIED>
+	<!ATTLIST Page icon     CDATA #IMPLIED>
+	<!ATTLIST Page altIcon  CDATA #IMPLIED>
+	<!ATTLIST Page optional CDATA #IMPLIED>
+    
+<!ELEMENT Link (AclName?, NavigationDescription?, MenuDescrption?, MenuHelp?, Icon?, AltIcon?)>
+	<!ATTLIST Link propName CDATA #REQUIRED>
+	<!ATTLIST Link url      CDATA #REQUIRED>
+	<!ATTLIST Link aclName  CDATA #IMPLIED>
+	<!ATTLIST Link icon     CDATA #IMPLIED>
+	<!ATTLIST Link altIcon  CDATA #IMPLIED>
+    
+<!ELEMENT MenuGroup (Title, Description?, Page*, Link*)>
+	<!ATTLIST MenuGroup name CDATA #REQUIRED>
+	<!ATTLIST MenuGroup menuBar (true | false) #IMPLIED>
+	<!ATTLIST MenuGroup topMenu (true | false) #IMPLIED>
+    
+<!ELEMENT Title (#PCDATA)>
+	<!ATTLIST Title i18n CDATA #IMPLIED>
+    
+<!ELEMENT Description (#PCDATA)>
+	<!ATTLIST Description i18n CDATA #IMPLIED>
+    
+<!ELEMENT ACL EMPTY>
+
+<!ELEMENT AclName (#PCDATA)>
+
+<!ELEMENT Icon (#PCDATA)>
+
+<!ELEMENT AltIcon (#PCDATA)>
+
+<!ELEMENT NavigationDescription (#PCDATA)>
+	<!ATTLIST NavigationDescription i18n CDATA #IMPLIED>
+    
+<!ELEMENT MenuDescrption (#PCDATA)>
+	<!ATTLIST MenuDescrption i18n CDATA #IMPLIED>
+    
+<!ELEMENT MenuHelp (#PCDATA)>
+	<!ATTLIST MenuHelp i18n CDATA #IMPLIED>
+
+<!-- Reports/Report -->
+<!ELEMENT Reports (Report+)>
+	<!ATTLIST Reports rtPropPrefix CDATA #IMPLIED>
+
+<!ELEMENT Report EMPTY>
+	<!ATTLIST Report name         CDATA #REQUIRED>
+	<!ATTLIST Report rtKey        CDATA #REQUIRED>
+	<!ATTLIST Report aclName      CDATA #IMPLIED>
+	<!ATTLIST Report sysAdminOnly CDATA #IMPLIED>
+
+<!-- EventNotificationEMail/Subject/Body -->
+<!ELEMENT EventNotificationEMail (Subject, Body)>
+	<!ATTLIST EventNotificationEMail from CDATA #REQUIRED>
+    
+<!ELEMENT Subject (#PCDATA)>
+	<!ATTLIST Subject i18n CDATA #IMPLIED>
+    
+<!ELEMENT Body (#PCDATA)>
+	<!ATTLIST Body i18n CDATA #IMPLIED>
+
+<!-- StandardRules -->
+<!ELEMENT StandardRules (Rule*)>
+
+<!ELEMENT Rule (Description, Selector, ActionMask?, Subject?, Message?, UserEMailWrapper)>
+
+<!-- <!ELEMENT Description (#PCDATA)>
+	<!ATTLIST Description i18n CDATA #IMPLIED> -->
+    
+<!ELEMENT Selector (#PCDATA)>
+
+<!ELEMENT ActionMask (#PCDATA)>
+
+<!-- <!ELEMENT Subject (#PCDATA)>
+	<!ATTLIST Subject i18n CDATA #IMPLIED> -->
+    
+<!ELEMENT Message (#PCDATA)>
+	<!ATTLIST Message i18n CDATA #IMPLIED>
+    
+<!ELEMENT UserEMailWrapper (#PCDATA)>
+
+<!-- StatusCodes -->
+<!ELEMENT StatusCodes (StatusCode*)>
+
+<!ELEMENT StatusCode (#PCDATA)>
+	<!ATTLIST StatusCode code CDATA #IMPLIED>
+	<!ATTLIST StatusCode name CDATA #IMPLIED>
+	<!ATTLIST StatusCode i18n CDATA #IMPLIED>
+
+<!-- Include -->
+<!ELEMENT Include (Property*)>
+	<!ATTLIST Include dir              CDATA #IMPLIED>
+	<!ATTLIST Include file             CDATA #IMPLIED>
+	<!ATTLIST Include optional         CDATA #IMPLIED>
+	<!ATTLIST Include ignoreDuplicates CDATA #IMPLIED>
+
+<!-- MapShapes (experimental) -->
+<!ELEMENT MapShapes (Shape*)>
+
+<!ELEMENT Shape (Description, Data)>
+	<!ATTLIST Shape name   CDATA #IMPLIED>
+	<!ATTLIST Shape type   CDATA #IMPLIED>
+	<!ATTLIST Shape radius CDATA #IMPLIED>
+	<!ATTLIST Shape color  CDATA #IMPLIED>
+	<!ATTLIST Shape zoom   CDATA #IMPLIED>
+    
+<!ELEMENT Data (#PCDATA)>
+

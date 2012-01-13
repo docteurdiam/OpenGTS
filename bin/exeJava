@@ -1,0 +1,140 @@
+#!/usr/bin/perl
+# -----------------------------------------------------------------------------
+# Project: OpenGTS - Open GPS Tracking System
+# URL    : http://www.opengts.org
+# File   : exeJava
+# -----------------------------------------------------------------------------
+# Description:
+#   Exectute Java "main" method in specified class
+# -----------------------------------------------------------------------------
+# Usage:
+#   % exeJava [-quiet] [-cp <additional_path>] <JavaClassName> [<Options>]
+# -----------------------------------------------------------------------------
+$JAVA_MEMORY="400m"; 
+$GTS_HOME = $ENV{"GTS_HOME"};
+if ("$GTS_HOME" eq "") {
+    print "WARNING: GTS_HOME not defined!\n";
+    use Cwd 'realpath';
+    use File::Basename;
+    my $REAL_PATH = realpath($0);
+    my $EXEC_BIN = dirname($REAL_PATH);
+    require "$EXEC_BIN/common.pl";
+} else {
+    require "$GTS_HOME/bin/common.pl";
+}
+# -----------------------------------------------------------------------------
+
+# --- constants
+$RUNCMD = "$cmd_java";
+
+# --- quiet
+$SHOWCMD = $true;
+if (($ARGV[0] eq "-q") || ($ARGV[0] eq "-quiet")) {
+    $SHOWCMD = $false;
+    shift @ARGV;
+}
+
+# --- headless
+$HEADLESS = "";
+if ($ARGV[0] eq "-headless") {
+    $HEADLESS = "-Djava.awt.headless='true'";
+    shift @ARGV;
+}
+
+# --- classpath
+$CLASSPATH = "." . $PATHSEP . "./build";
+$CLASSPATH = "$CLASSPATH" . $PATHSEP . &getJarClasspath($PWD_,"./build/lib",$PATHSEP);
+$CLASSPATH = "$CLASSPATH" . $PATHSEP . "./build/track/WEB-INF/classes";
+$CLASSPATH = "$CLASSPATH" . $PATHSEP . "./build/service/WEB-INF/classes";
+#$CLASSPATH = "$CLASSPATH" . $PATHSEP . "./build/celltrac/WEB-INF/classes";
+#$CLASSPATH = "$CLASSPATH" . $PATHSEP . "./build/notification/WEB-INF/classes";
+#$CLASSPATH = "$CLASSPATH" . $PATHSEP . "./build/ctrac/WEB-INF/classes";
+while (($ARGV[0] eq "-cp") || ($ARGV[0] eq "-classpath")) {
+    shift @ARGV;
+    $CLASSPATH = "$CLASSPATH" . $PATHSEP . $ARGV[0];
+    shift @ARGV;
+}
+
+# --- "org.opengts.util"
+$CLASS_PREFIX = '';
+if ($ARGV[0] eq "-u") {
+    $CLASS_PREFIX = "org.opengts.util.";
+    shift @ARGV;
+}
+
+# --- Java class
+$JAVA_CLASS = $CLASS_PREFIX . $ARGV[0];
+if ("$JAVA_CLASS" eq "") {
+    print "Missing Java classname\n";
+    exit(1);
+}
+shift @ARGV;
+
+# --- Tomcat
+$TOMCAT = $ENV{"CATALINA_HOME"};
+if ("$TOMCAT" ne "") {
+    if      (-d "$TOMCAT/common/lib") {
+        $CLASSPATH = "$CLASSPATH"                   . $PATHSEP .
+            "$TOMCAT/common/lib/servlet-api.jar"    . $PATHSEP .
+            "$TOMCAT/common/lib/jsp-api.jar"        . $PATHSEP .
+            "$TOMCAT/common/lib/jasper-runtime.jar";
+    } elsif (-d "$TOMCAT/lib") {
+        $CLASSPATH = "$CLASSPATH"                   . $PATHSEP .
+            "$TOMCAT/lib/servlet-api.jar"    . $PATHSEP .
+            "$TOMCAT/lib/jsp-api.jar"        . $PATHSEP .
+            "$TOMCAT/lib/jasper-runtime.jar";
+    } else {
+        print "(Tomcat library jars not found)\n";
+    }
+}
+
+# --- run command
+if ($HEADLESS ne "") {
+    $RUNCMD .= " $HEADLESS";
+}
+$RUNCMD .= " -classpath '$CLASSPATH'";
+$RUNCMD .= " $JAVA_CLASS";
+
+# --- args
+foreach ( @ARGV ) {
+    $RUNCMD .= " '$_'";
+}
+
+# --- run
+if ($SHOWCMD) {
+    print "GTS_HOME = ${GTS_HOME}\n";
+}
+$status = &sysCmd("$RUNCMD", $SHOWCMD);
+#print "'run' exit status = $status\n";
+exit($status);
+
+# -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+
+sub deblank(\$) {
+    my ($x) = @_;
+    $x =~ s/^[ \t\n\r]*//; # --- leading
+    $x =~ s/[ \t\n\r]*$//; # --- trailing
+    return $x;
+}
+
+sub getJarClasspath(\$\$\$) {
+    my ($DIR,$LIB,$SEP) = @_;
+    my $CP = "";
+    foreach ( `ls $LIB/*.jar 2>/dev/null` ) {
+        my $file = &deblank($_);
+        if ($file =~ /^$DIR/) { $file = substr($file, length($DIR)); }
+        if ("$CP" ne "") { $CP .= $SEP; }
+        $CP .= $file; 
+    }
+    return $CP;
+}
+
+sub sysCmd(\$\$) {
+    my ($cmd, $verbose) = @_;
+    if ($verbose) { print STDERR "$cmd\n"; }
+    my $rtn = system("$cmd") / 256;
+    return $rtn;
+}
+
+# ---

@@ -1,0 +1,59 @@
+
+/* Login page */
+.accountLoginTable { 
+    margin-top: 50px;
+    width: 350px;
+    text-align: center;
+}
+.accountLoginCell { 
+    padding: 10px; 
+    /* */
+    border: solid #555555 1px; 
+    background-color: #FBFBFB; 
+    /* */
+    text-align: center;
+}
+
+/* Login page */
+.accountLoginTable_nobord { 
+    margin-top: 50px;
+    width: 350px;
+    text-align: center;
+}
+.accountLoginCell_nobord { 
+    padding: 10px; 
+    text-align: center;
+}
+
+/* table containing vertical-separator (if any) and login text */
+TABLE.accountLoginContentTable {
+    width: 100%;
+    text-align: center; /* left; */
+}
+
+/* vertical separator (if any) */
+TD.accountLoginVertSepCell {
+    width: 10px;
+    height: 100%;
+    padding-right: 12px;
+}
+
+TD.accountLoginTextCell {
+    width: 100%;
+    text-align: center; /* left; */
+}
+
+/* Login form table */
+TABLE.accountLoginFormTable {
+    /* */
+    padding-left:35px;
+    /* */
+}
+TD.accountLoginFieldLabel {
+    padding-top: 4px;
+    padding-right: 4px;
+    text-align: left;
+}
+TD.accountLoginFieldValue {
+    padding-top: 4px;
+}

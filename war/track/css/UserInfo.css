@@ -1,0 +1,9 @@
+
+/* user ACL view box */
+.userAclViewDiv {
+    border: 1px solid black;
+    margin: 2px 20px 5px 10px;
+    height: 200px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}

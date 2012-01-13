@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC '-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN' 'http://java.sun.com/dtd/web-app_2_3.dtd'>
+<web-app id="TrackWar">
+
+    <!--
+     *** To change the servlet location to the root of the URL:
+     ***  1) In this 'web.xml' file:
+     ***     - Set <servlet-mapping>/<url-pattern> to "/"
+     ***     - Set <taglib>/<taglib-uri> to "."
+     ***  2) In 'loginSession.jsp':
+     ***     - Set 'taglib uri="." prefix="gts"'
+     ***  3) In 'webapp.conf':
+     ***     - Set "track.baseURI=/"
+     -->
+     
+    <!-- ======================================================================
+     === Expected tag ordering:
+     ===    icon?
+     ===    display-name?
+     ===    description?
+     ===    distributable?
+     ===    context-param*
+     ===    filter*
+     ===    filter-mapping*
+     ===    listener*
+     ===    servlet*
+     ===    servlet-mapping*
+     ===    session-config?
+     ===    mime-mapping*
+     ===    welcome-file-list?
+     ===    error-page*
+     ===    taglib*
+     ===    resource-env-ref*
+     ===    resource-ref*
+     ===    security-constraint*
+     ===    login-config?
+     ===    security-role*
+     ===    env-entry*
+     ===    ejb-ref*
+     ===    ejb-local-ref*
+     ===================================================================== -->
+
+    <display-name>TrackWar</display-name>
+    <description>Device mapped tracking</description>
+
+    <filter>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <filter-class>org.opengts.war.track.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>characterEncoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>overrideRequestEncoding</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>/Track</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>*.csv</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>*.xml</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>CharacterEncodingFilter</filter-name>
+        <url-pattern>*.kml</url-pattern>
+    </filter-mapping>
+
+    <listener>
+        <listener-class>org.opengts.war.tools.RTConfigContextListener</listener-class>
+    </listener>
+
+    <!-- ====================================================================== 
+     === Servlet definitions
+     -->
+
+    <!-- "Track" servlet --> 
+    <servlet>
+        <servlet-name>Track</servlet-name>
+        <servlet-class>org.opengts.war.track.Track</servlet-class>
+    </servlet>
+
+    <!-- "Service" servlet (may not be present in this release) -->
+    <servlet>
+        <servlet-name>Service</servlet-name>
+        <servlet-class>org.opengts.extra.war.service.Service</servlet-class>
+    </servlet>
+
+    <!-- "Celltrac" servlet (may not be present in this release) -->
+    <servlet>
+        <servlet-name>Celltrac</servlet-name>
+        <servlet-class>org.opengts.opt.war.celltrac.Celltrac</servlet-class>
+    </servlet>
+
+    <!-- ====================================================================== 
+     === Servlet-mapping definitions
+     -->
+
+    <!-- "Track" servlet-mapping --> 
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <!-- url-pattern>/</url-pattern -->
+        <url-pattern>/Track</url-pattern>
+        <!-- 'url-pattern' must match "org.opengts.war.track.Track.BASE_URI()" -->
+        <!-- ['Track.BASE_URI()' can also be set in the 'webapps.conf' runtime config property "track.baseURI"] -->
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>/Track.html</url-pattern>
+        <!-- Only needed because _some_ MapProviders require a '.html' at the end of the referring page URL -->
+        <!-- The 'webapps.conf' runtime config property "track.baseURI" must be changed to match -->
+        <!-- (yes, this requirement is ridiculous) -->
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>/Marker</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>/login.html</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>/loginFrame.html</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>*.csv</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>*.zip</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>*.txt</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>*.xls</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>*.xlsx</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>*.xml</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>*.kml</url-pattern>
+    </servlet-mapping>
+    <!-- servlet-mapping>
+        <servlet-name>Track</servlet-name>
+        <url-pattern>/index.html</url-pattern>
+    </servlet-mapping -->
+
+    <!-- "Service" servlet-mapping --> 
+    <servlet-mapping>
+        <servlet-name>Service</servlet-name>
+          <!-- <url-pattern>/</url-pattern> -->
+        <url-pattern>/Service</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Service</servlet-name>
+          <!-- <url-pattern>/</url-pattern> -->
+        <url-pattern>/ws</url-pattern>
+    </servlet-mapping>
+
+    <!-- "Celltrac" servlet-mapping --> 
+    <servlet-mapping>
+        <servlet-name>Celltrac</servlet-name>
+        <url-pattern>/GTS</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Celltrac</servlet-name>
+        <url-pattern>/Celltrac</url-pattern>
+    </servlet-mapping>
+
+    <!-- ====================================================================== -->
+    <!--
+     *** To change the login session timeout value:
+     *** !) In the file "$CATALINA_HOME/conf/web.xml", set the "session-timeout" value 
+     ***    to the number of minutes to maintain the session:
+     ***     <session-config>
+     ***         <session-timeout>240</session-timeout>
+     ***     </session-config>
+     -->
+     
+    <!-- ====================================================================== -->
+
+    <taglib>
+         <taglib-uri>./Track</taglib-uri>
+           <!-- 'taglib-uri' must match 'taglib uri="xxxx"' value in 'loginSession.jsp' file -->
+         <taglib-location>/WEB-INF/tld/Track.tld</taglib-location>
+    </taglib>
+
+</web-app>

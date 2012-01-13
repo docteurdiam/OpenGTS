@@ -1,0 +1,13 @@
+
+/* "Offline" page */
+.offlineTable { 
+    margin-top: 50px;
+    width: 378px;
+}
+
+.offlineCell { 
+    padding: 10px; 
+    border: solid #555555 1px; 
+    background-color: #FBFBFB; 
+    text-align: center;
+}

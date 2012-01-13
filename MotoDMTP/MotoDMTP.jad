@@ -1,0 +1,15 @@
+MIDlet-Delete-Confirm:
+MIDlet-Jar-Size: 91030
+MIDlet-1: MotoDMTP,,org.opendmtp.j2me.client.custom.motorola.Main
+MIDlet-Jar-URL: MotoDMTP.jar
+MIDlet-Permissions-Opt:
+MIDlet-Icon:
+MIDlet-Delete-Notify:
+MIDlet-Version: 1.2.2c
+MIDlet-Install-Notify:
+MIDlet-Info-URL: http://www.opendmtp.org
+MIDlet-Vendor: OpenDMTP.org
+MIDlet-Description: J2ME OpenDMTP
+MIDlet-Name: MotoDMTP
+MIDlet-Data-Size:
+MIDlet-Permissions: javax.microedition.io.Connector.http,javax.microedition.io.Connector.socket,javax.microedition.io.Connector.mposition

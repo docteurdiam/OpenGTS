@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+ 
+<!ELEMENT ReportDefinition (Properties*, DefaultStyle, ReportLayout+, ReportTypes, Report+)>
+	<!ATTLIST ReportDefinition i18nPackage CDATA #IMPLIED>
+    
+<!ELEMENT Properties (Property*)>
+
+<!ELEMENT Property (#PCDATA)>
+	<!ATTLIST Property key  CDATA #REQUIRED>
+
+<!ELEMENT DefaultStyle (#PCDATA)>
+	<!ATTLIST DefaultStyle cssFile  CDATA #REQUIRED>
+
+<!ELEMENT ReportLayout (DateFormat, TimeFormat, LayoutStyle)>
+	<!ATTLIST ReportLayout class    CDATA #REQUIRED>
+	<!ATTLIST ReportLayout optional CDATA #IMPLIED>
+
+<!ELEMENT DateFormat (#PCDATA)>
+
+<!ELEMENT TimeFormat (#PCDATA)>
+
+<!ELEMENT LayoutStyle (#PCDATA)>
+	<!ATTLIST LayoutStyle cssFile  CDATA #REQUIRED>
+
+<!ELEMENT ReportTypes (ReportType+)>
+
+<!ELEMENT ReportType (#PCDATA)>
+	<!ATTLIST ReportType name    CDATA #REQUIRED>
+	<!ATTLIST ReportType isGroup CDATA #IMPLIED>
+
+<!ELEMENT Report (MenuDescription, Title, Subtitle, Columns, SimpleColumns*, Options*, MapIconSelector?, Constraints?, Property*)>
+	<!ATTLIST Report name          CDATA #IMPLIED>
+	<!ATTLIST Report type          CDATA #IMPLIED>
+	<!ATTLIST Report class         CDATA #IMPLIED>
+	<!ATTLIST Report optional      CDATA #IMPLIED>
+	<!ATTLIST Report sysAdminOnly  CDATA #IMPLIED>
+	<!ATTLIST Report sortable      CDATA #IMPLIED>
+	<!ATTLIST Report urlOnly       CDATA #IMPLIED>
+
+<!ELEMENT Property (#PCDATA)>
+	<!ATTLIST Property key CDATA #REQUIRED>
+
+<!ELEMENT MenuDescription (#PCDATA)>
+	<!ATTLIST MenuDescription i18n  CDATA #IMPLIED>
+
+<!ELEMENT Title (#PCDATA)>
+	<!ATTLIST Title i18n  CDATA #IMPLIED>
+
+<!ELEMENT Subtitle (#PCDATA)>
+	<!ATTLIST Subtitle i18n  CDATA #IMPLIED>
+
+<!ELEMENT Columns (Column*)>
+
+<!ELEMENT Column (#PCDATA)>
+	<!ATTLIST Column name      CDATA #REQUIRED>
+	<!ATTLIST Column arg       CDATA #IMPLIED>
+	<!ATTLIST Column sortable  CDATA #IMPLIED>
+	<!ATTLIST Column i18n      CDATA #IMPLIED>
+	<!ATTLIST Column ifTrue    CDATA #IMPLIED>
+	<!ATTLIST Column ifFalse   CDATA #IMPLIED>
+
+<!ELEMENT SimpleColumns (#PCDATA)>
+
+<!ELEMENT Options (Option*)>
+
+<!ELEMENT Option (Description, Property*)>
+	<!ATTLIST Option name      CDATA #REQUIRED>
+	<!ATTLIST Option ifTrue    CDATA #IMPLIED>
+	<!ATTLIST Option ifFalse   CDATA #IMPLIED>
+
+<!ELEMENT Description (#PCDATA)>
+
+<!ELEMENT MapIconSelector (#PCDATA)>
+	<!ATTLIST MapIconSelector ruleFactoryName CDATA #REQUIRED>
+
+<!ELEMENT Constraints (TimeStart?, TimeEnd?, ValidGPSRequired?, RuleSelector?, Where?, SelectionLimit?, ReportLimit?, OrderAscending?, OrderDescending? )>
+
+<!ELEMENT TimeStart (#PCDATA)>
+
+<!ELEMENT TimeEnd (#PCDATA)>
+
+<!ELEMENT ValidGPSRequired (#PCDATA)>
+
+<!ELEMENT RuleSelector (#PCDATA)>
+	<!ATTLIST RuleSelector ruleFactoryName CDATA #REQUIRED>
+
+<!ELEMENT OrderAscending (#PCDATA)>
+<!ELEMENT OrderDescending (#PCDATA)>
+
+<!ELEMENT Where (#PCDATA)>
+	<!ATTLIST Where type CDATA #REQUIRED>
+
+<!ELEMENT SelectionLimit (#PCDATA)>
+	<!ATTLIST SelectionLimit type CDATA #REQUIRED>
+
+<!ELEMENT ReportLimit (#PCDATA)>
+

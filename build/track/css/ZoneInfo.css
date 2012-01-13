@@ -1,0 +1,74 @@
+
+/* description */
+DIV.zoneDescription {
+    width: 100%; 
+    font-size: 9pt;
+}
+SPAN.zoneDescription {
+    width: 100%; 
+    font-size: 9pt;
+    text-align: right;
+}
+
+/* overlap priority selection */
+DIV.zonePrioritySelect {
+    width: 100%;
+    margin-top: 4px;
+}
+
+/* checkbox selection */
+DIV.zoneCheckSelect {
+    width: 100%;
+    font-weight: normal;
+    font-size: 9pt;
+    margin-left: 4px;
+    margin-top: 3px;
+}
+
+/* basic notes */
+DIV.zoneNotesBasic {
+    width: 100%;
+    font-size: 8pt;
+}
+DIV.zoneInstructions {
+    width: 100%; 
+    font-size: 8pt;
+}
+
+/* zone color */
+DIV.zoneColorSelect {
+    width: 100%;
+    font-size: 9pt;
+    margin-top: 3px;
+}
+
+/* radius */
+DIV.zoneRadius {
+    width: 100%;
+    font-size: 9pt;
+    margin-top: 3px;
+}
+
+/* latitude/longitude */
+DIV.zoneLatLon {
+    width: 100%;
+    font-size: 9pt;
+    margin-top: 3px;
+}
+.zoneLatLonText {
+    font-size: 8pt;
+    border-width: 1px; 
+    border-style: solid; 
+    border-color: #555588 #AAAABB #AAAABB #555588; 
+    padding-left: 2px; 
+    background-color: #FFFFFF; 
+}
+.zoneLatLonText_ro {
+    font-size: 9pt;
+    border-width: 1px; 
+    border-style: solid; 
+    border-color: #555588 #AAAABB #AAAABB #555588; 
+    padding-left: 2px; 
+    color: #555555;
+    background-color: #EFEFEF; 
+}

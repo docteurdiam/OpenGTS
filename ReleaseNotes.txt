@@ -1,0 +1,28 @@
+
+Version 2.3.8 [2011/10/10]
+- NEW: Added additional StatusCodes.
+- NEW: Added "map.showPushpins" property to MapProvider section to allow disabling
+       the display of pushpins on the map.
+- NEW: Added support for daylight-savings-time zone names to "DateTime.java".
+- UPD: Added GeozoneID support to "GPSEvent.java"
+- DCS: taip - Added estimated odometer calculation, and simulated geozone support.
+- DCS: sipgear - default listen port changed from 31270 to 31170.
+- DCS: icare - default listen port changed from 31260 to 31160.
+- FIX: Fix memory leak issue in "OpenLayers.js" (thanks to YanXu "stelzbock")
+
+-----------------------------------------------------------------------------------
+
+Project Home Page:
+    http://www.opengts.org
+
+Download Latest Version from SourceForge:
+    https://sourceforge.net/projects/opengts/
+
+Documentation (installation/configuration, tutorials, FAQ):
+    http://www.opengts.org/FAQ.html
+    http://www.opengts.org/documentation.html
+    http://www.geotelematic.com/documentation.html
+
+GTS Enterprise:
+    http://www.geotelematic.com/gts.html
+

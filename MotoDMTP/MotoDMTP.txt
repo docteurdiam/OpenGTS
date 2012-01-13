@@ -1,0 +1,30 @@
+--------------------------------------------------------------------------------------
+Description: OpenDMTP Implementation for the Boost Mobile Motorola i425/i290/i580 phone
+Version    : MotoDMTP 1.2.2c
+Copyright  : Copyright(C) 2010-2011, GeoTelematics, Solutions, Inc.
+Contact    : projects@geotelematic.com
+OpenDMTP   : http://www.opendmtp.org
+OpenGTS    : http://www.opengts.org
+--------------------------------------------------------------------------------------
+
+The source for the MotoDMTP GPS tracking support software is located in the OpenDMTP 
+"client-j2me" project download from SourceForge:
+    https://sourceforge.net/project/showfiles.php?group_id=151031
+
+--------------------------------------------------------------------------------------
+
+See "Appendix C" in the OpenGTS_Config.pdf document for information regarding 
+installation and configuration of MotoDMTP on your Motorola Boost Mobile phone.
+
+--------------------------------------------------------------------------------------
+
+Please let us know if you have any difficulties installing the MotoDMTP J2ME
+application, or see any areas of this document that could be improved.
+
+--------------------------------------------------------------------------------------
+
+"Motorola" and "Boost Mobile" are trademarks owned by their respective companies.  
+OpenGTS/OpenDMTP is not affiliated with Sprint/Nextel, Boost Mobile, or Motorola, in 
+any way.
+
+--------------------------------------------------------------------------------------

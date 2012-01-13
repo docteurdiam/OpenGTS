@@ -1,0 +1,2676 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no' ?>
+<!DOCTYPE ReportDefinition SYSTEM "reports.dtd" >
+
+<!-- 
+  =======================================================================================
+  Project: OpenGTS - Open GPS Tracking System
+  URL    : http://www.opengts.org
+  File   : report.xml
+  =======================================================================================
+  Note: 
+  - The format of this XML file is subject to change.
+  - This file is parsed by class "org.opengts.war.tools.ReportFactory".
+  - The following tags can contain displayable text:
+      MenuDescrption, Title, Subtitle, Column, ReportType
+    The text described these tags can be localized by formatting the text as in the following example:
+      <Title i18n="Reports.sampleTitle">This is a sample title</Title>
+    Where "Report.sampleTitle" is the localization lookup key used to find the text value for 
+    current Locale in the file "LocalStrings_XX.properties".   The text "This is a sample title"
+    above is the default text value used if no Locale value is found.  The location where the
+    "LocalStrings_XX.properties" file should be located is defined by the "i18nPackage" attribute
+    on the 'ReportDefinition' tag.
+  =======================================================================================
+  Change History:
+   2008/03/28  Martin D. Flynn
+      - Changed "Limit" tag "SelectionLimit"
+      - Added new constraint tag "ReportLimit".
+   2009/01/01  Martin D. Flynn
+      - Added degree 'heading' format options.
+      - Initialized for 'gts' enterprise version
+   2009/05/01  Martin D. Flynn
+      - Included additional report definitions
+   2009/11/01  Martin D. Flynn
+      - Added "cssFile" attribute to "DefaultLayout" and "LayoutStyle" tags.
+      - Added "Properties" tag (used for 'ifTrue'/'ifFalse' column inclusion)
+      - Added "Options" tag to Report definitions.
+   2009/06/17  Martin D. Flynn
+      - Added Fleet Detail reports
+   2010/07/17  Martin D. Flynn
+      - Fixed i18n issue with strings "ReportsXML.fuelSummary.title", "ReportsXML.fuelSummary.subtitle", etc.
+   2010/09/09  Martin D. Flynn
+      - Added optional Antx daily reports
+   2011/03/08  Martin D. Flynn
+      - Added Geozone 'visit' count to Geozone report (see "columnGeozoneVisitCount")
+   2011/06/16  Martin D. Flynn
+      - Added TripReport "tripStartStopOnly" property
+  =======================================================================================
+ -->
+
+<ReportDefinition i18nPackage="org.opengts.war.report">
+   <!-- Properties: "ReportDefinitions." -->
+
+   <!-- Report Properties =====================================================================
+    === Currently these property definitions are only used for Column inclusion/exclusion
+    === within specific reports.  "ifTrue" and "ifFalse" are new attributes on the "Column" tag
+    === for a report.  To conditionally include a column, an 'ifTrue="propertyKey"' attribute
+    === can be specified, in the case of 'ifTrue', if the property specified below is 'true', 
+    === the column will be included, otherwise it will be omittted.  Conversly for 'ifFalse',if
+    === the property is false, it will be included, otherwise it will be omitted.
+    === These properties can be overridden in a runtime configuration file (ie. '.conf' file) 
+    === by specifying "ReportDefinition." before the property name.  For example to override
+    === the "columnLatLon" property, you could add the following definition to one of the loaded 
+    === runtime config files: IE.
+    ===    ReportDefinition.columnLatLon=false
+    ===    ReportDefinition.TripReport.showFuelTotal=true
+    -->
+   <Properties>
+      <!-- column properties -->
+      <Property key="columnIndexMapLink"                >false</Property>
+      <Property key="columnPushpin"                     >false</Property>
+      <Property key="columnLatLon"                      >true</Property>
+      <Property key="columnBattery"                     >true</Property>
+      <Property key="columnOdometer"                    >true</Property>
+      <Property key="columnFuelUsage"                   >false</Property>
+      <Property key="columnFuelEconomy"                 >false</Property>
+      <Property key="columnGeozoneDesc"                 >false</Property>
+      <Property key="columnServiceNotes"                >true</Property>
+      <Property key="columnSampleCollection"            >false</Property>
+      <Property key="columnGeozoneVisitCount"           >true</Property>
+      <Property key="columnThermo1"                     >true</Property>
+      <Property key="columnThermo2"                     >false</Property>
+      <Property key="columnThermo3"                     >false</Property>
+      <Property key="columnThermo4"                     >false</Property>
+      <Property key="columnThermo5"                     >false</Property>
+      <Property key="columnThermo6"                     >false</Property>
+      <Property key="columnThermo7"                     >false</Property>
+      <Property key="columnThermo8"                     >false</Property>
+      <!-- option properties -->
+      <Property key="optionTripStartType_default"       >true</Property>
+      <Property key="optionTripStartType_ignition"      >true</Property>
+      <Property key="optionTripStartType_startstop"     >true</Property>
+      <Property key="optionTripStartType_motion"        >true</Property>
+      <Property key="optionSummary_waymark0"            >true</Property>
+      <Property key="optionSummary_waymark1"            >false</Property>
+      <!--- TripReport specific properties -->
+      <Property key="TripReport.showFuelTotal"          >false</Property>
+      <Property key="TripReport.showFuelTrip"           >true</Property>
+      <Property key="TripReport.showFuelEconomy"        >true</Property>
+      <Property key="TripReport.estimateFuelTotal"      >false</Property>
+      <Property key="TripReport.kilometersPerLiter"     >0.0</Property>  <!-- 20mpg: mpg * 0.425 = 8.5 km/L -->
+      <Property key="TripReport.tripStartStopOnly"      >false</Property>
+      <!-- Event Detail OBD specific properties -->
+      <Property key="EventDetailOBD.statusDesc"         >true</Property>
+      <Property key="EventDetailOBD.geoPoint"           >true</Property>
+      <Property key="EventDetailOBD.address"            >true</Property>
+      <Property key="EventDetailOBD.geozoneDesc"        >true</Property>
+      <Property key="EventDetailOBD.speedH"             >true</Property>
+      <Property key="EventDetailOBD.altitude"           >true</Property>
+      <Property key="EventDetailOBD.odometer"           >true</Property>
+      <Property key="EventDetailOBD.fuelLevel"          >true</Property>
+      <Property key="EventDetailOBD.fuelEconomy"        >true</Property>
+      <Property key="EventDetailOBD.fuelTotal"          >true</Property>
+      <Property key="EventDetailOBD.fuelIdle"           >true</Property>
+      <Property key="EventDetailOBD.fuelPressure"       >true</Property>
+      <Property key="EventDetailOBD.engineRpm"          >true</Property>
+      <Property key="EventDetailOBD.engineHours"        >true</Property>
+      <Property key="EventDetailOBD.engineLoad"         >true</Property>
+      <Property key="EventDetailOBD.idleHours"          >true</Property>
+      <Property key="EventDetailOBD.transOilTemp"       >true</Property>
+      <Property key="EventDetailOBD.coolantLevel"       >true</Property>
+      <Property key="EventDetailOBD.coolantTemp"        >true</Property>
+      <Property key="EventDetailOBD.brakeGForce"        >true</Property>
+      <Property key="EventDetailOBD.brakePressure"      >true</Property>
+      <Property key="EventDetailOBD.brakePos"           >true</Property>
+      <Property key="EventDetailOBD.oilLevel"           >true</Property>
+      <Property key="EventDetailOBD.oilPressure"        >true</Property>
+      <Property key="EventDetailOBD.ptoEngaged"         >true</Property>
+      <Property key="EventDetailOBD.ptoHours"           >true</Property>
+      <Property key="EventDetailOBD.vBatteryVolts"      >true</Property>
+      <Property key="EventDetailOBD.throttlePos"        >true</Property>
+      <Property key="EventDetailOBD.intakeTemp"         >true</Property>
+      <Property key="EventDetailOBD.airPressure"        >true</Property>
+      <Property key="EventDetailOBD.airFilterPressure"  >true</Property>
+      <Property key="EventDetailOBD.turboPressure"      >true</Property>
+      <Property key="EventDetailOBD.malfunctionLamp"    >true</Property>
+      <!-- DistanceTraveled specific properties -->
+      <Property key="DistanceTraveled.startOdometer"    >true</Property>
+      <Property key="DistanceTraveled.stopOdometer"     >true</Property>
+      <Property key="DistanceTraveled.odomDelta"        >true</Property>
+      <Property key="DistanceTraveled.startFuel"        >false</Property>
+      <Property key="DistanceTraveled.stopFuel"         >false</Property>
+      <Property key="DistanceTraveled.fuelDelta"        >false</Property>
+   </Properties>
+
+   <!-- Global Style Sheet ==================================================================== -->
+   <DefaultStyle cssFile="RptGlobalStyle.css"/>
+   <!-- the style may be included directly here as well:
+   <DefaultStyle><![CDATA[
+    <style>
+        /* add style here */
+    </style>
+    <link rel="stylesheet" type="text/css" href="css/RptGlobalStyle.css"/>
+   ]]></DefaultStyle>
+   -->
+
+   <!-- ======================================================================================= -->
+   <!-- Report Layout configuration =========================================================== -->
+   <!-- (must be a subclass of "org.opengts.war.report.ReportLayout") -->
+
+   <!-- EventData based reports -->
+   <ReportLayout 
+        class="org.opengts.war.report.event.EventDataLayout"
+        >
+      <!-- 
+       === This report layout supports the following columns
+       ===   Name                   Example output
+       ===   index                  - # record number
+       ===   deviceId               - "dev32"
+       ===   deviceDesc             - "Linehaul #1"
+       ===   deviceBattery          - "89%"
+       ===   deviceCreateDateTime   - "2007/03/08 23:31:47"
+       ===   date                   - "2007/03/08"
+       ===   time                   - "23:31:47"
+       ===   dateTime               - "2007/03/08 23:31:47"
+       ===   timestamp              - "1173350990"
+       ===   createDate             - "2007/03/08"
+       ===   createTime             - "23:31:47"
+       ===   createDateTime         - "2007/03/08 23:31:47"
+       ===   createTimestamp        - "1173350990"
+       ===   groupId                - "sac"
+       ===   statusCode             - "0xF011"
+       ===   statusDesc             - "InMotion"
+       ===   gpsAge                 - "7"
+       ===   latitude               - "49.1234" or "49.07'24"N or "49.07.40N"
+       ===   latitude:dms           - "49.07'24"W"
+       ===   latitude:dm            - "49.07.40"W"
+       ===   latitude:3             - "49.123"
+       ===   latitude:4             - "49.1234"
+       ===   latitude:5             - "49.12345"
+       ===   longitude              - "-110.1234" or "110.07'24"W" or "110.07.40W"
+       ===   longitude:dms          - "110.07'24"W"
+       ===   longitude:dm           - "110.07.40"W"
+       ===   longitude:3            - "-110.123"
+       ===   longitude:4            - "-110.1234"
+       ===   longitude:5            - "-110.12345"
+       ===   geoPoint               - "49.1234/-110.1234" or "49.07'24"N/110.07'24"W" or "49.07.40N/110.07.40W"
+       ===   geoPoint:dms           - "49.07'24"N/110.07'24"W"
+       ===   geoPoint:dm            - "49.07.40N/110.07.40W"
+       ===   geoPoint:3             - "49.123/-110.123"
+       ===   geoPoint:4             - "49.1234/-110.1234"
+       ===   geoPoint:5             - "49.12345/-110.12345"
+       ===   accuracy               - "20"
+       ===   cellLatitude           - "49.1234" or "49.07'24"N or "49.07.40N"
+       ===   cellLongitude          - "-110.1234" or "110.07'24"W" or "110.07.40W"
+       ===   cellGeoPoint           - "49.1234/-110.1234" or "49.07'24"N/110.07'24"W" or "49.07.40N/110.07.40W"
+       ===   cellAccuracy           - "20"
+       ===   bestLatitude           - "49.1234" or "49.07'24"N or "49.07.40N"
+       ===   bestLongitude          - "-110.1234" or "110.07'24"W" or "110.07.40W"
+       ===   bestGeoPoint           - "49.1234/-110.1234" or "49.07'24"N/110.07'24"W" or "49.07.40N/110.07.40W"
+       ===   bestAccuracy           - "20"
+       ===   altitude               - "324.5"       (units specified on column header)
+       ===   altitude:1             - "324.4"       (units specified on column header)
+       ===   satellites             - "6"         
+       ===   speedLimit             - "65"          (units specified on column header)
+       ===   speed                  - "47"          (units specified on column header)
+       ===   speed:1                - "47.1"        (units specified on column header)
+       ===   speed:2                - "47.13"       (units specified on column header)
+       ===   speedH                 - "47 NW"       (units specified on column header)
+       ===   speedH:1               - "47.1 NW"     (units specified on column header)
+       ===   speedH:2               - "47.13 NW"    (units specified on column header)
+       ===   speedU                 - "47mph NE"
+       ===   speedU:1               - "47.1mph NE"
+       ===   speedU:2               - "47.13mph NE"
+       ===   heading                - "NE"
+       ===   heading:0              - "325"
+       ===   heading:1              - "325.2"
+       ===   distance               - "4587"        (units specified on column header)
+       ===   distance:0             - "4587"        (units specified on column header)
+       ===   distance:1             - "4587.2"      (units specified on column header)
+       ===   odometer               - "34297"       (units specified on column header)
+       ===   odometer:0             - "34297"       (units specified on column header)
+       ===   odometer:1             - "34297.2"     (units specified on column header)
+       ===   battery                - "24%"
+       ===   batteryVolts           - "3.65"
+       ===   batteryPercent         - "24%"
+       ===   inpuitState            - "10010000"  (binary input state)
+       ===   analog0                - "12.4"
+       ===   analog1                - "12.4"
+       ===   analog2                - "12.4"
+       ===   analog3                - "12.4"
+       ===   address                - "1234 Somewhere Lane, Anytown, CA" 
+       ===   city                   - "Anytown" 
+       ===   state                  - "CA" 
+       ===   country                - "US" 
+       ===   subdivision            - "US/CA" 
+       ===   geozoneId              - "home" 
+       ===   geozoneDesc            - "Home Base" 
+       ===   entityId               - "00000123"
+       ===   entityDesc             - "Trailer 123"
+       ===   driverId               - "john"
+       ===   driverDesc             - "Jon Smith"
+       ===   driverStatus           - "1"
+       ===   driverMessage          - "Hello World"
+       ===   jobNumber              - "12345"
+       ===   rfidTag                - "abcdfe"
+       ===   sampleIndex            - "47"
+       ===   sampleId               - "123-456"
+       ====  applyPressure          - "23.3"
+       ===   barometer              - "15.5"
+       ===   ambientTemp            - "32.5"
+       ===   thermo#:0              - "14F"         ('#' may be 1..4)
+       ===   thermo#:1              - "-2.3C"       ('#' may be 1..4)
+       ===   fuelLevel              - "87%"
+       ===   fuelLevelVolume        - "7.5"         (units specified on column header)
+       ===   fuelEconomy            - "6.4"         (units specified on column header)
+       ===   fuelTotal              - "1032.4"      (units specified on column header)
+       ===   fuelIdle               - "232.4"       (units specified on column header)
+       ===   fuelPressure           - "23.4"        (units specified on column header)
+       ===   faultCode              - "128/123/1"
+       ===   malfunctionLamp        - "No"
+       ===   oilLevel               - "98%"
+       ===   oilPressure            - "13.9"
+       ===   oilTemp                - "56..7"
+       ===   engineRpm              - "1352"
+       ===   engineHours            - "5647.8"
+       ===   engineLoad             - "78.5%"
+       ===   idleHours              - "2387.2"
+       ===   transOilTemp           - "65.3"
+       ===   coolantLevel           - "97.3%"
+       ===   coolantTemp            - "96.4"
+       ===   acceleration           - "10.2"        (meters/sec/sec)
+       ===   brakeGForce            - "1.3"         (G-force)
+       ===   brakeForce             - "1.3"         (km/hr/sec)
+       ===   brakePressure          - "23.4"
+       ===   brakePos               - "10%"
+       ===   ptoEngaged             - "true"
+       ===   ptoHours               - "1234.4"
+       ===   vBatteryVolts          - "13.6"
+       ===   throttlePos            - "80%"
+       ===   intakeTemp             - "96.4"
+       ===   airPressure            - "22.4"
+       ===   airFilterPressure      - "22.4"
+       ===   turboPressure          - "22.4"
+       ===   tirePressure           - "32,29,29,30"
+       ===   tireTemp               - "40,40,40,40"
+       ===   checkinDateTime        - "2007/03/08 23:31:47"
+       ===   checkinAge             - "2d 04h 37m"
+       ===   lastBatteryPercent     - "45.6%"
+       ===   fuelCapacity           - "20.0"
+       ===   etaDateTime            - "2007/03/08 23:31:47"
+       ===   etaTimestamp           - "1173350990"
+       ===   etaUniqueID            - "123"
+       ===   etaDistance            - "4587"       (units specified on column header)
+       ===   etaDistance:0          - "4587"       (units specified on column header)
+       ===   etaDistance:1          - "4587.2"     (units specified on column header)
+       ===   etaDistance:2          - "4587.23"    (units specified on column header)
+       ===   etaLatitude            - "49.1234" or "49.07'24"N or "49.07.40N"
+       ===   etaLatitude:dms        - "49.07'24"W"
+       ===   etaLatitude:dm         - "49.07.40"W"
+       ===   etaLatitude:3          - "49.123"
+       ===   etaLatitude:4          - "49.1234"
+       ===   etaLatitude:5          - "49.12345"
+       ===   etaLongitude           - "-110.1234" or "110.07'24"W" or "110.07.40W"
+       ===   etaLongitude:dms       - "110.07'24"W"
+       ===   etaLongitude:dm        - "110.07.40"W"
+       ===   etaLongitude:3         - "-110.123"
+       ===   etaLongitude:4         - "-110.1234"
+       ===   etaLongitude:5         - "-110.12345"
+       ===   etaGeoPoint            - "49.1234/-110.1234" or "49.07'24"N/110.07'24"W" or "49.07.40N/110.07.40W"
+       ===   etaGeoPoint:dms        - "49.07'24"N/110.07'24"W"
+       ===   etaGeoPoint:dm         - "49.07.40N/110.07.40W"
+       ===   etaGeoPoint:3          - "49.123/-110.123"
+       ===   etaGeoPoint:4          - "49.1234/-110.1234"
+       ===   etaGeoPoint:5          - "49.12345/-110.12345"
+       ===   stopUniqueID           - "123"
+       ===   stopStatus             - "103"
+       ===   stopStatusDesc         - "Active"
+       ===   stopIndex              - "1"
+       -->
+
+      <!-- Date/Time format (Note: case is import!)
+       === yyyy - year
+       ===   MM - month
+       ===   dd - day
+       ===   HH - hour
+       ===   mm - minute
+       ===   ss - second
+       === (these will default to the format provided in 'private.xml' if not defined here)
+       -->
+      <!-- <DateFormat>yyyy/MM/dd</DateFormat> --> <!-- see "java.text.SimpleDateFormat" -->
+      <!-- <TimeFormat>HH:mm:ss</TimeFormat>   --> <!-- see "java.text.SimpleDateFormat" -->
+
+      <!-- layout css style -->
+      <LayoutStyle cssFile="RptEventDataLayout.css"/>
+      <!--
+      <LayoutStyle><![CDATA[
+        <link rel="stylesheet" type="text/css" href="css/RptEventDataLayout.css"/>
+      ]]></LayoutStyle>
+      -->
+
+   </ReportLayout>
+
+   <!-- FieldLayout: Generic field based reports -->
+   <ReportLayout 
+        class="org.opengts.war.report.field.FieldLayout"
+        >
+      <!-- 
+       === Notes:
+       ===   - Not every field will contain a value for every report.  Only those fields
+       ===     which have been populated by the report itself will contain values.
+       ===
+       === This report layout supports the following columns
+       ===   index              - # record number
+       ===   accountId          - "acme"
+       ===   accountDesc        - "Acme Incorporated"
+       ===   userId             - "smith"
+       ===   userDesc           - "John Smith"
+       ===   deviceId           - "dev32"
+       ===   deviceDesc         - "Linehaul #1"
+       ===   deviceBattery      - "97%"
+       ===   vehicleId          - "J123456789012345"    (ie. VIN)
+       ===   equipmentType      - "Truck"
+       ===   uniqueId           - "gts_123456789012345"
+       ===   groupId            - "sac"
+       ===   date               - "2007/03/08"
+       ===   time               - "23:31:47"
+       ===   dateTime           - "2007/03/08 23:31:47"
+       ===   timestamp          - "1173350990"
+       ===   statusCode         - "0xF011"
+       ===   statusDesc         - "InMotion"
+       ===   pushpin            - "http://localhost/track/images/blue_pushpin.png"
+       ===   entityId           - "00000123"
+       ===   entityDesc         - "Jon Smith"
+       ===   driverId           - "smith"
+       ===   driverDesc         - "John Smith"
+       ===   driverPadge        - "X12345"
+       ===   driverLicense      - "X123456789"
+       ===   driverLicenseExp   - "2011/03/01"
+       ===   driverBirthdate    - "1960/01/01"
+       ===   latitude           - "49.1234" or "49.07'24"N or "49.07.40N"
+       ===   latitude:dms       - "49.07'24"W"
+       ===   latitude:dm        - "49.07.40"W"
+       ===   latitude:3         - "49.123"
+       ===   latitude:4         - "49.1234"
+       ===   latitude:5         - "49.12345"
+       ===   longitude          - "-110.1234" or "110.07'24"W" or "110.07.40W"
+       ===   longitude:dms      - "110.07'24"W"
+       ===   longitude:dm       - "110.07.40"W"
+       ===   longitude:3        - "-110.123"
+       ===   longitude:4        - "-110.1234"
+       ===   longitude:5        - "-110.12345"
+       ===   geoPoint           - "49.1234/-110.1234" or "49.07'24"N/110.07'24"W" or "49.07.40N/110.07.40W"
+       ===   geoPoint:dms       - "49.07'24"N/110.07'24"W"
+       ===   geoPoint:dm        - "49.07.40N/110.07.40W"
+       ===   geoPoint:3         - "49.123/-110.123"
+       ===   geoPoint:4         - "49.1234/-110.1234"
+       ===   geoPoint:5         - "49.12345/-110.12345"
+       ===   altitude           - "324"        (units specified on column header)
+       ===   altitude:1         - "324.4"      (units specified on column header)
+       ===   speedLimit         - "47"         (units specified on column header)
+       ===   speed              - "47"         (units specified on column header)
+       ===   speed:1            - "47.1"       (units specified on column header)
+       ===   speed:2            - "47.13"      (units specified on column header)
+       ===   speedH             - "47 NW"      (units specified on column header)
+       ===   speedH:1           - "47.1 NW"    (units specified on column header)
+       ===   speedH:2           - "47.13 NW"   (units specified on column header)
+       ===   speedU             - "47mph NE"
+       ===   speedU:1           - "47.1mph NE"
+       ===   speedU:2           - "47.13mph NE"
+       ===   heading            - "NE"
+       ===   heading:0          - "325"
+       ===   heading:1          - "325.2"
+       ===   distance           - "4587"       (units specified on column header)
+       ===   distance:0         - "4587"       (units specified on column header)
+       ===   distance:1         - "4587.2"     (units specified on column header)
+       ===   distance:2         - "4587.23"    (units specified on column header)
+       ===   odometer           - "34297"      (units specified on column header)
+       ===   odometer:0         - "34297"      (units specified on column header)
+       ===   odometer:1         - "34297.2"    (units specified on column header)
+       ===   odometer:2         - "34297.23"   (units specified on column header)
+       ===   odomDelta          - "34297"      (units specified on column header)
+       ===   odomDelta:0        - "34297"      (units specified on column header)
+       ===   odomDelta:1        - "34297.2"    (units specified on column header)
+       ===   odomDelta:2        - "34297.23"   (units specified on column header)
+       ===   address            - "1234 Somewhere Lane, Anytown, CA" 
+       ===   utilization        - "23%" 
+       ===   count              - "45" 
+       ===   ipAddress          - "10.0.0.1"
+       ===   isDuplex           - "true"
+       ===   tcpConnections     - "5"
+       ===   udpConnections     - "10"
+       ===   connections        - "15"
+       ===   bytesRead          - "128"
+       ===   bytesWritten       - "128"
+       ===   bytesOverhead      - "128"
+       ===   bytesTotal         - "256"
+       ===   bytesRounded       - "1024"
+       ===   eventsReceived     - "2"
+       ===   startDateTime      - "2007/03/08 23:31:47" 
+       ===   startTimestamp     - "1173350990" 
+       ===   startOdometer      - "34297"
+       ===   stopDateTime       - "2007/03/08 23:31:47" 
+       ===   stopTimestamp      - "1173350990" 
+       ===   stopGeoPoint       - "49.1234/-110.1234"
+       ===   stopGeoPoint:3     - "49.123/-110.123"
+       ===   stopGeoPoint:4     - "49.1234/-110.1234"
+       ===   stopGeoPoint:5     - "49.12345/-110.12345"
+       ===   stopOdometer       - "34297"
+       ===   stopCount          - "5"
+       ===   odomDelta          - "142"
+       ===   enterDateTime      - "2007/03/08 23:31:47" 
+       ===   enterTimestamp     - "1173350990" 
+       ===   exitDateTime       - "2007/03/08 23:31:47" 
+       ===   exitTimestamp      - "1173350990" 
+       ===   fuelCapacity       - "20.0"       (units specified on column header)
+       ===   fuelLevel          - "62%"        
+       ===   fuelTotal          - "1045.3"     (units specified on column header)
+       ===   fuelTrip           - "15.3"       (units specified on column header)
+       ===   fuelIdle           - "10.7"       (units specified on column header)
+       ===   fuelWork           - "87.7"       (units specified on column header)
+       ===   fuelPTO            - "14.7"       (units specified on column header)
+       ===   fuelEconomy        - "6.3"        (units specified on column header)
+       ===   startFuel          - "1433.5"     (units specified on column header)
+       ===   stopFuel           - "1433.5"     (units specified on column header)
+       ===   fuelDelta          - "33.0"       (units specified on column header)
+       ===   drivingElapse      - "01:23:43" 
+       ===   stopElapse         - "01:23:43" 
+       ===   idleElapse         - "01:23:43" 
+       ===   checkinDateTime    - "2007/03/08 23:31:47"
+       ===   checkinAge         - "2d 04h 37m"
+       ===   lastIPAddress      - "192.168.1.1"
+       ===   propertyKey        - "0xF911"
+       ===   propertyDesc       - "mot.inmotion"
+       ===   propertyValue      - "120"
+       ===   diagError          - "true"
+       ===   diagKey            - "0xF911"
+       ===   diagDesc           - "GPS Expired"
+       ===   diagValue          - "lastFix=2008/01/03 12:12:32"
+       -->
+
+      <!-- Date/Time format (Note: case is import!)
+       === yyyy - year
+       ===   MM - month
+       ===   dd - day
+       ===   HH - hour
+       ===   mm - minute
+       ===   ss - second
+       === (these will default to the format provided in 'private.xml' if not defined here)
+       -->
+      <!-- <DateFormat>yyyy/MM/dd</DateFormat> --> <!-- see "java.text.SimpleDateFormat" -->
+      <!-- <TimeFormat>HH:mm:ss</TimeFormat>   --> <!-- see "java.text.SimpleDateFormat" -->
+
+      <!-- FieldLayout css style -->
+      <LayoutStyle cssFile="RptFieldLayout.css"/>
+
+   </ReportLayout>
+
+   <!-- OPTIONAL LAYOUT: may not be supported in all releases -->
+   <!-- Border Crossing reports -->
+   <ReportLayout 
+        class="org.opengts.bcross.war.report.BCLayout" 
+        optional="true"
+        >
+      <!-- 'BCLayout' supports the following columns
+       ===   index           - # record number
+       ===   deviceId        - "dev32"
+       ===   deviceDesc      - "Linehaul #1"
+       ===   groupId         - "sac"
+       ===   enterDateTime   - "2007/03/08 23:31:47"
+       ===   enterTimestamp  - "1173350990"
+       ===   enterGeoPoint   - "49.1234/-110.1234"
+       ===   enterGeoPoint:3 - "49.123/-110.123"
+       ===   enterGeoPoint:4 - "49.1234/-110.1234"
+       ===   enterGeoPoint:5 - "49.12345/-110.12345"
+       ===   enterOdometer   - "34297"   (units specified on column header)
+       ===   enterOdometer:0 - "34297"   (units specified on column header)
+       ===   enterOdometer:1 - "34297.2" (units specified on column header)
+       ===   exitDateTime    - "2007/03/08 23:31:47"
+       ===   exitTimestamp   - "1173350990"
+       ===   exitGeoPoint    - "49.1234/-110.1234"
+       ===   exitGeoPoint:3  - "49.123/-110.123"
+       ===   exitGeoPoint:4  - "49.1234/-110.1234"
+       ===   exitGeoPoint:5  - "49.12345/-110.12345"
+       ===   exitOdometer    - "34297"   (units specified on column header)
+       ===   exitOdometer:0  - "34297"   (units specified on column header)
+       ===   exitOdometer:1  - "34297.2" (units specified on column header)
+       ===   odomDelta       - "34297"   (units specified on column header)
+       ===   odomDelta:0     - "34297"   (units specified on column header)
+       ===   odomDelta:1     - "34297.2" (units specified on column header)
+       -->
+
+      <!-- Date/Time format (Note: case is import!)
+       === yyyy - year
+       ===   MM - month
+       ===   dd - day
+       ===   HH - hour
+       ===   mm - minute
+       ===   ss - second
+       === (these will default to the format provided in 'private.xml' if not defined here)
+       -->
+      <!-- <DateFormat>yyyy/MM/dd</DateFormat> --> <!-- see "java.text.SimpleDateFormat" -->
+      <!-- <TimeFormat>HH:mm:ss</TimeFormat>   --> <!-- see "java.text.SimpleDateFormat" -->
+
+      <!-- layout css style -->
+      <LayoutStyle cssFile="RptBCLayout.css"/>
+
+   </ReportLayout>
+
+   <!-- OPTIONAL LAYOUT: may not be supported in all releases -->
+   <!-- Antx daily reports -->
+   <ReportLayout 
+        class="org.opengts.extra.war.report.antx.AntxLayout" 
+        optional="true"
+        >
+      <!-- 'AntxLayout' supports the following columns
+       ===   index           - # record number
+       ===   deviceId        - "dev32"
+       ===   deviceDesc      - "Linehaul #1"
+       ===   dateTime        - "2007/03/08 23:31:47"
+       ===   timestamp       - "1173350990"
+       ===   fieldID         - "10"
+       ===   fieldDesc       - "Trans Oil Temp"
+       ===   channelID       - "153"
+       ===   channelDesc     - "Digital"
+       ===   type            - "Min/Max"
+       ===   data0           - "0.0"
+       ===   data1           - "0.0"
+       ===   data2           - "0.0"
+       ===   data3           - "0.0"
+       ===   data4           - "0.0"
+       -->
+
+      <!-- Date/Time format (Note: case is import!)
+       === yyyy - year
+       ===   MM - month
+       ===   dd - day
+       ===   HH - hour
+       ===   mm - minute
+       ===   ss - second
+       === (these will default to the format provided in 'private.xml' if not defined here)
+       -->
+      <!-- <DateFormat>yyyy/MM/dd</DateFormat> --> <!-- see "java.text.SimpleDateFormat" -->
+      <!-- <TimeFormat>HH:mm:ss</TimeFormat>   --> <!-- see "java.text.SimpleDateFormat" -->
+
+      <!-- layout css style -->
+      <LayoutStyle cssFile="RptAntxLayout.css"/>
+
+   </ReportLayout>
+
+   <!-- ======================================================================================= -->
+   <!-- ======================================================================================= -->
+   <!-- Report Types ========================================================================== -->
+
+   <!--
+    === Notes: 
+    ===  - These must match the "REPORT_TYPE_..." names defined in "src/org/opengts/war/report/ReportFactory.java"
+    ===  - See "src/org/opengts/war/report/ReportFactory.java" for the default descriptions used for these report groups.
+    -->
+   <ReportTypes>
+      <ReportType name="device.detail"      isGroup="false" /> <!-- i18n="ReportsXML.type.deviceDetail"     >Device Detail Reports:</ReportType>        -->
+      <ReportType name="device.summary"     isGroup="false" /> <!-- i18n="ReportsXML.type.deviceSummary"    >Device Summary Reports:</ReportType>       -->
+      <ReportType name="driver.performance" isGroup="false" /> <!-- i18n="ReportsXML.type.driverPerformance">Driver Performance Reports:</ReportType>   -->
+      <ReportType name="fleet.detail"       isGroup="true"  /> <!-- i18n="ReportsXML.type.fleetDetail"      >Fleet Detail Reports:</ReportType>         -->
+      <ReportType name="fleet.summary"      isGroup="true"  /> <!-- i18n="ReportsXML.type.fleetSummary"     >Fleet Summary Reports:</ReportType>        -->
+      <ReportType name="ifta.detail"        isGroup="false" /> <!-- i18n="ReportsXML.type.iftaDetail"       >I.F.T.A. Reports:</ReportType>             -->
+      <ReportType name="ifta.summary"       isGroup="true"  /> <!-- i18n="ReportsXML.type.iftaSummary"      >I.F.T.A. Reports:</ReportType>             -->
+      <ReportType name="sysadmin.summary"   isGroup="true"  /> <!-- i18n="ReportsXML.type.sysadminSummary"  >System Administrator Reports:</ReportType> -->
+   </ReportTypes>
+
+   <!-- ======================================================================================= -->
+   <!-- ======================================================================================= -->
+   <!-- Report Definition ===================================================================== -->
+   <!-- (must be a subclass of "org.opengts.war.report.ReportData")
+    === 'Title', and 'Subtitle', may contain the following vars (many of these are not necessarily
+    === applicable to including in a report title):
+    ===    ${navigation}        - Page navigation string
+    ===    ${pageTitle}         - Page title
+    ===    ${copyright}         - Copyright string
+    ===    ${isLoggedIn}        - "true" (account will always be logged-in on the report)
+    ===    ${loginCount}        - Number of Account/User login sessions
+    ===    ${i18n.Login}        - Localized "Login" string
+    ===    ${ipAddress}         - Logged-in user IP Address
+    ===    ${timezone}          - (Report) Selected Time Zone
+    ===    ${dateRange}         - (Report) Selected date range 
+    ===    ${limit}             - (Report) Report record selection limit
+    ===    ${version}           - GTS version string
+    ===    ${locale}            - Current Locale
+    ===    ${accountID}         - Account ID
+    ===    ${accountDesc}       - Account description
+    ===    ${i18n.Account}      - Account singular "Acount" title
+    ===    ${i18n.Accounts}     - Account plural "Acounts" title
+    ===    ${deviceID}          - Device ID
+    ===    ${deviceDesc}        - Device description
+    ===    ${i18n.Device}       - Account singular "Device" title
+    ===    ${i18n.Devices}      - Account plural "Devices" title
+    ===    ${groupID}           - DeviceGroup ID
+    ===    ${groupDesc}         - DeviceGroup description
+    ===    ${i18n.Group}        - Account singular "DeviceGroup" title
+    ===    ${i18n.Groups}       - Account plural "DeviceGroups" title
+    ===    ${userID}            - Logged-in User ID
+    ===    ${userDesc}          - Logged-in User description
+    ===    ${i18n.User}         - Account singular "User" title
+    ===    ${i18n.Users}        - Account plural "Users" title
+    ===    ${speedUnits}        - Account 'speed' units (ie. "mph", "kph")
+    ===    ${distanceUnits}     - Account 'distance' units (ie. "miles", "km")
+    ===    ${altitudeUnits}     - Account 'altitude' units (ie. "feet", "meters")
+    ===    ${economyUnits}      - Account 'economy' units (ie. "mpg", "kpl")
+    ===    ${pressureUnits}     - Account 'pressure' units (ie. "kPa", "psi")
+    ===    ${volumeUnits}       - Account 'volume' units (ie. "Liters", "Gallons")
+    ===    ${statusCodeDesc:X}  - Account status-code description for 'X'
+    ===
+    === Report 'type' must be one of the following:
+    ===    device.detail
+    ===    fleet.detail
+    ===    fleet.summary
+    ===    driver.performance
+    ===    ifta.detail
+    ===    sysadmin.summary
+    -->
+
+   <!-- ======================================================================================= -->
+   <!-- ======================================================================================= -->
+   <!-- device.detail ========================================================================= -->
+
+   <!-- example device detail report showing all events for a given device (and all possible fields) -->
+   <!-- (intended for web-service retrieval, not for web-browser display) -->
+   <Report name="EventDetailAll" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventDetailAll.menu">Event Detail (All fields)</MenuDescription>
+      <Title i18n="ReportsXML.eventDetailAll.title">Event Detail (All fields)</Title>
+      <Subtitle i18n="ReportsXML.eventDetailAll.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="deviceId"                        />
+         <Column name="deviceDesc"                      />
+         <Column name="timestamp"                       />
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusCode"          arg="color" />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="pushpin"                         ifTrue="columnPushpin"/>
+         <Column name="latitude"            arg="5"     />  <!-- "bestLatitude"  -->
+         <Column name="longitude"           arg="5"     />  <!-- "bestLongitude" -->
+         <Column name="accuracy"                        />
+         <Column name="cellLatitude"        arg="5"     />
+         <Column name="cellLongitude"       arg="5"     />
+         <Column name="cellAccuracy"                    />
+         <Column name="gpsAge"                          />
+         <Column name="satellites"                      />
+         <!-- <Column name="speed"               arg="1" /> -->
+         <Column name="speedH"                          />
+         <!-- <Column name="speedU"                      /> -->
+         <!-- <Column name="heading"             arg="0" /> -->
+         <Column name="speedLimit"                      />
+         <Column name="altitude"                        />
+         <Column name="odometer"            arg="0"     />
+         <Column name="inputState"                      />
+         <Column name="address"                         />
+         <Column name="geozoneDesc"                     />
+         <Column name="subdivision"                     />
+         <Column name="batteryPercent"                  />
+         <Column name="batteryVolts"                    />
+         <!-- J1708/J1939/OBDII fields -->
+         <Column name="malfunctionLamp"                 />
+         <Column name="fuelLevel"                       />
+         <Column name="fuelLevelVolume"                 />
+         <Column name="fuelEconomy"                     />
+         <Column name="fuelTotal"                       />
+         <Column name="fuelIdle"                        />
+         <Column name="fuelPressure"                    />
+         <Column name="engineRpm"                       />
+         <Column name="engineHours"                     />
+         <Column name="engineLoad"                      />
+         <Column name="idleHours"                       />
+         <Column name="transOilTemp"                    />
+         <Column name="coolantLevel"                    />
+         <Column name="coolantTemp"                     />
+         <Column name="brakeGForce"                     />
+         <Column name="brakePressure"                   />
+         <Column name="brakePos"                        />
+         <Column name="oilLevel"                        />
+         <Column name="oilPressure"                     />
+         <Column name="ptoEngaged"                      />
+         <Column name="ptoHours"                        />
+         <Column name="vBatteryVolts"                   />
+         <Column name="throttlePos"                     />
+         <Column name="intakeTemp"                      />
+         <Column name="airPressure"                     />
+         <Column name="airFilterPressure"               />
+         <Column name="turboPressure"                   />
+         <Column name="rfidTag"                         />
+         <Column name="sampleIndex"                     />
+         <Column name="sampleId"                        />
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="last">4000</SelectionLimit>
+         <ReportLimit>4000</ReportLimit>
+         <OrderAscending>true</OrderAscending>
+      </Constraints>
+   </Report>
+
+   <!-- event detail report showing all events for a given device -->
+   <Report name="EventDetail" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventDetail.menu">Event Detail</MenuDescription>
+      <Title i18n="ReportsXML.eventDetail.title">Event Detail</Title>
+      <Subtitle i18n="ReportsXML.eventDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"             arg="mapLink" ifTrue="columnIndexMapLink"/>
+         <Column name="index"                           ifFalse="columnIndexMapLink"/>
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="pushpin"                         ifTrue="columnPushpin"/>
+         <Column name="geoPoint"            arg="5"     ifTrue="columnLatLon"/>
+         <Column name="speedH"              arg="1"     />
+         <Column name="altitude"                        />
+         <Column name="odometer"            arg="0"     ifTrue="columnOdometer"/>
+         <Column name="fuelTotal"                       ifTrue="columnFuelUsage"/>
+         <Column name="address"                         />
+         <Column name="geozoneDesc"                     ifTrue="columnGeozoneDesc"/>
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+         <OrderAscending>true</OrderAscending>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((mph<4)?"reddot":(speed<15)?"yellow":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- minimal event detail report -->
+   <Report name="CTEventDetail" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventDetail.menu">Celltrac Event Detail</MenuDescription>
+      <Title i18n="ReportsXML.eventDetail.title">Celltrac Event Detail</Title>
+      <Subtitle i18n="ReportsXML.eventDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           i18n="ReportsXML.CTEventDetail.index"  >#</Column>
+         <Column name="dateTime"                        i18n="ReportsXML.CTEventDetail.date"   >Date</Column>
+         <Column name="statusDesc"                      i18n="ReportsXML.CTEventDetail.Status" >Status</Column>
+         <Column name="geoPoint"            arg="4"     i18n="ReportsXML.CTEventDetail.latLon" >Lat/Lon</Column>
+         <Column name="speedH"              arg="1"     i18n="ReportsXML.CTEventDetail.speedH" >Speed</Column>
+     <!-- Column name="odometer"            arg="0"     i18n="ReportsXML.CTEventDetail.odom"   >Odom</Column -->
+         <Column name="address"                         i18n="ReportsXML.CTEventDetail.address">Address</Column>
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="first">500</SelectionLimit>
+         <ReportLimit>500</ReportLimit>
+         <OrderAscending>true</OrderAscending>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((mph<4)?"reddot":(speed<15)?"yellow":"heading") ]]>
+      </MapIconSelector> 
+      <Property key="callbackColumnHeaderDescriptions">true</Property>
+   </Report>
+
+   <!-- example device detail report showing all events for a given device -->
+   <Report name="SampleCollectionDetail" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.sampleCollectionDetail.menu">Sample Collection Detail</MenuDescription>
+      <Title i18n="ReportsXML.sampleCollectionDetail.title">Sample Collection Detail</Title>
+      <Subtitle i18n="ReportsXML.sampleCollectionDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="geoPoint"            arg="5"     ifTrue="columnLatLon"/>
+         <Column name="speedH"              arg="1"     />
+         <Column name="altitude"                        />
+         <Column name="sampleIndex"                     />
+         <Column name="sampleId"                        />
+         <Column name="rfidTag"                         /> <!-- bar code -->
+         <Column name="geozoneDesc"                     ifTrue="columnGeozoneDesc"/>
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+         <OrderAscending>true</OrderAscending>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((mph<4)?"reddot":(speed<15)?"yellow":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- example device detail report showing digital input states of all events for a given device -->
+   <Report name="EventInput" type="device.detail"
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventInput.menu">Event Digital Input</MenuDescription>
+      <Title i18n="ReportsXML.eventInput.title">Event Digital Input</Title>
+      <Subtitle i18n="ReportsXML.eventInput.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="geoPoint"            arg="5"     ifTrue="columnLatLon"/>
+         <Column name="inputState"                      />
+         <Column name="address"                         />
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+   </Report>
+
+   <!-- EventData detail report showing "Initialize" events -->
+   <Report name="EventReboot" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventReboot.menu">Device Initialization/Reboot</MenuDescription>
+      <Title i18n="ReportsXML.eventReboot.title">Device Initialization/Reboot</Title>
+      <Subtitle i18n="ReportsXML.eventReboot.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="dateTime"                        />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="geoPoint"            arg="4"     ifTrue="columnLatLon"/>
+         <Column name="speedH"                          />
+         <Column name="address"                         />
+      </Columns>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[ (statusCode = 0xF010) ]]></Where>
+         <SelectionLimit type="first">1000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ("bluedot") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- EventData detail report showing "Waymark_0" events -->
+   <Report name="EventWaymark0Detail" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventWaymark0Detail.menu">Device '${statusCodeDesc:0xF030}' Locations</MenuDescription>
+      <Title i18n="ReportsXML.eventWaymark0Detail.title">Device '${statusCodeDesc:0xF030}' Locations</Title>
+      <Subtitle i18n="ReportsXML.eventWaymark0Detail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="dateTime"                        />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="pushpin"                         ifTrue="columnPushpin"/>
+         <Column name="geoPoint"            arg="4"     ifTrue="columnLatLon"/>
+         <Column name="address"                         />
+         <Column name="geozoneDesc"                     ifTrue="columnGeozoneDesc"/>
+      </Columns>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[ (statusCode = 0xF030) ]]></Where>
+         <SelectionLimit type="first">1000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ("reddot") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- EventData detail report showing "Waymark_1" events -->
+   <Report name="EventWaymark1Detail" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventWaymark1Detail.menu">Device '${statusCodeDesc:0xF031}' Locations</MenuDescription>
+      <Title i18n="ReportsXML.eventWaymark1Detail.title">Device '${statusCodeDesc:0xF031}' Locations</Title>
+      <Subtitle i18n="ReportsXML.eventWaymark1Detail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="dateTime"                        />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="pushpin"                         ifTrue="columnPushpin"/>
+         <Column name="geoPoint"            arg="4"     ifTrue="columnLatLon"/>
+         <Column name="address"                         />
+         <Column name="geozoneDesc"                     ifTrue="columnGeozoneDesc"/>
+      </Columns>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[ (statusCode = 0xF031) ]]></Where>
+         <SelectionLimit type="first">1000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ("reddot") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- Garmin Driver message Detail -->
+   <Report name="DriverMessageDetail" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.messageDetail.menu">Driver Message Detail</MenuDescription>
+      <Title i18n="ReportsXML.messageDetail.title">Driver Message Detail</Title>
+      <Subtitle i18n="ReportsXML.messageDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="dateTime"                    />
+         <Column name="statusDesc"      arg="color" />
+         <Column name="driverMessage"               />
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+         <OrderAscending>true</OrderAscending>
+         <!--
+          === 0xE103 = Send Driver Non-ACK Message
+          === 0xE104 = Send Driver ACK Message
+          === 0xE1B1 = Receive Driver Message
+          === 0xF215 = Job Arrive
+          === 0xF235 = Job Depart
+          -->
+         <Where type="mysql"><![CDATA[ 
+            ((statusCode=0xE103) || (statusCode=0xE104) || (statusCode=0xE1B1) || (statusCode=0xF215) || (statusCode=0xF235)) 
+            ]]></Where>
+      </Constraints>
+   </Report>
+
+   <!-- example device detail report showing all events for a given device -->
+   <Report name="EventDetailOBD" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventDetailOBD.menu">OBD Event Detail</MenuDescription>
+      <Title i18n="ReportsXML.eventDetailOBD.title">OBD Event Detail</Title>
+      <Subtitle i18n="ReportsXML.eventDetailOBD.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                            />
+         <Column name="dateTime"                         />
+         <Column name="statusDesc"        arg="color"    ifTrue="EventDetailOBD.statusDesc"        />
+         <Column name="geoPoint"          arg="5"        ifTrue="EventDetailOBD.geoPoint"          />
+         <Column name="address"                          ifTrue="EventDetailOBD.address"           />
+         <Column name="geozoneDesc"                      ifTrue="EventDetailOBD.geozoneDesc"       />
+         <Column name="speedH"            arg="1"        ifTrue="EventDetailOBD.speedH"            />
+         <Column name="altitude"                         ifTrue="EventDetailOBD.altitude"          />
+         <Column name="odometer"          arg="0"        ifTrue="EventDetailOBD.odometer"          />
+         <Column name="fuelLevel"                        ifTrue="EventDetailOBD.fuelLevel"         />
+         <Column name="fuelEconomy"                      ifTrue="EventDetailOBD.fuelEconomy"       />
+         <Column name="fuelTotal"                        ifTrue="EventDetailOBD.fuelTotal"         />
+         <Column name="fuelIdle"                         ifTrue="EventDetailOBD.fuelIdle"          />
+         <Column name="fuelPressure"                     ifTrue="EventDetailOBD.fuelPressure"      />
+         <Column name="engineRpm"                        ifTrue="EventDetailOBD.engineRpm"         />
+         <Column name="engineHours"                      ifTrue="EventDetailOBD.engineHours"       />
+         <Column name="engineLoad"                       ifTrue="EventDetailOBD.engineLoad"        />
+         <Column name="idleHours"         blankFill="--" ifTrue="EventDetailOBD.idleHours"         />
+         <Column name="transOilTemp"                     ifTrue="EventDetailOBD.transOilTemp"      />
+         <Column name="coolantLevel"                     ifTrue="EventDetailOBD.coolantLevel"      />
+         <Column name="coolantTemp"                      ifTrue="EventDetailOBD.coolantTemp"       />
+         <Column name="brakeGForce"       blankFill="--" ifTrue="EventDetailOBD.brakeGForce"       />
+         <Column name="brakePressure"                    ifTrue="EventDetailOBD.brakePressure"     />
+         <Column name="brakePos"                         ifTrue="EventDetailOBD.brakePos"          />
+         <Column name="oilLevel"                         ifTrue="EventDetailOBD.oilLevel"          />
+         <Column name="oilPressure"       blankFill="--" ifTrue="EventDetailOBD.oilPressure"       />
+         <Column name="ptoEngaged"                       ifTrue="EventDetailOBD.ptoEngaged"        />
+         <Column name="ptoHours"                         ifTrue="EventDetailOBD.ptoHours"          />
+         <Column name="vBatteryVolts"                    ifTrue="EventDetailOBD.vBatteryVolts"     />
+         <Column name="throttlePos"                      ifTrue="EventDetailOBD.throttlePos"       />
+         <Column name="intakeTemp"                       ifTrue="EventDetailOBD.intakeTemp"        />
+         <Column name="airPressure"       blankFill="--" ifTrue="EventDetailOBD.airPressure"       />
+         <Column name="airFilterPressure" blankFill="--" ifTrue="EventDetailOBD.airFilterPressure" />
+         <Column name="turboPressure"     blankFill="--" ifTrue="EventDetailOBD.turboPressure"     />
+         <Column name="malfunctionLamp"                  ifTrue="EventDetailOBD.malfunctionLamp"   />
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+         <OrderAscending>true</OrderAscending>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((mph<4)?"reddot":(speed<15)?"yellow":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- example device detail report showing all events for a given device -->
+   <Report name="EventDetailOBDshort" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventDetailOBDShort.menu">OBD Event Detail (abbrev)</MenuDescription>
+      <Title i18n="ReportsXML.eventDetailOBDShort.title">OBD Event Detail (abbrev)</Title>
+      <Subtitle i18n="ReportsXML.eventDetailOBDShort.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="geoPoint"            arg="5"     ifTrue="columnLatLon"/>
+         <Column name="address"                         />
+         <Column name="geozoneDesc"                     />
+         <Column name="speedH"              arg="1"     />
+         <Column name="altitude"                        />
+         <Column name="odometer"            arg="0"     /> <!-- ifTrue="columnOdometer" -->
+         <Column name="fuelLevel"                       />
+         <Column name="fuelEconomy"                     />
+         <Column name="engineRpm"                       />
+         <Column name="vBatteryVolts"                   />
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+         <OrderAscending>true</OrderAscending>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((mph<4)?"reddot":(speed<15)?"yellow":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- Property list -->
+   <Report name="PropertyValue" type="device.detail" 
+        class="org.opengts.war.report.dmtp.PropertyReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.propertyValue.menu">Property Values</MenuDescription>
+      <Title i18n="ReportsXML.propertyValue.title">Property Values</Title>
+      <Subtitle i18n="ReportsXML.propertyValue.subtitle">${deviceDesc} [${deviceId}]</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="propertyKey"                 />
+         <Column name="propertyDesc"                />
+         <Column name="propertyValue"               />
+      </Columns>
+   </Report>
+
+   <!-- Diagnostic list -->
+   <Report name="DiagnosticValue" type="device.detail" 
+        class="org.opengts.war.report.dmtp.DiagnosticReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.diagnosticValue.menu">Error/Diagnostic Values</MenuDescription>
+      <Title i18n="ReportsXML.diagnosticValue.title">Error/Diagnostic Values</Title>
+      <Subtitle i18n="ReportsXML.diagnosticValue.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="dateTime"                    />
+         <Column name="diagKey"                     />
+         <Column name="diagDesc"                    />
+         <Column name="diagValue"                   />
+      </Columns>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Trip report detail with trip subtotals (based on default device supported 'start' type) -->
+   <Report name="TripReport" type="device.detail" 
+        class="org.opengts.extra.war.report.field.TripReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.tripReport.menu">Trip Report Detail</MenuDescription>
+      <Title i18n="ReportsXML.TripReport.title">Trip Report Detail [${description}]</Title>
+      <Subtitle i18n="ReportsXML.TripReport.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="date"                        />
+         <Column name="time"                        />
+         <Column name="statusDesc"                  />
+         <Column name="geoPoint"            arg="5" ifTrue="columnLatLon"/>
+         <Column name="speedH"              arg="0" />
+         <Column name="address"                     />
+         <Column name="drivingElapse"       arg="0" />
+         <Column name="odomDelta"           arg="1" />
+         <Column name="fuelTotal"           arg="1" ifTrue="TripReport.showFuelTotal"/>
+         <Column name="fuelTrip"            arg="2" ifTrue="TripReport.showFuelTrip"/>
+         <Column name="fuelEconomy"         arg="1" ifTrue="TripReport.showFuelEconomy"/>
+      </Columns>
+      <Options>
+         <Option name="default" ifTrue="optionTripStartType_default">
+            <Description i18n="ReportsXML.tripReport.default">Default</Description>
+            <Property key="tripStartType">default</Property>
+            <Property key="minimumStoppedTime">300</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">true</Property>
+            </Option>
+         <Option name="ignition" ifTrue="optionTripStartType_ignition">
+            <Description i18n="ReportsXML.TripReport.ignition">Based on Ignition On/Off Status Codes</Description>
+            <Property key="tripStartType">ignition</Property>
+            </Option>
+         <Option name="startstop" ifTrue="optionTripStartType_startstop">
+            <Description i18n="ReportsXML.TripReport.startstop">Based on Start/Stop Status Codes</Description>
+            <Property key="tripStartType">startstop</Property>
+            <Property key="stopOnIgnitionOff">true</Property>
+            </Option>
+         <Option name="motion5" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.TripReport.motion5">Based on 5 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">300</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion10" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.TripReport.motion10">Based on 10 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">600</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion20" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.TripReport.motion20">Based on 20 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">1200</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion30" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.TripReport.motion30">Based on 30 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">1800</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <Property key="tripStartType">default</Property>
+      <Property key="minimumStoppedTime">300</Property>     <!-- seconds -->
+      <Property key="minimumSpeedKPH">3.0</Property>        <!-- km/h -->
+      <Property key="stopOnIgnitionOff">true</Property>
+      <Property key="estimateFuelTotal">${TripReport.estimateFuelTotal=false}</Property>
+      <Property key="kilometersPerLiter">${TripReport.kilometersPerLiter=0.0}</Property> <!-- 20 mpg = 8.5 km/L -->
+      <Property key="tripStartStopOnly">${TripReport.tripStartStopOnly=false}</Property>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Ignition detail report -->
+   <Report name="IgnitionDetailReport" type="device.detail" 
+        class="org.opengts.extra.war.report.field.DigitalIOReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.ignitionDetail.menu">Ignition Detail Report</MenuDescription>
+      <Title i18n="ReportsXML.ignitionDetail.title">Ignition Detail Report</Title>
+      <Subtitle i18n="ReportsXML.ignitionDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="enterDateTime"               i18n="ReportsXML.ignitionOn.column" >Ignition On\ntime</Column>
+         <Column name="exitDateTime"                i18n="ReportsXML.ignitionOff.column">Ignition Off\ntime</Column>
+         <Column name="address"                     />
+         <Column name="elapseSec"           arg="0" />
+      </Columns>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <Property key="reportType">detail</Property>
+      <Property key="digitalInputIndex">ignition</Property>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Digital input detail report -->
+   <Report name="DigitalInputDetailReport" type="device.detail" 
+        class="org.opengts.extra.war.report.field.DigitalIOReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.digInputDetail.menu">Digital Input Detail Report</MenuDescription>
+      <Title i18n="ReportsXML.digInputDetail.title">Digital Input Detail Report [${description}]</Title>
+      <Subtitle i18n="ReportsXML.digInputDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="enterDateTime"               i18n="ReportsXML.inputOn.column" >Input On\ntime</Column>
+         <Column name="exitDateTime"                i18n="ReportsXML.inputOff.column">Input Off\ntime</Column>
+         <Column name="address"                     />
+         <Column name="elapseSec"           arg="0" />
+      </Columns>
+      <Options>
+         <Option name="input0">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_0">Input #0</Description>
+            <Property key="digitalInputIndex">0</Property>
+            </Option>
+         <Option name="input1">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_1">Input #1</Description>
+            <Property key="digitalInputIndex">1</Property>
+            </Option>
+         <Option name="input2">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_2">Input #2</Description>
+            <Property key="digitalInputIndex">2</Property>
+            </Option>
+         <Option name="input3">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_3">Input #3</Description>
+            <Property key="digitalInputIndex">3</Property>
+            </Option>
+         <Option name="input4">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_4">Input #4</Description>
+            <Property key="digitalInputIndex">4</Property>
+            </Option>
+         <Option name="input5">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_5">Input #5</Description>
+            <Property key="digitalInputIndex">5</Property>
+            </Option>
+         <Option name="input6">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_6">Input #6</Description>
+            <Property key="digitalInputIndex">6</Property>
+            </Option>
+         <Option name="input7">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_7">Input #7</Description>
+            <Property key="digitalInputIndex">7</Property>
+            </Option>
+         <!-- - ->
+         <Option name="input8">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_8">Input #8</Description>
+            <Property key="digitalInputIndex">8</Property>
+            </Option>
+         <Option name="input9">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_9">Input #9</Description>
+            <Property key="digitalInputIndex">9</Property>
+            </Option>
+         <Option name="input10">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_10">Input #10</Description>
+            <Property key="digitalInputIndex">10</Property>
+            </Option>
+         <Option name="input11">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_11">Input #11</Description>
+            <Property key="digitalInputIndex">11</Property>
+            </Option>
+         <Option name="input12">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_12">Input #12</Description>
+            <Property key="digitalInputIndex">12</Property>
+            </Option>
+         <Option name="input13">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_13">Input #13</Description>
+            <Property key="digitalInputIndex">13</Property>
+            </Option>
+         <Option name="input14">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_14">Input #14</Description>
+            <Property key="digitalInputIndex">14</Property>
+            </Option>
+         <Option name="input15">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_15">Input #15</Description>
+            <Property key="digitalInputIndex">15</Property>
+            </Option>
+         <!- - -->
+      </Options>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <Property key="reportType">detail</Property>
+      <Property key="digitalInputIndex">0</Property>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Geozone Arrival Summary report -->
+   <Report name="GeozoneReport" type="device.detail" 
+        class="org.opengts.extra.war.report.field.GeozoneReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.geozoneReport.menu">Geozone Report</MenuDescription>
+      <Title i18n="ReportsXML.geozoneReport.title">Geozone Report</Title>
+      <Subtitle i18n="ReportsXML.geozoneReport.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="geozoneId"                   />
+         <Column name="geozoneDesc"                 />
+         <Column name="latitude"            arg="4" ifTrue="columnLatLon"/>
+         <Column name="longitude"           arg="4" ifTrue="columnLatLon"/>
+         <Column name="address"                     />
+         <Column name="enterDateTime"               />
+         <Column name="exitDateTime"                />
+         <Column name="insideElapse"        arg="0" />
+         <Column name="count"                       ifTrue="columnGeozoneVisitCount"/>
+      </Columns>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <Property key="geozoneType">geozone</Property> <!-- geozone|job -->
+      <Property key="totalByGeozone">true</Property>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Geozone Arrival Transition report detail -->
+   <Report name="GeozoneDriving" type="device.detail" 
+        class="org.opengts.extra.war.report.field.GeozoneReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.geozoneDriving.menu">Geozone Arrival Report</MenuDescription>
+      <Title i18n="ReportsXML.geozoneDriving.title">Geozone Arrival Report</Title>
+      <Subtitle i18n="ReportsXML.geozoneDriving.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="geozoneId"                   />
+         <Column name="latitude"            arg="4" ifTrue="columnLatLon"/>
+         <Column name="longitude"           arg="4" ifTrue="columnLatLon"/>
+         <Column name="address"                     />
+         <Column name="enterDateTime"               />
+         <Column name="exitDateTime"                />
+         <Column name="insideElapse"        arg="0" />
+         <Column name="outsideElapse"       arg="0" />
+      </Columns>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <Property key="totalByGeozone">false</Property>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Job Arrival Summary report -->
+   <Report name="JobReport" type="device.detail" 
+        class="org.opengts.extra.war.report.field.GeozoneReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.jobReport.menu">Job Report</MenuDescription>
+      <Title i18n="ReportsXML.jobReport.title">Job Report</Title>
+      <Subtitle i18n="ReportsXML.jobReport.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="geozoneID"                   i18n="ReportsXML.jobReport.geozoneID" >Job\nNumber</Column>
+         <Column name="address"                     />
+         <Column name="enterDateTime"               />
+         <Column name="exitDateTime"                />
+         <Column name="insideElapse"        arg="0" />
+      </Columns>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <Property key="geozoneType">job</Property> <!-- geozone|job -->
+      <Property key="totalByGeozone">true</Property>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Geozone Departure report summary -->
+   <Report name="GeozoneDeparture" type="device.detail" 
+        class="org.opengts.extra.war.report.field.GeozoneDepartReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.geozoneDeparture.menu">Geozone Departure Report</MenuDescription>
+      <Title i18n="ReportsXML.geozoneDeparture.title">Geozone Departure Report</Title>
+      <Subtitle i18n="ReportsXML.geozoneDeparture.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="driverId"                    />
+         <Column name="exitDateTime"                />
+         <Column name="exitGeozoneId"               />
+         <Column name="exitAddress"                 />
+         <Column name="enterDateTime"               />
+         <Column name="enterGeozoneId"              />
+         <Column name="enterAddress"                />
+         <Column name="drivingElapse"       arg="0" />
+         <Column name="odomDelta"           arg="0" />
+      </Columns>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- EventData report showing temperatures -->
+   <Report name="EventThermo" type="device.detail" 
+        class="org.opengts.extra.war.report.event.EventThermoReport" 
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.tempMonitor.menu">Temperature Monitor</MenuDescription>
+      <Title i18n="ReportsXML.tempMonitor.title">Temperature Monitor</Title>
+      <Subtitle i18n="ReportsXML.tempMonitor.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="date"                        />
+         <Column name="time"                        />
+         <Column name="statusDesc"                  />
+         <Column name="geoPoint"            arg="5" ifTrue="columnLatLon"/>
+         <Column name="address"                     />
+         <Column name="speedH"                      />
+         <Column name="thermo1"                     ifTrue="columnThermo1"/>
+         <Column name="thermo2"                     ifTrue="columnThermo2"/>
+         <Column name="thermo3"                     ifTrue="columnThermo3"/>
+         <Column name="thermo4"                     ifTrue="columnThermo4"/>
+         <Column name="thermo5"                     ifTrue="columnThermo5"/>
+         <Column name="thermo6"                     ifTrue="columnThermo6"/>
+         <Column name="thermo7"                     ifTrue="columnThermo7"/>
+         <Column name="thermo8"                     ifTrue="columnThermo8"/>
+      </Columns>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>true</ValidGPSRequired>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Sample EventData report showing a "RuleSelector" filter -->
+   <Report name="EventRule" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventRule.menu">Custom Rules</MenuDescription>
+      <Title i18n="ReportsXML.eventRule.title">Custom Rules</Title>
+      <Subtitle i18n="ReportsXML.eventRule.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="latitude"            arg="4"     ifTrue="columnLatLon"/>
+         <Column name="longitude"           arg="4"     ifTrue="columnLatLon"/>
+         <Column name="speedH"                          />
+      </Columns>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>true</ValidGPSRequired>
+         <RuleSelector ruleFactoryName="GTSRulesEngine">
+            <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+            <![CDATA[ (mph >= 55) ]]>
+         </RuleSelector>
+         <SelectionLimit type="first">1000</SelectionLimit>
+         <ReportLimit>500</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- EventData report showing events which have J1708 fault codes -->
+   <Report name="EventJ1708fault" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.j1708Fault.menu">OBD Fault Codes</MenuDescription>
+      <Title i18n="ReportsXML.j1708Fault.title">OBD Fault Codes</Title>
+      <Subtitle i18n="ReportsXML.j1708Fault.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="geoPoint"            arg="5"     ifTrue="columnLatLon"/>
+         <Column name="speedH"                          />
+         <Column name="faultCode"           arg="desc"  />
+         <Column name="address"                         />
+      </Columns>
+      <Constraints>
+         <!-- <TimeStart>-1</TimeStart> -->
+         <!-- <TimeEnd>-1</TimeEnd>     -->
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[ (j1708Fault != 0) ]]></Where>
+         <SelectionLimit type="first">1000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- EventData report showing all drop/hook events -->
+   <Report name="EntityDetail" type="device.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.trailerDetail.menu">Trailer Hook/Drop Detail</MenuDescription>
+      <Title i18n="ReportsXML.trailerDetail.title">Trailer Hook/Drop Detail</Title>
+      <Subtitle i18n="ReportsXML.trailerDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="entityId"                        />
+         <Column name="entityDesc"                      />
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="odometer"            arg="0"     />
+         <Column name="latitude"            arg="4"     ifTrue="columnLatLon"/> <!-- "bestLatitude"  -->
+         <Column name="longitude"           arg="4"     ifTrue="columnLatLon"/> <!-- "bestLongitude" -->
+         <Column name="address"                         />
+      </Columns>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[ ((statusCode = 0xF821) || (statusCode = 0xF822)) ]]></Where>
+         <SelectionLimit type="first">1000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Antx day detail report -->
+   <Report name="AntxDayDetail" type="device.detail" 
+        class="org.opengts.extra.war.report.antx.AntxDayDetailReport"
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.antxDayDetail.menu">Antx Daily Detail</MenuDescription>
+      <Title i18n="ReportsXML.antxDayDetail.title">Antx Daily Detail</Title>
+      <Subtitle i18n="ReportsXML.antxDayDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="deviceId"                    />
+         <Column name="deviceDesc"                  />
+         <Column name="dateTime"                    />
+         <Column name="fieldDesc"                   arg="id" />
+         <Column name="channelDesc"                 arg="id" />
+         <Column name="type"                        />
+         <Column name="data0"                       />
+         <Column name="data1"                       />
+         <Column name="data2"                       />
+         <Column name="data3"                       />
+         <Column name="data4"                       />
+      </Columns>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[  ]]></Where>
+         <SelectionLimit type="first">1000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Antx day detail report -->
+   <Report name="AntxDaySummary" type="device.detail" 
+        class="org.opengts.extra.war.report.antx.AntxDayValueSummaryReport"
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.antxDayFuelSummary.menu">Antx Daily Fuel Summary</MenuDescription>
+      <Title i18n="ReportsXML.antxDayFuelSummary.title">Antx Daily Fuel Summary</Title>
+      <Subtitle i18n="ReportsXML.antxDayFuelSummary.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="deviceId"                    />
+         <Column name="deviceDesc"                  />
+         <Column name="date"                        />
+         <Column name="distance"                    />
+         <Column name="totalFuel"                   />
+         <Column name="ptoFuel"                     />
+         <Column name="idleFuel"                    />
+         <Column name="workFuel"                    />
+      </Columns>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[  ]]></Where>
+         <SelectionLimit type="first">1000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Fuel Register detail report -->
+   <Report name="FuelRegisterDetail" type="device.detail" 
+        class="org.opengts.rulewar.report.field.FuelRegisterReport"
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.fuelRegisterDetail.menu">Fuel Register Detail</MenuDescription>
+      <Title i18n="ReportsXML.fuelRegisterDetail.title">Fuel Register Detail</Title>
+      <Subtitle i18n="ReportsXML.fuelRegisterDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="deviceId"                    />
+         <Column name="deviceDesc"                  />
+         <Column name="dateTime"                    />
+         <Column name="odometer"                    />
+         <Column name="fuelTotal"                   />
+         <Column name="fuelLevel"                   />
+         <Column name="geoPoint"          arg="5"   />
+         <Column name="subdivision"                 />
+      </Columns>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">1000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+   </Report>
+
+   <!-- ======================================================================================= -->
+   <!-- ======================================================================================= -->
+   <!-- fleet.detail ========================================================================== -->
+
+   <!-- example device detail report showing all events for all devices -->
+   <Report name="EventDetail_Group" type="fleet.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.EventDetailGroup.menu">Event Detail (by Group)</MenuDescription>
+      <Title i18n="ReportsXML.EventDetailGroup.title">Event Detail (by Group)</Title>
+      <Subtitle i18n="ReportsXML.EventDetailGroup.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="deviceId"                        />
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="pushpin"                         ifTrue="columnPushpin"/>
+         <Column name="geoPoint"            arg="5"     ifTrue="columnLatLon"/>
+         <Column name="speedH"              arg="1"     />
+         <Column name="altitude"                        />
+         <Column name="odometer"            arg="0"     ifTrue="columnOdometer"/>
+         <Column name="fuelTotal"                       ifTrue="columnFuelUsage"/>
+         <Column name="address"                         />
+         <Column name="geozoneDesc"                     ifTrue="columnGeozoneDesc"/>
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+         <OrderAscending>true</OrderAscending>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((mph<4)?"reddot":(speed<15)?"yellow":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Trip report detail with trip subtotals (based on default device supported 'start' type) -->
+   <Report name="TripReport_Group" type="fleet.detail" 
+        class="org.opengts.extra.war.report.field.TripReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.TripReportGroup.menu">Trip Report Detail (by Group)</MenuDescription>
+      <Title i18n="ReportsXML.TripReportGroup.title">Trip Report Detail (by Group) [${description}]</Title>
+      <Subtitle i18n="ReportsXML.TripReportGroup.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="deviceId"                    />
+         <Column name="date"                        />
+         <Column name="time"                        />
+         <Column name="statusDesc"                  />
+         <Column name="geoPoint"            arg="5" ifTrue="columnLatLon"/>
+         <Column name="speedH"              arg="0" />
+         <Column name="address"                     />
+         <Column name="drivingElapse"       arg="0" />
+         <Column name="odomDelta"           arg="1" />
+         <Column name="fuelTotal"           arg="1" ifTrue="TripReport.showFuelTotal"/>
+         <Column name="fuelTrip"            arg="2" ifTrue="TripReport.showFuelTrip"/>
+         <Column name="fuelEconomy"         arg="1" ifTrue="TripReport.showFuelEconomy"/>
+      </Columns>
+      <Options>
+         <Option name="default" ifTrue="optionTripStartType_default">
+            <Description i18n="ReportsXML.TripReportGroup.default">Default</Description>
+            <Property key="tripStartType">default</Property>
+            <Property key="minimumStoppedTime">300</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">true</Property>
+            </Option>
+         <Option name="ignition" ifTrue="optionTripStartType_ignition">
+            <Description i18n="ReportsXML.TripReportGroup.ignition">Based on Ignition On/Off Status Codes</Description>
+            <Property key="tripStartType">ignition</Property>
+            </Option>
+         <Option name="startstop" ifTrue="optionTripStartType_startstop">
+            <Description i18n="ReportsXML.TripReportGroup.startstop">Based on Start/Stop Status Codes</Description>
+            <Property key="tripStartType">startstop</Property>
+            <Property key="stopOnIgnitionOff">true</Property>
+            </Option>
+         <Option name="motion5" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.TripReportGroup.motion5">Based on 5 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">300</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion10" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.TripReportGroup.motion10">Based on 10 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">600</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion20" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.TripReportGroup.motion20">Based on 20 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">1200</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion30" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.TripReportGroup.motion30">Based on 30 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">1800</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <Property key="tripStartType">default</Property>
+      <Property key="minimumStoppedTime">300</Property>     <!-- seconds -->
+      <Property key="minimumSpeedKPH">3.0</Property>        <!-- km/h -->
+      <Property key="stopOnIgnitionOff">true</Property>
+      <Property key="estimateFuelTotal">${TripReport.estimateFuelTotal=false}</Property>
+      <Property key="kilometersPerLiter">${TripReport.kilometersPerLiter=0.0}</Property> <!-- 20 mpg = 8.5 km/L -->
+      <Property key="tripStartStopOnly">${TripReport.tripStartStopOnly=false}</Property>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Geozone Arrival Summary report -->
+   <Report name="GeozoneReport_Group" type="fleet.detail" 
+        class="org.opengts.extra.war.report.field.GeozoneReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.GeozoneReportGroup.menu">Geozone Report (by Group)</MenuDescription>
+      <Title i18n="ReportsXML.GeozoneReportGroup.title">Geozone Report (by Group)</Title>
+      <Subtitle i18n="ReportsXML.GeozoneReportGroup.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="deviceId"                    />
+         <Column name="geozoneId"                   />
+         <Column name="geozoneDesc"                 />
+         <Column name="latitude"            arg="4" ifTrue="columnLatLon"/>
+         <Column name="longitude"           arg="4" ifTrue="columnLatLon"/>
+         <Column name="address"                     />
+         <Column name="enterDateTime"               />
+         <Column name="exitDateTime"                />
+         <Column name="insideElapse"        arg="0" />
+         <Column name="count"                       ifTrue="columnGeozoneVisitCount"/>
+      </Columns>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <Property key="geozoneType">geozone</Property> <!-- geozone|job -->
+      <Property key="totalByGeozone">true</Property>
+   </Report>
+
+   <!-- example device detail report which includes a MySQL 'where' query -->
+   <Report name="EventSpeedOption_Group" type="fleet.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.EventSpeedOptionGroup.menu">Speeds over</MenuDescription>
+      <Title i18n="ReportsXML.EventSpeedOptionGroup.title">Speeds over ${description}</Title>
+      <Subtitle i18n="ReportsXML.EventSpeedOptionGroup.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="deviceId"                        />
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="pushpin"                         ifTrue="columnPushpin"/>
+         <Column name="latitude"            arg="3"     ifTrue="columnLatLon"/>  <!-- "bestLatitude"  -->
+         <Column name="longitude"           arg="3"     ifTrue="columnLatLon"/>  <!-- "bestLongitude" -->
+         <Column name="speedH"                          />
+         <Column name="address"                         />
+      </Columns>
+      <Options>
+         <Option name="45mph">
+            <Description i18n="ReportsXML.EventSpeedOptionGroup.45mph">%{mph:45}</Description>
+            <Property key="optSpeedKPH">72.405</Property>
+            </Option>
+         <Option name="55mph">
+            <Description i18n="ReportsXML.EventSpeedOptionGroup.55mph">%{mph:55}</Description>
+            <Property key="optSpeedKPH">88.51392</Property>
+            </Option>
+         <Option name="65mph">
+            <Description i18n="ReportsXML.EventSpeedOptionGroup.65mph">%{mph:65}</Description>
+            <Property key="optSpeedKPH">104.60736</Property>
+            </Option>
+         <Option name="75mph">
+            <Description i18n="ReportsXML.EventSpeedOptionGroup.75mph">%{mph:75}</Description>
+            <Property key="optSpeedKPH">120.7008</Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>true</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[ (speedKPH > ${optSpeedKPH}) ]]></Where>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- event detail report for speeds greater than posted limit -->
+   <!-- 'speedLimitPKH' must be defined in EventData, or an error will result -->
+   <Report name="EventSpeedPosted_Group" type="fleet.detail" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.EventSpeedPostedGroup.menu">Exceeding Posted Speed</MenuDescription> 
+      <Title i18n="ReportsXML.EventSpeedPostedGroup.title">Exceeding Posted Speed (${description})</Title>
+      <Subtitle i18n="ReportsXML.EventSpeedPostedGroup.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="deviceId"                    />
+         <Column name="date"                        />
+         <Column name="time"                        />
+         <Column name="geoPoint"            arg="4" ifTrue="columnLatLon"/>
+         <Column name="speedH"                      />
+         <Column name="speedLimit"                  />
+         <Column name="address"                     />
+      </Columns>
+      <Options>
+         <Option name="default">
+            <Description i18n="ReportsXML.EventSpeedPostedGroup.0mph">over limit</Description>
+            <Property key="overLimitKPH">0.00000</Property>
+            </Option>
+         <Option name="5mph">
+            <Description i18n="ReportsXML.EventSpeedPostedGroup.5mph">5mph over limit</Description>
+            <Property key="overLimitKPH">8.04672</Property>
+            </Option>
+         <Option name="10mph">
+            <Description i18n="ReportsXML.EventSpeedPostedGroup.10mph">10mph over limit</Description>
+            <Property key="overLimitKPH">16.09344</Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>true</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[ ((speedLimitKPH > 0) AND (speedKPH > (speedLimitKPH + ${overLimitKPH}))) ]]></Where>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ("heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Digital input detail report -->
+   <Report name="DigitalInputDetailReport_Group" type="fleet.detail" 
+        class="org.opengts.extra.war.report.field.DigitalIOReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.digInputDetail.menu">Digital Input Detail Report</MenuDescription>
+      <Title i18n="ReportsXML.digInputDetail.title">Digital Input Detail Report [${description}]</Title>
+      <Subtitle i18n="ReportsXML.digInputDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="deviceId"                    />
+         <Column name="enterDateTime"               i18n="ReportsXML.inputOn.column" >Input On\ntime</Column>
+         <Column name="exitDateTime"                i18n="ReportsXML.inputOff.column">Input Off\ntime</Column>
+         <Column name="address"                     />
+         <Column name="elapseSec"           arg="0" />
+      </Columns>
+      <Options>
+         <Option name="input0">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_0">Input #0</Description>
+            <Property key="digitalInputIndex">0</Property>
+            </Option>
+         <Option name="input1">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_1">Input #1</Description>
+            <Property key="digitalInputIndex">1</Property>
+            </Option>
+         <Option name="input2">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_2">Input #2</Description>
+            <Property key="digitalInputIndex">2</Property>
+            </Option>
+         <Option name="input3">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_3">Input #3</Description>
+            <Property key="digitalInputIndex">3</Property>
+            </Option>
+         <Option name="input4">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_4">Input #4</Description>
+            <Property key="digitalInputIndex">4</Property>
+            </Option>
+         <Option name="input5">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_5">Input #5</Description>
+            <Property key="digitalInputIndex">5</Property>
+            </Option>
+         <Option name="input6">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_6">Input #6</Description>
+            <Property key="digitalInputIndex">6</Property>
+            </Option>
+         <Option name="input7">
+            <Description i18n="ReportsXML.DigitalInputDetailReport.input_7">Input #7</Description>
+            <Property key="digitalInputIndex">7</Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <Property key="reportType">detail</Property>
+      <Property key="digitalInputIndex">0</Property>
+   </Report>
+
+   <!-- ======================================================================================= -->
+   <!-- ======================================================================================= -->
+   <!-- fleet.summary ========================================================================= -->
+
+   <!-- example device summary report showing the driving and idle times for a given device -->
+   <Report name="FleetMotion" type="fleet.summary" 
+        class="org.opengts.war.report.field.MotionReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.fleetMotion.menu">Driving Time Fleet Summary</MenuDescription>
+      <Title i18n="ReportsXML.fleetMotion.title">Driving Time Fleet Summary</Title>
+      <Subtitle i18n="ReportsXML.fleetMotion.subtitle">${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="deviceId"                    />
+         <Column name="deviceDesc"                  />
+         <Column name="drivingElapse"               />   <!-- "Driving Duration"    -->
+         <Column name="odomDelta"           arg="1" ifTrue="columnOdometer"/>     <!-- "Miles" (driven)      -->
+         <Column name="fuelEconomy"         arg="1" ifTrue="columnFuelEconomy"/>  <!-- "Fuel Econ" (at stop) -->
+         <Column name="stopCount"                   />   <!-- "Number of Stops"   -->
+    <!-- <Column name="stopElapse"                  /> -->  <!-- doesn't include time after last stop  -->
+         <Column name="idleElapse"                  />   <!-- "Idle Elapsed Time"   -->
+      </Columns>
+      <Options>
+         <Option name="default" ifTrue="optionTripStartType_default">
+            <Description i18n="ReportsXML.fleetMotion.default">Default</Description>
+            <Property key="tripStartType">default</Property>
+            <Property key="minimumStoppedTime">300</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">true</Property>
+            </Option>
+         <Option name="ignition" ifTrue="optionTripStartType_ignition">
+            <Description i18n="ReportsXML.fleetMotion.ignition">Based on Ignition On/Off Status Codes</Description>
+            <Property key="tripStartType">ignition</Property>
+            </Option>
+         <Option name="startstop" ifTrue="optionTripStartType_startstop">
+            <Description i18n="ReportsXML.fleetMotion.startstop">Based on Start/Stop Status Codes</Description>
+            <Property key="tripStartType">startstop</Property>
+            <Property key="stopOnIgnitionOff">true</Property>
+            </Option>
+         <Option name="motion5" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.fleetMotion.motion5">Based on 5 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">300</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion10" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.fleetMotion.motion10">Based on 10 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">600</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion20" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.fleetMotion.motion20">Based on 20 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">1200</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion30" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.fleetMotion.motion30">Based on 30 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">1800</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <!-- EventData records MUST be in ascending order -->
+         <SelectionLimit type="first">4000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+      <Property key="tripStartType">default</Property>
+      <Property key="minimumStoppedTime">300</Property> <!-- seconds -->
+      <Property key="minimumSpeedKPH">3.0</Property> <!-- kph -->
+      <Property key="stopOnIgnitionOff">true</Property>
+   </Report>
+
+   <!-- fleet summary report showing the last known location of every device -->
+   <Report name="EventSummary" type="fleet.summary" 
+        class="org.opengts.war.report.event.EventSummaryReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventSummary.menu">Last Known ${i18n.Vehicle} Location</MenuDescription>
+      <Title i18n="ReportsXML.eventSummary.title">Last Known ${i18n.Vehicle} Location [${description}]</Title>
+      <Subtitle i18n="ReportsXML.eventSummary.subtitle">Devices: ${groupDesc}\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="deviceDesc"                  />
+         <Column name="deviceId"                    />
+         <Column name="date"                        />
+         <Column name="time"                        />
+     <!-- Column name="pushpin"                     ifTrue="columnPushpin"/ -->
+         <Column name="odometer"            arg="0" ifTrue="columnOdometer"/>
+         <Column name="geoPoint"            arg="4" ifTrue="columnLatLon"/>
+         <Column name="address"                     />
+         <Column name="lastBatteryPercent"          ifTrue="columnBattery"/>
+         <Column name="checkinAge"                  />
+      </Columns>
+      <Options>
+         <Option name="all">
+            <Description i18n="ReportsXML.eventSummary.default">All Events</Description>
+            <Property key="summary.where"><![CDATA[ (1=1) ]]></Property>
+            </Option>
+         <Option name="waymark0" ifTrue="optionSummary_waymark0">
+            <Description i18n="ReportsXML.eventSummary.waymark0">'${statusCodeDesc:0xF030}' Events</Description>
+            <Property key="summary.where"><![CDATA[ (statusCode = 0xF030) ]]></Property>
+            </Option>
+         <Option name="waymark1" ifTrue="optionSummary_waymark1">
+            <Description i18n="ReportsXML.eventSummary.waymark1">'${statusCodeDesc:0xF031}' Events</Description>
+            <Property key="summary.where"><![CDATA[ (statusCode = 0xF031) ]]></Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <SelectionLimit type="last">1</SelectionLimit> <!-- 1 per device -->
+         <ReportLimit>2000</ReportLimit>
+         <Where type="mysql"><![CDATA[ ${summary.where=} ]]></Where>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- minimal fleet summary report -->
+   <Report name="CTEventSummary" type="fleet.summary" 
+        class="org.opengts.war.report.event.EventSummaryReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventSummary.menu">Celltrac Last Known ${i18n.Vehicle} Location</MenuDescription>
+      <Title i18n="ReportsXML.eventSummary.title">Celltrac Last Known ${i18n.Vehicle} Location [${description}]</Title>
+      <Subtitle i18n="ReportsXML.eventSummary.subtitle">Devices: ${groupDesc}\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       i18n="ReportsXML.CTEventSummary.index"  >#</Column>
+         <Column name="deviceDesc"                  i18n="ReportsXML.CTEventSummary.desc"   >Desc</Column>
+         <Column name="dateTime"                    i18n="ReportsXML.CTEventSummary.date"   >Date</Column>
+         <Column name="geoPoint"            arg="4" i18n="ReportsXML.CTEventSummary.latLon" >Lat/Lon</Column>
+     <!-- Column name="odometer"            arg="0" i18n="ReportsXML.CTEventSummary.odom"   >Odom</Column -->
+         <Column name="address"                     i18n="ReportsXML.CTEventSummary.address">Address</Column>
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="last">1</SelectionLimit> <!-- 1 per device -->
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+      <Property key="callbackColumnHeaderDescriptions">true</Property>
+   </Report>
+
+   <!-- event counts -->
+   <Report name="EventCount" type="fleet.summary" 
+        class="org.opengts.war.report.field.EventCountReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventCount.menu">Received Event Counts</MenuDescription>
+      <Title i18n="ReportsXML.eventCount.title">Count of ${description} Received Events</Title>
+      <Subtitle i18n="ReportsXML.eventCount.subtitle">Devices: ${groupDesc}\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="deviceDesc"                  />
+         <Column name="deviceId"                    />
+         <Column name="count"                       />
+         <Column name="checkinAge"                  />
+      </Columns>
+      <Options>
+         <Option name="all">
+            <Description i18n="ReportsXML.eventCount.all">All</Description>
+            <Property key="count.where"><![CDATA[ (1=1) ]]></Property>
+            </Option>
+         <Option name="initialization">
+            <Description i18n="ReportsXML.eventCount.initialization">'Initialization'</Description>
+            <Property key="count.where"><![CDATA[ (statusCode = 0xF010) ]]></Property>
+            </Option>
+         <Option name="inmotion">
+            <Description i18n="ReportsXML.eventCount.inmotion">'In-Motion'</Description>
+            <Property key="count.where"><![CDATA[ (statusCode = 0xF112) ]]></Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <Where type="mysql"><![CDATA[ ${count.where=} ]]></Where>
+      </Constraints>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Fleet Fuel summary report -->
+   <Report name="FuelSummaryReport" type="fleet.summary" 
+        class="org.opengts.extra.war.report.field.FuelSummaryReport" 
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.fuelSummary.menu">Fuel Summary Report</MenuDescription>
+      <Title i18n="ReportsXML.fuelSummary.title">Fuel Summary Report</Title>
+      <Subtitle i18n="ReportsXML.fuelSummary.subtitle">Devices: ${groupDesc}\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="deviceDesc"                  />
+         <Column name="deviceId"                    />
+         <Column name="engineHours"         arg="3" />
+         <Column name="fuelTotal"           arg="1" />
+         <Column name="idleHours"           arg="3" />
+         <Column name="fuelIdle"            arg="1" />
+         <Column name="workHours"           arg="3" />
+         <Column name="fuelWork"            arg="1" />
+         <Column name="ptoHours"            arg="3" />
+         <Column name="fuelPTO"             arg="1" />
+         <Column name="odomDelta"           arg="1" />
+         <Column name="fuelEconomy"         arg="1" />
+      </Columns>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Ignition summary report -->
+   <Report name="IgnitionSummaryReport" type="fleet.summary" 
+        class="org.opengts.extra.war.report.field.DigitalIOReport" 
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.ignitionSummary.menu">Ignition Summary Report</MenuDescription>
+      <Title i18n="ReportsXML.ignitionSummary.title">Ignition Summary Report</Title>
+      <Subtitle i18n="ReportsXML.ignitionSummary.subtitle">Devices: ${groupDesc}\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="deviceDesc"                  />
+         <Column name="deviceId"                    />
+         <Column name="elapseSec"           arg="0" />
+      </Columns>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <Property key="reportType">summary</Property>
+      <Property key="digitalInputIndex">ignition</Property>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Service/Maintenance Report -->
+   <Report name="PeriodicService" type="fleet.summary"
+        class="org.opengts.extra.war.report.field.DeviceReport"
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.maintenenceReport.menu">Periodic Service Report</MenuDescription>
+      <Title i18n="ReportsXML.maintenenceReport.title">Periodic Service Report</Title>
+      <Subtitle i18n="ReportsXML.maintenenceReport.subtitle">Devices: ${groupDesc}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="deviceDesc"                  />
+         <Column name="deviceId"                    />
+         <Column name="odometer"                    />
+         <Column name="serviceLast"                 />
+         <Column name="serviceInterval"             />
+         <Column name="serviceRemaining"            />
+         <Column name="serviceNext"                 />
+         <Column name="checkinAge"                  />
+         <Column name="serviceNotes"                ifTrue="columnServiceNotes"/>
+      </Columns>
+      <Property key="includeOdometerDelta">false</Property> <!-- populate startOdometer/stopOdometer/odomDelta -->
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Distance Traveled / Fuel Consumed Report -->
+   <Report name="DistanceTraveled" type="fleet.summary"
+        class="org.opengts.extra.war.report.field.DeviceReport"
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.distanceTraveledReport.menu">Distance Traveled Report</MenuDescription>
+      <Title i18n="ReportsXML.distanceTraveledReport.title">Distance Traveled Report</Title>
+      <Subtitle i18n="ReportsXML.distanceTraveledReport.subtitle">Devices: ${groupDesc}\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="deviceDesc"                  />
+         <Column name="deviceId"                    />
+         <Column name="startOdometer"       arg="0" ifTrue="DistanceTraveled.startOdometer" i18n="ReportsXML.startOdometer.column" >Starting\n${distanceUnits}</Column>
+         <Column name="stopOdometer"        arg="0" ifTrue="DistanceTraveled.stopOdometer"  i18n="ReportsXML.endingOdometer.column">Ending\n${distanceUnits}</Column>
+         <Column name="odomDelta"           arg="0" ifTrue="DistanceTraveled.odomDelta"     i18n="ReportsXML.travelOdometer.column">Traveled\n${distanceUnits}</Column>
+         <Column name="startFuel"           arg="0" ifTrue="DistanceTraveled.startFuel"     i18n="ReportsXML.startFuel.column"     >Fuel Start\n${volumeUnits}</Column>
+         <Column name="stopFuel"            arg="0" ifTrue="DistanceTraveled.stopFuel"      i18n="ReportsXML.endingFuel.column"    >Fuel End\n${volumeUnits}</Column>
+         <Column name="fuelDelta"           arg="0" ifTrue="DistanceTraveled.fuelDelta"     i18n="ReportsXML.usedFuel.column"      >Fuel Used\n${volumeUnits}</Column>
+      </Columns>
+      <Property key="includeOdometerDelta">true</Property> <!-- OBSOLETE -->
+      <Property key="includeDeltaValues">true</Property> <!-- populate startOdometer/stopOdometer/odomDelta -->
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Session Status -->
+   <Report name="EventSessionStatus" type="fleet.summary" 
+        class="org.opengts.extra.war.report.session.SessionStatusReport" 
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.sessionStatus.menu">Session Connection Status</MenuDescription>
+      <Title i18n="ReportsXML.sessionStatus.title">Session Connection Status</Title>
+      <Subtitle i18n="ReportsXML.sessionStatus.subtitle">Devices: ${groupDesc}\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="deviceDesc"                  />
+         <Column name="deviceId"                    />
+         <Column name="eventsReceived"              />
+         <Column name="tcpConnections"              />
+         <Column name="udpConnections"              />
+         <Column name="bytesRead"                   />
+         <Column name="bytesWritten"                />
+         <Column name="bytesOverhead"               />
+         <Column name="bytesTotal"                  />
+         <Column name="bytesRounded"                />
+         <Column name="checkinAge"                  />
+      </Columns>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Entity report showing last known location of all trailers -->
+   <Report name="EntitySummary" type="fleet.summary" 
+        class="org.opengts.extra.war.report.entity.EntityReport" 
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.trailerSummary.menu">Last Known Trailer Location Summary</MenuDescription>
+      <Title i18n="ReportsXML.trailerSummary.title">Last Known Trailer Location Summary</Title>
+      <Subtitle i18n="ReportsXML.trailerSummary.subtitle">All Trailers\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="entityId"                    />
+         <Column name="entityDesc"                  />
+         <Column name="date"                        />
+         <Column name="time"                        />
+         <Column name="odometer"            arg="0" i18n="ReportsXML.accumOdometer.column" >Accum.\n${distanceUnits}</Column>
+         <Column name="deviceId"                    i18n="ReportsXML.currentTractor.column">Current\nTractor</Column>
+         <Column name="latitude"            arg="4" ifTrue="columnLatLon"/>
+         <Column name="longitude"           arg="4" ifTrue="columnLatLon"/>
+         <Column name="address"                     />
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="first">1500</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ("bluedot") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- User Login Report -->
+   <Report name="UserLogin" type="fleet.summary" 
+        class="org.opengts.extra.war.report.field.AuditReport"
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.userLoginReport.menu">User Login Report</MenuDescription>
+      <Title i18n="ReportsXML.userLoginReport.title">User Login Report</Title>
+      <Subtitle i18n="ReportsXML.userLoginReport.subtitle">${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"       />
+         <Column name="userId"      />
+         <Column name="userDesc"    />
+         <Column name="dateTime"    i18n="ReportsXML.userLoginReport.login">Login</Column>
+      </Columns>
+      <Constraints>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <SelectionLimit type="first">3000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+         <Where type="mysql"><![CDATA[ (auditCode=0x0100) ]]></Where>
+      </Constraints>
+   </Report>
+
+   <!-- ======================================================================================= -->
+   <!-- ======================================================================================= -->
+   <!-- driver.performance ==================================================================== -->
+
+   <!-- example device detail report which includes a MySQL 'where' query -->
+   <Report name="EventSpeedOption" type="driver.performance" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventSpeedOption.menu">Speeds over</MenuDescription>
+      <Title i18n="ReportsXML.eventSpeedOption.title">Speeds over ${description}</Title>
+      <Subtitle i18n="ReportsXML.eventSpeedOption.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="date"                            />
+         <Column name="time"                            />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="pushpin"                         ifTrue="columnPushpin"/>
+         <Column name="latitude"            arg="3"     ifTrue="columnLatLon"/>  <!-- "bestLatitude"  -->
+         <Column name="longitude"           arg="3"     ifTrue="columnLatLon"/>  <!-- "bestLongitude" -->
+         <Column name="speedH"                          />
+         <Column name="address"                         />
+      </Columns>
+      <Options>
+         <Option name="45mph">
+            <Description i18n="ReportsXML.eventSpeedOption.45mph">%{mph:45}</Description>
+            <Property key="optSpeedKPH">72.405</Property>
+            </Option>
+         <Option name="55mph">
+            <Description i18n="ReportsXML.eventSpeedOption.55mph">%{mph:55}</Description>
+            <Property key="optSpeedKPH">88.51392</Property>
+            </Option>
+         <Option name="65mph">
+            <Description i18n="ReportsXML.eventSpeedOption.65mph">%{mph:65}</Description>
+            <Property key="optSpeedKPH">104.60736</Property>
+            </Option>
+         <Option name="75mph">
+            <Description i18n="ReportsXML.eventSpeedOption.75mph">%{mph:75}</Description>
+            <Property key="optSpeedKPH">120.7008</Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>true</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[ (speedKPH > ${optSpeedKPH}) ]]></Where>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- EventData report showing "Excessive Speed" events -->
+   <Report name="EventExcessSpeed" type="driver.performance" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventExcessSpeed.menu">Device Excess Speed</MenuDescription>
+      <Title i18n="ReportsXML.eventExcessSpeed.title">Device Excess Speed</Title>
+      <Subtitle i18n="ReportsXML.eventExcessSpeed.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                           />
+         <Column name="dateTime"                        />
+         <Column name="statusDesc"          arg="color" />
+         <Column name="pushpin"                         ifTrue="columnPushpin"/>
+         <Column name="geoPoint"            arg="4"     ifTrue="columnLatLon"/>
+         <Column name="speedH"                          />
+         <Column name="address"                         />
+      </Columns>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>false</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[ (statusCode = 0xF11A) ]]></Where>
+         <SelectionLimit type="first">1000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ("greenh") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- event detail report for speeds greater than posted limit -->
+   <!-- 'speedLimitPKH' must be defined in EventData, or an error will result -->
+   <Report name="EventSpeedPosted" type="driver.performance" 
+        class="org.opengts.war.report.event.EventDetailReport"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.eventSpeedPosted.menu">Exceeding Posted Speed</MenuDescription> 
+      <Title i18n="ReportsXML.eventSpeedPosted.title">Exceeding Posted Speed (${description})</Title>
+      <Subtitle i18n="ReportsXML.eventSpeedPosted.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="date"                        />
+         <Column name="time"                        />
+         <Column name="geoPoint"            arg="4" ifTrue="columnLatLon"/>
+         <Column name="speedH"                      />
+         <Column name="speedLimit"                  />
+         <Column name="address"                     />
+      </Columns>
+      <Options>
+         <Option name="default">
+            <Description i18n="ReportsXML.eventSpeedPosted.0mph">over limit</Description>
+            <Property key="overLimitKPH">0.00000</Property>
+            </Option>
+         <Option name="5mph">
+            <Description i18n="ReportsXML.eventSpeedPosted.5mph">5mph over limit</Description>
+            <Property key="overLimitKPH">8.04672</Property>
+            </Option>
+         <Option name="10mph">
+            <Description i18n="ReportsXML.eventSpeedPosted.10mph">10mph over limit</Description>
+            <Property key="overLimitKPH">16.09344</Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <TimeStart>-1</TimeStart>
+         <TimeEnd>-1</TimeEnd>
+         <ValidGPSRequired>true</ValidGPSRequired>
+         <Where type="mysql"><![CDATA[ ((speedLimitKPH > 0) AND (speedKPH > (speedLimitKPH + ${overLimitKPH}))) ]]></Where>
+         <SelectionLimit type="first">2000</SelectionLimit>
+         <ReportLimit>2000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ("heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- example device summary report showing the driving and idle times for a given device -->
+   <Report name="MotionSummary" type="driver.performance" 
+        class="org.opengts.war.report.field.MotionReport"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.motionSummary.menu">Driving/Stopped Time Summary</MenuDescription>
+      <Title i18n="ReportsXML.motionSummary.title">Driving/Stopped Time Summary [${description}]</Title>
+      <Subtitle i18n="ReportsXML.motionSummary.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="startDateTime"               />   <!-- "Start Time"          -->
+         <Column name="drivingElapse"               />   <!-- "Driving Duration"    -->
+         <Column name="odomDelta"           arg="1" ifTrue="columnOdometer"/>     <!-- "Miles" (driven)      -->
+         <Column name="stopDateTime"                />   <!-- "Stop Time"           -->
+         <Column name="fuelEconomy"         arg="1" ifTrue="columnFuelEconomy"/>  <!-- "Fuel Econ" (at stop) -->
+         <Column name="stopGeoPoint"        arg="4" ifTrue="columnLatLon"/>       <!-- "Lat/Lon" (at stop)   -->
+         <Column name="stopAddress"                 />   <!-- "Address" (at stop)   -->
+         <Column name="idleElapse"                  />   <!-- "Idle Elapsed Time"   -->
+         <Column name="stopElapse"                  />   <!-- "Stop Elapsed Time"   -->
+      </Columns>
+      <Options>
+         <Option name="default" ifTrue="optionTripStartType_default">
+            <Description i18n="ReportsXML.motionSummary.default">Default</Description>
+            <Property key="tripStartType">default</Property>
+            <Property key="minimumStoppedTime">300</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">true</Property>
+            </Option>
+         <Option name="ignition" ifTrue="optionTripStartType_ignition">
+            <Description i18n="ReportsXML.motionSummary.ignition">Based on Ignition On/Off Status Codes</Description>
+            <Property key="tripStartType">ignition</Property>
+            </Option>
+         <Option name="startstop" ifTrue="optionTripStartType_startstop">
+            <Description i18n="ReportsXML.motionSummary.startstop">Based on Start/Stop Status Codes</Description>
+            <Property key="tripStartType">startstop</Property>
+            <Property key="stopOnIgnitionOff">true</Property>
+            </Option>
+         <Option name="motion5" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.motionSummary.motion5">Based on 5 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">300</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion10" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.motionSummary.motion10">Based on 10 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">600</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion20" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.motionSummary.motion20">Based on 20 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">1200</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+         <Option name="motion30" ifTrue="optionTripStartType_motion">
+            <Description i18n="ReportsXML.motionSummary.motion30">Based on 30 Minute Minimum Stop</Description>
+            <Property key="tripStartType">motion</Property>
+            <Property key="minimumStoppedTime">1800</Property> <!-- seconds -->
+            <Property key="minimumSpeedKPH">3.0</Property>
+            <Property key="stopOnIgnitionOff">false</Property>
+            </Option>
+      </Options>
+      <Constraints>
+         <!-- EventData records MUST be in ascending order -->
+         <SelectionLimit type="first">4000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+      <Property key="tripStartType">default</Property>
+      <Property key="minimumStoppedTime">300</Property> <!-- seconds -->
+      <Property key="minimumSpeedKPH">3.0</Property> <!-- kph -->
+      <Property key="stopOnIgnitionOff">true</Property>
+   </Report>
+
+   <!-- ======================================================================================= -->
+   <!-- ======================================================================================= -->
+   <!-- sysadmin.summary ====================================================================== -->
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Account Last Login Report -->
+   <Report name="AccountLastLogin" type="sysadmin.summary" 
+        class="org.opengts.extra.war.report.field.AccountReport"
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.accountLoginReport.menu">Account Login Report</MenuDescription>
+      <Title i18n="ReportsXML.accountLoginReport.title">Account Login Report</Title>
+      <Subtitle i18n="ReportsXML.accountLoginReport.subtitle"></Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="accountId"                   />
+         <Column name="accountDesc"                 />
+         <Column name="accountActive"               />
+         <Column name="deviceCount"                 />
+         <Column name="loginDateTime"               />
+         <Column name="loginAge"                    />
+      </Columns>
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- Report showing devices which have not yet been assigned to an account/device -->
+   <Report name="UnassignedDevices" type="sysadmin.summary" 
+        class="org.opengts.extra.war.report.field.UnassignedDevicesReport" 
+        optional="true"
+        sortable="true"
+        >
+      <MenuDescription i18n="ReportsXML.unassignedDevices.menu">Unassigned Devices</MenuDescription>
+      <Title i18n="ReportsXML.unassignedDevices.title">Devices not yet assigned to an Account</Title>
+      <Subtitle i18n="ReportsXML.unassignedDevices.subtitle">Timezone: ${timezone}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="serverID"                    />
+         <Column name="uniqueID"                    />
+         <Column name="createDateTime"              i18n="ReportsXML.recvDateTime.column" >Received Time</Column>
+         <Column name="dateTime"                    i18n="ReportsXML.eventDateTime.column">Event Time</Column>
+         <Column name="geoPoint"            arg="5" />
+         <Column name="ipAddress"                   />
+         <Column name="isDuplex"                    />
+      </Columns>
+      <Constraints>
+         <SelectionLimit type="last">1000</SelectionLimit>
+         <ReportLimit>1000</ReportLimit>
+      </Constraints>
+   </Report>
+
+   <!-- ======================================================================================= -->
+   <!-- ======================================================================================= -->
+   <!-- ifta.detail =========================================================================== -->
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- BorderCrossing report showing all state-line crossings -->
+   <Report name="BCrossDetail" type="ifta.detail"
+        class="org.opengts.bcross.war.report.StateMileageDetailReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.borderCrossDetail.menu">State Border-Crossing Summary</MenuDescription>
+      <Title i18n="ReportsXML.borderCrossDetail.title">State Border-Crossing Summary</Title>
+      <Subtitle i18n="ReportsXML.borderCrossDetail.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="subdivision"                 />
+         <Column name="subdivName"                  />
+         <Column name="enterDateTime"               />
+         <Column name="enterOdometer"       arg="1" />
+         <Column name="exitDateTime"                />
+         <Column name="exitOdometer"        arg="1" />
+         <Column name="distanceTraveled"    arg="1" />
+      </Columns>
+      <MapIconSelector ruleFactoryName="GTSRulesEngine">
+        <!-- an installed "RuleFactory" implementation is required which can analyze this iconSelector -->
+        <![CDATA[ ((speed<5)?"reddot":"heading") ]]>
+      </MapIconSelector> 
+   </Report>
+
+   <!-- OPTIONAL REPORT: may not be supported in all releases -->
+   <!-- BorderCrossing report showing accumulated miles within states -->
+   <Report name="BCrossSummary" type="ifta.detail"
+        class="org.opengts.bcross.war.report.StateMileageSummaryReport" 
+        optional="true"
+        sortable="false"
+        >
+      <MenuDescription i18n="ReportsXML.borderCrossSummary.menu">State Mileage Summary</MenuDescription>
+      <Title i18n="ReportsXML.borderCrossSummary.title">State Mileage Summary</Title>
+      <Subtitle i18n="ReportsXML.borderCrossSummary.subtitle">${deviceDesc} [${deviceId}]\n${dateRange}</Subtitle>
+      <Columns>
+         <Column name="index"                       />
+         <Column name="subdivision"                 />
+         <Column name="subdivName"                  />
+         <Column name="distanceTraveled"    arg="1" />
+      </Columns>
+   </Report>
+
+   <!-- ======================================================================================= -->
+   <!-- <Include dir="." file="TestReport.xml" optional="true"/> -->
+   <!-- ======================================================================================= -->
+
+</ReportDefinition>

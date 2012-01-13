@@ -1,0 +1,50 @@
+
+TD#deviceId         { 
+    text-align: left;
+}
+TD#deviceDesc       { 
+    text-align: left;
+}
+TD#groupId          { 
+    text-align: left;
+}
+TD#enterTimestamp   { 
+    font-family: monospace; 
+    padding-top: 2px;
+}
+TD#enterDateTime    { 
+    font-family: monospace; 
+    padding-top: 2px;
+}
+TD#enterGeoPoint    { 
+    font-family: monospace; 
+    padding-top: 2px;
+}
+TD#enterOdometer    { 
+    font-family: monospace; 
+    padding-top: 2px;
+    text-align: right;
+}
+TD#exitTimestamp    { 
+    font-family: monospace; 
+    padding-top: 2px;
+}
+TD#exitDateTime     { 
+    font-family: monospace; 
+    padding-top: 2px;
+}
+TD#exitGeoPoint     { 
+    font-family: monospace; 
+    padding-top: 2px;
+}
+TD#exitOdometer     { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#distanceTraveled { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right;
+}
+

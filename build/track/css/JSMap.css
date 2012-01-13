@@ -1,0 +1,153 @@
+
+/* map details report */
+A.trackMapDetailLocationControl {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+DIV.trackMapDetailLocation {
+    height: 200px; /* change this height to extend or shorten the height of the details report section */
+    /*overflow-x: hidden;*/
+    overflow-y: scroll;
+    border-top: solid 1px black;
+}
+
+TD.mapProviderCell {
+    width: 100%; 
+    border: 1px solid black; 
+    padding: 0px; 
+    margin: 0px;
+}
+
+TR.mapDetailsHeaderRow {
+    background-color: #E2E2E2;
+}
+
+TH.mapDetailsHeaderColumn {
+    height: 12px;
+    border-bottom: 3px double black;
+    font: bold 8pt sans-serif; 
+    text-align: center;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+TR.mapDetailsDataRowOdd {
+    background-color: #FFFFFF;
+}
+
+TR.mapDetailsDataRowEven {
+    background-color: #EEEEEE;
+}
+
+TR.mapDetailsDataRowHiLite {
+    background-color: #FFFFBB;
+}
+
+TD.mapDetailsIndexColumn {
+    font: normal 8pt sans-serif; 
+    text-align: center; 
+    text-decoration: underline;
+    color: #000088;
+    background-color: #EEEEFF;
+    border-right: 1px solid #CCCCCC; 
+    border-bottom: 1px solid #CCCCCC;
+    cursor: pointer;
+}
+
+TD.mapDetailsDataColumn_new {
+    font: bold 8pt sans-serif; 
+    text-align: center; 
+    border-top: 2px solid #650000;
+    border-right: 1px solid #CCCCCC; 
+    border-bottom: 1px solid #CCCCCC; 
+    padding-left: 4px;
+    padding-right: 4px;
+}
+TD.mapDetailsDataColumn {
+    font: normal 8pt sans-serif; 
+    text-align: center; 
+    border-right: 1px solid #CCCCCC; 
+    border-bottom: 1px solid #CCCCCC; 
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+/* Map controls */
+TD.mapControlCell {
+    /* */
+}
+TD.mapControlCollapseBar_L {
+    background: #DDDDDD url(../images/arrowLt3.png) center no-repeat;
+    background-color: #DDDDDD;
+    width: 8px;
+    min-width: 8px;
+    border: 1px solid black;
+    text-align: center;
+    cursor: pointer;
+}
+TD.mapControlCollapseBar_R {
+    background: #DDDDDD url(../images/arrowRt3.png) center no-repeat;
+    background-color: #DDDDDD;
+    width: 8px;
+    min-width: 8px;
+    border: 1px inset black;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* JSMap */
+TABLE.jsmapLoadingView {
+    border: 2px solid black;
+}
+
+TR.jsmapLoadingRow {
+    vertical-align: middle;
+    background-color: white;
+}
+
+TD.jsmapLoadingText {
+    font: bold 12pt sans-serif; 
+    text-align: center; 
+    vertical-align: middle;
+    padding: 10px 10px 10px 10px; /* top,right,bottom,left */
+}
+
+TD.jsmapLoadingImage {
+    padding: 3px 10px 3px 10px;
+}
+
+/* Info Balloon */
+TABLE.infoBoxTable {
+    font-size: 9pt;
+}
+
+TR.infoBoxRow {
+    font-size: 9pt;
+}
+
+TD.infoBoxCell {
+    font-size: 9pt;
+    text-align: left; 
+    white-space: nowrap;
+}
+
+/* Map Legend */
+SPAN.mapProviderLegend {
+    font-weight: bold;
+}
+
+TABLE.mapProviderLegend {
+}
+
+TR.mapProviderLegend {
+}
+
+TD.mapProviderLegend {
+    vertical-align: middle;
+    padding-left: 5px;
+}
+
+IMG.mapProviderLegend {
+    /*padding-left: 5px;*/
+}

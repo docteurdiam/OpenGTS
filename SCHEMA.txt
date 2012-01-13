@@ -1,0 +1,588 @@
+Version: 2.3.8
+================================================================================================
+This document contains database schema information for the tables defined within the OpenGTS
+system.  Optional tables (if any) will be indicated by the term "[optional]" next to the table
+name.
+
+Additional information may be obtained by examining the source module for the specified class.
+
+The schema listing below should match the installed configuration, however, there may still be
+minor differences depending on the specific version installed, or changes that have been made
+to the configuration.  The current schema configuration can be generated from the actual
+database configuration by executing the following command:
+(executed from within the OpenGTS directory)
+
+   bin/dbAdmin.pl -schema
+
+Or, on Windows:
+
+   bin\dbConfig.bat -schema
+
+
+================================================================================================
+Table: Account [required]
+Class: org.opengts.db.tables.Account
+
+This table defines the top level Account specific information.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 accountType            Account Type                   SMALLINT UNSIGNED                    
+   3 notifyEmail            Notification EMail Address     VARCHAR(128)                         
+   4 speedUnits             Speed Units                    TINYINT UNSIGNED                     
+   5 distanceUnits          Distance Units                 TINYINT UNSIGNED                     
+   6 volumeUnits            Volume Units                   TINYINT UNSIGNED                     
+   7 pressureUnits          Pressure Units                 TINYINT UNSIGNED                     
+   8 economyUnits           Economy Units                  TINYINT UNSIGNED                     
+   9 temperatureUnits       Temperature Units              TINYINT UNSIGNED                     
+  10 latLonFormat           Latitude/Longitude Format      TINYINT UNSIGNED                     
+  11 geocoderMode           Geocoder Mode                  TINYINT UNSIGNED                     
+  12 privateLabelName       PrivateLabel Name              VARCHAR(32)                          
+  13 isBorderCrossing       Is BorderCrossing Enabled      TINYINT                              
+  14 retainedEventAge       Retained Event Age (sec)       INT UNSIGNED                         
+  15 maximumDevices         Maximum number of devices      INT                                  
+  16 totalPingCount         Total 'Ping' Count             SMALLINT UNSIGNED                    
+  17 maxPingCount           Maximum 'Ping' Count           SMALLINT UNSIGNED                    
+  18 autoAddDevices         AutoAdd Devices                TINYINT                              
+  19 dcsPropertiesID        DCS Properties ID              VARCHAR(32)                          
+  20 expirationTime         Expiration Time                INT UNSIGNED                         
+  21 defaultUser            Default User ID                VARCHAR(32)                          
+  22 password               Password                       VARCHAR(32)                          
+  23 contactName            Contact Name                   VARCHAR(64) [utf8]                   
+  24 contactPhone           Contact Phone                  VARCHAR(32)                          
+  25 contactEmail           Contact EMail Address          VARCHAR(128)                 email   
+  26 timeZone               Time Zone                      VARCHAR(32)                          
+  27 passwdQueryTime        Last Password Query Time       INT UNSIGNED                         
+  28 lastLoginTime          Last Login Time                INT UNSIGNED                         
+  29 isActive               Is Active                      TINYINT                              
+  30 displayName            Display Name                   VARCHAR(40) [utf8]                   
+  31 description            Description                    VARCHAR(128) [utf8]                  
+  32 notes                  Notes                          TEXT [utf8]                          
+  33 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+  34 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: AccountString [required]
+Class: org.opengts.db.tables.AccountString
+
+This table defines Account specific customized String key/values.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 stringID               String ID                      VARCHAR(32)                  PRIMARY 
+   3 singularTitle          Singular Title                 VARCHAR(64)                          
+   4 pluralTitle            Plural Title                   VARCHAR(64)                          
+   5 description            Description                    VARCHAR(128) [utf8]                  
+   6 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+   7 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: User [required]
+Class: org.opengts.db.tables.User
+
+This table defines Account specific Users.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 userID                 User ID                        VARCHAR(32)                  PRIMARY 
+   3 userType               User Type                      SMALLINT UNSIGNED                    
+   4 roleID                 User Role                      VARCHAR(32)                  role    
+   5 password               Password                       VARCHAR(32)                          
+   6 gender                 Gender                         TINYINT UNSIGNED                     
+   7 notifyEmail            Notification EMail Address     VARCHAR(128)                         
+   8 contactName            Contact Name                   VARCHAR(64) [utf8]                   
+   9 contactPhone           Contact Phone                  VARCHAR(32)                          
+  10 contactEmail           Contact EMail Address          VARCHAR(64)                  email   
+  11 timeZone               Time Zone                      VARCHAR(32)                          
+  12 firstLoginPageID       First Login Page ID            VARCHAR(24)                          
+  13 preferredDeviceID      Preferred Device ID            VARCHAR(32)                          
+  14 maxAccessLevel         Maximum Access Level           SMALLINT UNSIGNED                    
+  15 passwdQueryTime        Last Password Query Time       INT UNSIGNED                         
+  16 lastLoginTime          Last Login Time                INT UNSIGNED                         
+  17 isActive               Is Active                      TINYINT                              
+  18 displayName            Display Name                   VARCHAR(40) [utf8]                   
+  19 description            Description                    VARCHAR(128) [utf8]                  
+  20 notes                  Notes                          TEXT [utf8]                          
+  21 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+  22 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: UserAcl [required]
+Class: org.opengts.db.tables.UserAcl
+
+This table defines User specific Access Control permissions.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 userID                 User ID                        VARCHAR(32)                  PRIMARY 
+   3 aclID                  ACL ID                         VARCHAR(64)                  PRIMARY 
+   4 accessLevel            Access Level                   SMALLINT UNSIGNED                    
+   5 description            Description                    VARCHAR(128) [utf8]                  
+   6 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+   7 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: GroupList [required]
+Class: org.opengts.db.tables.GroupList
+
+This table defines the authorized Groups that can be accessed by a given User.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 userID                 User ID                        VARCHAR(32)                  PRIMARY 
+   3 groupID                Device Group ID                VARCHAR(32)                  PRIMARY 
+   4 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: Device [required]
+Class: org.opengts.db.tables.Device
+
+This table defines Device/Vehicle specific information for an Account. A 'Device' record
+typically represents something that is being 'tracked', such as a Vehicle.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 deviceID               Device/Asset ID                VARCHAR(32)                  PRIMARY 
+   3 groupID                Group ID                       VARCHAR(32)                          
+   4 equipmentType          Equipment Type                 VARCHAR(40)                          
+   5 vehicleID              VIN                            VARCHAR(24)                          
+   6 licensePlate           License Plate                  VARCHAR(24)                          
+   7 driverID               Driver ID                      VARCHAR(32)                          
+   8 fuelCapacity           Fuel Capacity                  DOUBLE                               
+   9 fuelEconomy            Approx. Fuel Economy           DOUBLE                               
+  10 speedLimitKPH          Max Speed km/h                 DOUBLE                               
+  11 expirationTime         Expiration Time                INT UNSIGNED                         
+  12 uniqueID               Unique ID                      VARCHAR(40)                  altIndex
+  13 deviceCode             Server ID                      VARCHAR(24)                          
+  14 deviceType             Device Type                    VARCHAR(24)                          
+  15 dcsPropertiesID        DCS Properties ID              VARCHAR(32)                          
+  16 pushpinID              Pushpin ID                     VARCHAR(32)                          
+  17 displayColor           Display Color                  VARCHAR(16)                          
+  18 serialNumber           Serial Number                  VARCHAR(24)                          
+  19 simPhoneNumber         SIM Phone Number               VARCHAR(24)                          
+  20 smsEmail               SMS EMail Address              VARCHAR(64)                          
+  21 imeiNumber             IMEI Number                    VARCHAR(24)                          
+  22 dataKey                Data Key                       TEXT                                 
+  23 ignitionIndex          Ignition I/O Index             SMALLINT                             
+  24 codeVersion            Code Version                   VARCHAR(32)                          
+  25 featureSet             Feature Set                    VARCHAR(64)                          
+  26 ipAddressValid         Valid IP Addresses             VARCHAR(128)                         
+  27 lastTotalConnectTime   Last Total Connect Time        INT UNSIGNED                         
+  28 lastDuplexConnectTime  Last Duplex Connect Time       INT UNSIGNED                         
+  29 pendingPingCommand     Pending Ping Command           TEXT                                 
+  30 lastPingTime           Last 'Ping' Time               INT UNSIGNED                         
+  31 totalPingCount         Total 'Ping' Count             SMALLINT UNSIGNED                    
+  32 maxPingCount           Maximum 'Ping' Count           SMALLINT UNSIGNED                    
+  33 expectAck              Expecting an ACK               TINYINT                              
+  34 lastAckCommand         Last Command Expecting ACK     TEXT                                 
+  35 lastAckTime            Last Received 'ACK' Time       INT UNSIGNED                         
+  36 dcsConfigMask          DCS Configuration Mask         INT UNSIGNED                         
+  37 supportsDMTP           Supports DMTP                  TINYINT                              
+  38 supportedEncodings     Supported Encodings            TINYINT UNSIGNED                     
+  39 unitLimitInterval      Accounting Time Interval Min   SMALLINT UNSIGNED                    
+  40 maxAllowedEvents       Max Events per Interval        SMALLINT UNSIGNED                    
+  41 totalProfileMask       Total Profile Mask             BLOB                                 
+  42 totalMaxConn           Max Total Conn per Interval    SMALLINT UNSIGNED                    
+  43 totalMaxConnPerMin     Max Total Conn per Minute      SMALLINT UNSIGNED                    
+  44 duplexProfileMask      Duplex Profile Mask            BLOB                                 
+  45 duplexMaxConn          Max Duplex Conn per Interval   SMALLINT UNSIGNED                    
+  46 duplexMaxConnPerMin    Max Duplex Conn per Minute     SMALLINT UNSIGNED                    
+  47 ipAddressCurrent       Current IP Address             VARCHAR(32)                          
+  48 remotePortCurrent      Current Remote Port            SMALLINT UNSIGNED                    
+  49 listenPortCurrent      Current Listen Port            SMALLINT UNSIGNED                    
+  50 lastInputState         Last Input State               INT UNSIGNED                         
+  51 lastBatteryLevel       Last Battery Level             DOUBLE                               
+  52 lastFuelLevel          Last Fuel Level                DOUBLE                               
+  53 lastFuelTotal          Last Fuel Total Liters         DOUBLE                               
+  54 lastOilLevel           Last Oil Level                 DOUBLE                               
+  55 lastValidLatitude      Last Valid Latitude            DOUBLE                               
+  56 lastValidLongitude     Last Valid Longitude           DOUBLE                               
+  57 lastValidHeading       Last Valid Heading             DOUBLE                               
+  58 lastGPSTimestamp       Last Valid GPS Timestamp       INT UNSIGNED                         
+  59 lastCellServingInfo    Last Serving Cell Info         VARCHAR(100)                         
+  60 lastOdometerKM         Last Odometer km               DOUBLE                               
+  61 odometerOffsetKM       Odometer Offset km             DOUBLE                               
+  62 lastEngineHours        Last Engine Hours              DOUBLE                               
+  63 isActive               Is Active                      TINYINT                              
+  64 displayName            Display Name                   VARCHAR(40) [utf8]                   
+  65 description            Description                    VARCHAR(128) [utf8]                  
+  66 notes                  Notes                          TEXT [utf8]                          
+  67 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+  68 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: Transport [required]
+Class: org.opengts.db.tables.Transport
+
+This table defines the data transport specific information for an Asset/Device.  A 'Transport'
+represents the datapath used to send data to a server.  In some cases a single 'Device' can
+have more than one such datapath to the server, such as a device that incorporates both GPRS
+and satellite communications.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 transportID            Transport ID                   VARCHAR(32)                  PRIMARY 
+   3 assocAccountID         Associated Account ID          VARCHAR(32)                  device  
+   4 assocDeviceID          Associated Device ID           VARCHAR(32)                  device  
+   5 uniqueID               Unique ID                      VARCHAR(40)                  altIndex
+   6 deviceCode             Device Code                    VARCHAR(24)                          
+   7 deviceType             Device Type                    VARCHAR(24)                          
+   8 serialNumber           Serial Number                  VARCHAR(24)                          
+   9 simPhoneNumber         SIM Phone Number               VARCHAR(24)                          
+  10 smsEmail               SMS EMail Address              VARCHAR(64)                          
+  11 imeiNumber             IMEI Number                    VARCHAR(24)                          
+  12 lastInputState         Last Input State               INT UNSIGNED                         
+  13 ignitionIndex          Ignition I/O Index             SMALLINT UNSIGNED                    
+  14 codeVersion            Code Version                   VARCHAR(32)                          
+  15 featureSet             Feature Set                    VARCHAR(64)                          
+  16 ipAddressValid         Valid IP Addresses             VARCHAR(128)                         
+  17 ipAddressCurrent       Current IP Address             VARCHAR(32)                          
+  18 remotePortCurrent      Current Remote Port            SMALLINT UNSIGNED                    
+  19 listenPortCurrent      Current Listen Port            SMALLINT UNSIGNED                    
+  20 pendingPingCommand     Pending Ping Command           TEXT                                 
+  21 lastPingTime           Last 'Ping' Time               INT UNSIGNED                         
+  22 totalPingCount         Total 'Ping' Count             SMALLINT UNSIGNED                    
+  23 maxPingCount           Maximum 'Ping' Count           SMALLINT UNSIGNED                    
+  24 expectAck              Expecting an ACK               TINYINT                              
+  25 lastAckCommand         Last Command Expecting an ACK  TEXT                                 
+  26 lastAckTime            Last Received 'ACK' Time       INT UNSIGNED                         
+  27 supportsDMTP           Supports DMTP                  TINYINT                              
+  28 supportedEncodings     Supported Encodings            TINYINT UNSIGNED                     
+  29 unitLimitInterval      Accounting Time Interval Min   SMALLINT UNSIGNED                    
+  30 maxAllowedEvents       Max Events per Interval        SMALLINT UNSIGNED                    
+  31 totalProfileMask       Total Profile Mask             BLOB                                 
+  32 totalMaxConn           Max Total Conn per Interval    SMALLINT UNSIGNED                    
+  33 totalMaxConnPerMin     Max Total Conn per Minute      SMALLINT UNSIGNED                    
+  34 duplexProfileMask      Duplex Profile Mask            BLOB                                 
+  35 duplexMaxConn          Max Duplex Conn per Interval   SMALLINT UNSIGNED                    
+  36 duplexMaxConnPerMin    Max Duplex Conn per Minute     SMALLINT UNSIGNED                    
+  37 lastTotalConnectTime   Last Total Connect Time        INT UNSIGNED                         
+  38 lastDuplexConnectTime  Last Duplex Connect Time       INT UNSIGNED                         
+  39 displayName            Display Name                   VARCHAR(40) [utf8]                   
+  40 description            Description                    VARCHAR(128) [utf8]                  
+  41 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+  42 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: UniqueXID [required]
+Class: org.opengts.db.tables.UniqueXID
+
+This table defines system-wide mapping of Transport Unique-IDs to a specific Account/Transport.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 uniqueID               Unique ID                      VARCHAR(40)                  PRIMARY 
+   2 accountID              Account ID                     VARCHAR(32)                          
+   3 transportID            Transport ID                   VARCHAR(32)                          
+
+
+================================================================================================
+Table: DeviceGroup [required]
+Class: org.opengts.db.tables.DeviceGroup
+
+This table defines Account specific Device Groups.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 groupID                Device Group ID                VARCHAR(32)                  PRIMARY 
+   3 displayName            Display Name                   VARCHAR(40) [utf8]                   
+   4 description            Description                    VARCHAR(128) [utf8]                  
+   5 notes                  Notes                          TEXT [utf8]                          
+   6 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+   7 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: DeviceList [required]
+Class: org.opengts.db.tables.DeviceList
+
+This table defines the membership of a given Device within a DeviceGroup. A Device may be
+defined in more than one DeviceGroup.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 groupID                Device Group ID                VARCHAR(32)                  PRIMARY 
+   3 deviceID               Device/Asset ID                VARCHAR(32)                  PRIMARY 
+   4 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+   5 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: Driver [required]
+Class: org.opengts.db.tables.Driver
+
+This table defines Account specific Vehicle Drivers.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 driverID               Driver ID                      VARCHAR(32)                  PRIMARY 
+   3 contactPhone           Contact Phone                  VARCHAR(32)                          
+   4 contactEmail           Contact EMail                  VARCHAR(128)                         
+   5 licenseType            License Type                   VARCHAR(24)                          
+   6 licenseNumber          License Number                 VARCHAR(32)                          
+   7 licenseExpire          License Expiration Day         INT UNSIGNED                         
+   8 badgeID                Badge ID                       VARCHAR(32)                          
+   9 address                Full Address                   VARCHAR(90) [utf8]                   
+  10 birthdate              Driver Birthdate               INT UNSIGNED                         
+  11 deviceID               Device/Asset ID                VARCHAR(32)                          
+  12 displayName            Display Name                   VARCHAR(40) [utf8]                   
+  13 description            Description                    VARCHAR(128) [utf8]                  
+  14 notes                  Notes                          TEXT [utf8]                          
+  15 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+  16 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: EventData [required]
+Class: org.opengts.db.tables.EventData
+
+This table contains events which have been generated by all client devices.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 deviceID               Device/Asset ID                VARCHAR(32)                  PRIMARY 
+   3 timestamp              Timestamp                      INT UNSIGNED                 PRIMARY 
+   4 statusCode             Status Code                    INT UNSIGNED                 PRIMARY 
+   5 latitude               Latitude                       DOUBLE                               
+   6 longitude              Longitude                      DOUBLE                               
+   7 gpsAge                 GPS Fix Age                    INT UNSIGNED                         
+   8 speedKPH               Speed                          DOUBLE                               
+   9 heading                Heading                        DOUBLE                               
+  10 altitude               Altitude                       DOUBLE                               
+  11 transportID            Transport ID                   VARCHAR(32)                          
+  12 inputMask              Input Mask                     INT UNSIGNED                         
+  13 address                Full Address                   VARCHAR(90) [utf8]                   
+  14 dataSource             Data Source                    VARCHAR(32)                          
+  15 rawData                Raw Data                       TEXT                                 
+  16 distanceKM             Distance KM                    DOUBLE                               
+  17 odometerKM             Odometer KM                    DOUBLE                               
+  18 geozoneIndex           Geozone Index                  INT UNSIGNED                         
+  19 geozoneID              Geozone ID                     VARCHAR(32)                          
+  20 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: Geozone [required]
+Class: org.opengts.db.tables.Geozone
+
+This table defines Account specific geozones/geofences.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 geozoneID              Geozone ID                     VARCHAR(32)                  PRIMARY 
+   3 sortID                 Sort ID                        INT UNSIGNED                 PRIMARY 
+   4 minLatitude            Min Latitude                   DOUBLE                       bounds  
+   5 maxLatitude            Max Latitude                   DOUBLE                       bounds  
+   6 minLongitude           Min Longitude                  DOUBLE                       bounds  
+   7 maxLongitude           Max Longitude                  DOUBLE                       bounds  
+   8 reverseGeocode         Reverse geocode                TINYINT                              
+   9 arrivalZone            Arrival Zone                   TINYINT                              
+  10 departureZone          Departure Zone                 TINYINT                              
+  11 autoNotify             Auto Notify                    TINYINT                              
+  12 zoomRegion             Zoom Region                    TINYINT                              
+  13 shapeColor             Shape Color                    VARCHAR(12)                          
+  14 zoneType               Zone Type                      TINYINT UNSIGNED                     
+  15 radius                 Radius Meters                  INT UNSIGNED                         
+  16 latitude1              Latitude 1                     DOUBLE                               
+  17 longitude1             Longitude 1                    DOUBLE                               
+  18 latitude2              Latitude 2                     DOUBLE                               
+  19 longitude2             Longitude 2                    DOUBLE                               
+  20 latitude3              Latitude 3                     DOUBLE                               
+  21 longitude3             Longitude 3                    DOUBLE                               
+  22 latitude4              Latitude 4                     DOUBLE                               
+  23 longitude4             Longitude 4                    DOUBLE                               
+  24 latitude5              Latitude 5                     DOUBLE                               
+  25 longitude5             Longitude 5                    DOUBLE                               
+  26 latitude6              Latitude 6                     DOUBLE                               
+  27 longitude6             Longitude 6                    DOUBLE                               
+  28 latitude7              Latitude 7                     DOUBLE                               
+  29 longitude7             Longitude 7                    DOUBLE                               
+  30 latitude8              Latitude 8                     DOUBLE                               
+  31 longitude8             Longitude 8                    DOUBLE                               
+  32 clientUpload           Client Upload                  TINYINT                              
+  33 clientID               Client ID                      INT UNSIGNED                 altIndex
+  34 streetAddress          Street Address                 VARCHAR(90) [utf8]                   
+  35 city                   City                           VARCHAR(40) [utf8]                   
+  36 stateProvince          State/Province                 VARCHAR(40) [utf8]                   
+  37 postalCode             Postal Code                    VARCHAR(16) [utf8]                   
+  38 country                Country                        VARCHAR(40) [utf8]                   
+  39 subdivision            Subdivision                    VARCHAR(32) [utf8]                   
+  40 displayName            Display Name                   VARCHAR(40) [utf8]                   
+  41 description            Description                    VARCHAR(128) [utf8]                  
+  42 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+  43 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: Resource [required]
+Class: org.opengts.db.tables.Resource
+
+This table defines Account specific text resources.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 resourceID             Resource ID                    VARCHAR(64)                  PRIMARY 
+   3 type                   Type                           VARCHAR(16)                          
+   4 title                  Title                          VARCHAR(70) [utf8]                   
+   5 properties             Properties                     TEXT                                 
+   6 value                  Value                          BLOB                                 
+   7 displayName            Display Name                   VARCHAR(40) [utf8]                   
+   8 description            Description                    VARCHAR(128) [utf8]                  
+   9 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+  10 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: Role [required]
+Class: org.opengts.db.tables.Role
+
+This table defines Account specific Roles.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 roleID                 Role ID                        VARCHAR(32)                  PRIMARY 
+   3 displayName            Display Name                   VARCHAR(40) [utf8]                   
+   4 description            Description                    VARCHAR(128) [utf8]                  
+   5 notes                  Notes                          TEXT [utf8]                          
+   6 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+   7 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: RoleAcl [required]
+Class: org.opengts.db.tables.RoleAcl
+
+This table defines Role specific Access Control permissions.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 roleID                 Role ID                        VARCHAR(32)                  PRIMARY 
+   3 aclID                  ACL ID                         VARCHAR(64)                  PRIMARY 
+   4 accessLevel            Access Level                   SMALLINT UNSIGNED                    
+   5 description            Description                    VARCHAR(128) [utf8]                  
+   6 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+   7 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: StatusCode [required]
+Class: org.opengts.db.tables.StatusCode
+
+This table defines Device specific StatusCode descriptions.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 deviceID               Device/Asset ID                VARCHAR(32)                  PRIMARY 
+   3 statusCode             Status Code                    INT UNSIGNED                 PRIMARY 
+   4 statusName             Status Name                    VARCHAR(18)                          
+   5 foregroundColor        Foreground Color               VARCHAR(10)                          
+   6 backgroundColor        Background Color               VARCHAR(10)                          
+   7 iconSelector           Icon Selector                  VARCHAR(128)                         
+   8 iconName               Icon Name                      VARCHAR(24)                          
+   9 description            Description                    VARCHAR(128) [utf8]                  
+  10 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+  11 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: SystemProps [required]
+Class: org.opengts.db.tables.SystemProps
+
+This table defines system-wide installation property key/values.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 propertyID             Property ID                    VARCHAR(32)                  PRIMARY 
+   2 value                  Value                          TEXT [utf8]                          
+   3 description            Description                    VARCHAR(128) [utf8]                  
+   4 lastUpdateTime         Last Update Time               INT UNSIGNED                         
+   5 creationTime           Creation Time                  INT UNSIGNED                         
+
+
+================================================================================================
+Table: EventTemplate [optional]
+Class: org.opengts.db.dmtp.EventTemplate
+
+This table contains DMTP event packet 'template's (Custom Event Packet Negotiation parse
+templates) which have been received from client devices.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 deviceID               Device/Asset ID                VARCHAR(32)                  PRIMARY 
+   3 customType             Custom Type                    TINYINT UNSIGNED             PRIMARY 
+   4 repeatLast             Repeat Last                    TINYINT                              
+   5 template               Template                       TEXT                                 
+
+
+================================================================================================
+Table: PendingPacket [optional]
+Class: org.opengts.db.dmtp.PendingPacket
+
+This table contains configuration packets which are to be sent to the DMTP client device the
+next time it 'checks-in' with the server.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 deviceID               Device/Asset ID                VARCHAR(32)                  PRIMARY 
+   3 queueTime              Packet Queue Time              INT UNSIGNED                 PRIMARY 
+   4 sequence               Sequence                       SMALLINT UNSIGNED            PRIMARY 
+   5 packetBytes            Packet Bytes                   MEDIUMBLOB                           
+   6 autoDelete             Delete after sending           TINYINT                              
+
+
+================================================================================================
+Table: Property [optional]
+Class: org.opengts.db.dmtp.Property
+
+This table contains Device specific property information collected from client devices.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 deviceID               Device/Asset ID                VARCHAR(32)                  PRIMARY 
+   3 propKey                Property Key                   INT UNSIGNED                 PRIMARY 
+   4 timestamp              Timestamp                      INT UNSIGNED                         
+   5 binaryValue            Binary Value                   BLOB                                 
+
+
+================================================================================================
+Table: Diagnostic [optional]
+Class: org.opengts.db.dmtp.Diagnostic
+
+This table contains Device specific diagnostic information collected from client devices.
+
+  ## Column                 Description                    SQL Type                     Key     
+ --- ---------------------- ------------------------------ ---------------------------- --------
+   1 accountID              Account ID                     VARCHAR(32)                  PRIMARY 
+   2 deviceID               Device/Asset ID                VARCHAR(32)                  PRIMARY 
+   3 isError                Is Error                       TINYINT                      PRIMARY 
+   4 codeKey                Code Key                       INT UNSIGNED                 PRIMARY 
+   5 timestamp              Timestamp                      INT UNSIGNED                 PRIMARY 
+   6 binaryValue            Binary Value                   BLOB                                 
+
+

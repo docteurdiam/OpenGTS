@@ -1,0 +1,32 @@
+
+/* recent login date */
+.recentLoginDate_odd {
+    color: #308330; /* green */
+}
+.recentLoginDate_even {
+    color: #308330; /* green */
+}
+
+/* normal login date */
+.normalLoginDate_odd {
+    color: black; 
+}
+.normalLoginDate_even {
+    color: black; 
+}
+
+/* old login date */
+.oldLoginDate_odd {
+    color: #d4d606; /* yellow */
+}
+.oldLoginDate_even {
+    color: #d4d606; /* yellow */
+}
+
+/* very old login date */
+.veryOldLoginDate_odd {
+    color: red; 
+}
+.veryOldLoginDate_even {
+    color: red; 
+}

@@ -1,0 +1,286 @@
+
+/* Navigation bar */
+.navBar { 
+    font-size: 10pt; 
+    padding-bottom: 1px; 
+    background-color: #EFEFEF; 
+    border-top: solid #555555 1px; 
+    border-bottom: solid #555555 1px;
+}
+.navBarClear { 
+    font-size: 10pt; 
+    padding-bottom: 1px; 
+}
+
+/* generic form button */
+.formButton { 
+    margin: 0;
+    padding: 0;
+}
+
+/* Text input/display */
+.textInput { 
+    border-width: 1px; 
+    border-style: solid; 
+    border-color: #555588 #AAAABB #AAAABB #555588; 
+    padding-left: 2px; 
+    background-color: #FFFFFF; 
+}
+.textReadOnly { 
+    border-width: 1px; 
+    border-style: solid; 
+    border-color: #555588 #AAAABB #AAAABB #555588; 
+    padding-left: 2px; 
+    color: #555555;
+    background-color: #EFEFEF; 
+}
+.textReadOnly:focus { 
+    color: #111111;
+    background-color: #E7E7E7; 
+}
+.textOnClick { 
+    border-width: 1px; 
+    border-style: solid; 
+    border-color: #444477 #9999AA #9999AA #444477; 
+    /*
+    border-width: 2px; 
+    border-style: inset; 
+    border-color: #DDDDDD #EEEEEE #EEEEEE #DDDDDD; 
+    */
+    padding-left: 2px; 
+    background-color: #FFFFFF; 
+    cursor: pointer;
+}
+
+/* TextArea input/display */
+.textAreaInput {
+    border-width: 1px; 
+    border-style: solid; 
+    border-color: #444477 #9999AA #9999AA #444477; 
+    /*
+    border-width: 2px; 
+    border-style: inset; 
+    border-color: #DDDDDD #EEEEEE #EEEEEE #DDDDDD; 
+    */
+    padding-left: 2px; 
+    background-color: #FFFFFF; 
+    font-family: monospace;
+}
+.textAreaReadOnly { 
+    border-width: 1px; 
+    border-style: solid; 
+    border-color: #444477 #9999AA #9999AA #444477; 
+    /*
+    border-width: 1px; 
+    border-style: inset; 
+    border-color: #DDDDDD #EEEEEE #EEEEEE #DDDDDD; 
+    */
+    padding-left: 2px; 
+    color: #555555;
+    background-color: #EFEFEF; 
+    font-family: monospace;
+}
+.textAreaReadOnly:focus { 
+    color: #111111;
+    background-color: #E7E7E7; 
+}
+
+/* menu */
+.menuTitle { 
+    font-size: 12pt; 
+    font-weight: bold; 
+}
+.menuInstructions { 
+    font-size: 10pt; 
+}
+.menuDescription { 
+    padding-top: 3px; 
+    font-size: 9pt;
+}
+
+/* General page content */
+.contentTable { 
+    width: 844px;
+    height: 550px; 
+    max-height: 550px;
+    margin-top: 10px;
+}
+
+.contentCell {
+    /* height: 100%; */
+    padding: 5px;
+    border: solid #555555 2px;
+    background-color: #F4F4FF;
+    vertical-align: top;
+}
+.contentTopMenuCell { 
+    padding: 5px; 
+    border: solid #555555 2px; 
+    background-color: #FBFBFB; 
+    vertical-align: top;
+    text-align: left;
+}
+
+.contentMessage {
+    margin-top: 5px;
+    font-style: oblique;
+    text-align: center;
+}
+
+/* Map page content */
+.contentMapTable {
+    width: 844px;
+    height: 550px;
+    max-height: 550px;
+    margin-top: 10px;
+}
+.contentTrackMapCell {
+    width: 100%;
+    padding: 5px 5px 5px 5px;
+    border: 2px solid #555555;
+    background-color: #FBFBFB;
+    font-size: 7pt;
+    vertical-align: top;
+}
+
+/* Map page content full screen */
+.contentMapTableFull {
+    width: 100%;
+    height: 99%;
+    margin-top: 10px;
+}
+.contentTrackMapCellFull {
+    width: 100%;
+    /* height: 100%; */
+    padding: 5px 5px 5px 5px;
+    border: solid #555555 2px;
+    background-color: #FBFBFB;
+    font-size: 7pt;
+    vertical-align: top;
+}
+
+/* simple message response */
+.messageResponseTable {
+    margin-top: 50px;
+}
+.messageResponseCell {
+    padding: 10px;
+    border: solid #555555 1px;
+    background-color: #FBFBFB;
+    text-align: center;
+}
+
+/* copyright */
+.copyrightFooter {
+    font-size: 7pt; 
+    text-align: center; 
+    padding-bottom: 2px;
+    background-color: #EFEFEF; 
+}
+.copyrightFooterClear {
+    font-size: 7pt; 
+    text-align: center; 
+    padding-bottom: 2px;
+}
+
+/* --------------------------------------------- */
+
+TBODY.scrollExp {
+    max-height: 380px;
+    height: expression( this.scrollHeight > 379 ? "380px" : "auto" );
+    /*height: 380px; /**/
+    overflow-y: expression( this.scrollHeight > 379 ? "scroll" : "hidden" );
+    overflow-x: hidden;
+}
+
+TBODY.scroll {
+    max-height: 380px;
+    height: 380px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+TBODY.noScroll {
+}
+
+/* --------------------------------------------- */
+
+/* Admin/info controls */
+H1.adminSelectTitle { 
+    font: bold 9pt sans-serif; 
+    text-align: left; 
+    margin-top: 0px; 
+    margin-bottom: 3px; 
+}
+SPAN.adminSelectTitle { 
+    font: bold 9pt sans-serif; 
+    text-align: left; 
+    margin-top: 0px; 
+    margin-bottom: 3px; 
+}
+TABLE.adminSelectTable { 
+    border: 1px solid black; 
+}
+TABLE.adminSelectTable_sortable { 
+    border: 1px solid black; 
+}
+TR.adminTableHeaderRow { 
+    background-color: #E2E2E2; 
+}
+TH.adminTableHeaderCol_sort { 
+    white-space: nowrap;
+    font: bold 8pt sans-serif; 
+    text-align: center; 
+    padding: 3px 5px 3px 5px; 
+    border-bottom: 3px double black; 
+}
+TH.adminTableHeaderCol_sort:hover { 
+    white-space: nowrap;
+    font: bold 8pt sans-serif; 
+    text-align: center; 
+    padding: 3px 5px 3px 5px; 
+    border-bottom: 3px double #770000; 
+    background-color: #CCCCCC;
+}
+TH.adminTableHeaderCol_nosort { 
+    white-space: nowrap;
+    font: bold 8pt sans-serif; 
+    text-align: center; 
+    padding: 3px 5px 3px 5px; 
+    border-bottom: 3px double black; 
+}
+
+TR.adminTableBodyRowOdd { 
+    background-color: #FFFFFF; 
+}
+TR.adminTableBodyRowEven { 
+    background-color: #F0F0F0; 
+}
+TD.adminTableBodyCol {
+    font: normal 8pt sans-serif;
+    text-align: center;
+    padding: 0px 5px 0px 5px;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+TABLE.adminViewTable {
+}
+TD.adminViewTableHeader {
+    font-size: 9pt;
+    height: 23px;
+    padding-right: 5px;
+    padding-left: 5px;
+    text-align: right;
+}
+TD.adminViewTableData {
+    height: 23px;
+}
+TD.adminViewTableTextArea {
+    /*height: 23px;*/
+}
+
+SELECT.adminComboBox {
+    font-size: 8pt;
+    height: 19px;
+}

@@ -1,0 +1,56 @@
+
+H1.rptTitle       { 
+    font: bold 13pt sans-serif; 
+    text-align: center; 
+    margin-bottom: 1px; 
+}
+H2.rptSubtitle    { 
+    font: normal 8pt sans-serif; 
+    text-align: center; 
+    margin-bottom: 1px;
+}
+H2.rptNoData      { 
+    font: bold 8pt sans-serif; 
+    text-align: center; 
+    margin-bottom: 1px; color: black;
+}
+H2.rptPartial     { 
+    font: bold 8pt sans-serif; 
+    text-align: center; 
+    margin-bottom: 1px; color: red;
+}
+TABLE.rptTbl      { 
+    border: 1px solid black;
+}
+TR.rptHdrRow      { 
+    background-color: #E2E2E2;
+}
+TH.rptHdrCol      { 
+    font: bold 8pt sans-serif; 
+    text-align: center; 
+    padding: 3px 5px 3px 5px; 
+    border-bottom: 3px double black;
+}
+TR.rptBodyRowOdd  { 
+    background-color: #FFFFFF;
+}
+TR.rptBodyRowEven { 
+    background-color: #F0F0F0;
+}
+TD.rptBodyCol     { 
+    font: normal 8pt sans-serif; 
+    text-align: center; 
+    padding: 0px 5px 0px 5px; 
+    border-right: 1px solid #CCCCCC; 
+    border-bottom: 1px solid #CCCCCC;
+}
+TR.rptTotalRow    { 
+    background-color: #E2E2E2;
+}
+TD.rptTotalCol    { 
+    font: normal 8pt sans-serif; 
+    text-align: center; 
+    padding: 0px 5px 0px 5px; 
+    border-top: 3px double black;
+}
+

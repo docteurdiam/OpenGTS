@@ -1,0 +1,28 @@
+<!-- 
+===============================================================================
+Project: OpenGTS - Open GPS Tracking System
+URL    : http://www.opengts.org
+File   : build_custom.xml
+===============================================================================
+-->
+
+<!-- Copyright 2008-2011 GeoTelematic Solutions, Inc. -->
+<project name="GTS Custom" basedir=".">
+
+  <!-- ======================================================================== -->
+  
+  <target name="custom" depends="custom.jar,customtrack.jar"/>
+
+  <!-- Target: custom.jar -->
+  <target name="custom.jar" description="Genera custom targets">
+    <echo message="Skipping General Custom build ..."/>
+  </target>
+
+  <!-- Target: customtrack.jar -->
+  <target name="customtrack.jar" description="Track custom targets">
+    <echo message="Skipping Track Custom build ..."/>
+  </target>
+
+  <!-- ======================================================================== -->
+
+</project>

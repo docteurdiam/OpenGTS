@@ -1,0 +1,490 @@
+
+/* device */
+TD#deviceId        { 
+    text-align: left; 
+}
+TD#deviceDesc      { 
+    text-align: left; 
+}
+TD#deviceBattery { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#deviceCreateDateTime { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+
+/* group */
+TD#groupId         { 
+    text-align: left; 
+}
+
+/* entity */
+TD#entityId        { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right; 
+}
+TD#entityDesc      { 
+    text-align: left; 
+}
+
+/* status code */
+TD#statusCode      {
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right; 
+}
+TD#statusDesc      {
+    text-align: left; 
+}
+TD#pushpin      {
+    padding-top: 2px; 
+    padding-bottom: 2px;
+}
+
+/* driver */
+TD#driverId        { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: left; 
+}
+TD#driverDesc      { 
+    text-align: left; 
+}
+TD#driverMessage   { 
+    text-align: left; 
+}
+TD#driverStatus   { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right; 
+}
+
+/* Garmin: ETA */
+TD#etaDateTime        { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+TD#etaTimestamp       { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+TD#etaUniqueID   { 
+    text-align: left; 
+}
+TD#etaGeoPoint        { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+TD#etaLatitude        { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right; 
+}
+TD#etaLongitude       { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right; 
+}
+TD#etaDistance  { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* Garmin: Stop */
+TD#stopUniqueID   { 
+    text-align: left; 
+}
+TD#stopStatus   { 
+    text-align: left; 
+}
+TD#stopIndex   { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* date/time */
+TD#date            { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+TD#time            { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+TD#dateTime        { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+TD#timestamp       { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+
+/* record creation date/time */
+TD#createDate      { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+TD#createTime      { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+TD#createDateTime  { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+TD#createTimestamp { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+
+/* gps */
+TD#gpsAge          { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right; 
+}
+TD#geoPoint        { 
+    font-family: monospace; 
+    padding-top: 2px; 
+}
+TD#latitude        { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right; 
+}
+TD#longitude       { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right; 
+}
+TD#satellites      { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#altitude        { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* speed */
+TD#speedLimit      { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: right; 
+}
+TD#speed           { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#speedh          { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#speedu          { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* odometer */
+TD#odometer        { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#distance        { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* geozone */
+TD#geozoneId        { 
+    font-family: monospace; 
+    padding-top: 2px; 
+    text-align: left; 
+}
+TD#geozoneDesc      { 
+    text-align: left; 
+}
+
+/* address */
+TD#address         { 
+    text-align: left; 
+    width: 200px;
+}
+
+/* Atmosphere */
+TD#barometer { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#ambientTemp     { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* Temperature */
+TD#thermo1         { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#thermo2         { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#thermo3         { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#thermo4         { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#thermo5         { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#thermo6         { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#thermo7         { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#thermo8         { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* Battery */
+TD#battery { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#batteryVolts { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#batteryPercent { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#lastBatteryPercent { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* OBD: Fuel */
+TD#fuelCapacity    { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#fuelLevel       { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#fuelLevelVolume { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#fuelEconomy     { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#fuelTotal { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#fuelIdle { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* OBD: PTO */
+TD#ptoEngaged { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#ptoHours { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* OBD: oil */
+TD#oilLevel { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#oilPressure { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#oilTemp { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* OBD: engine */
+TD#engineRpm { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#engineHours { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#engineLoad { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#idleHours { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* OBD: Transmission Oil */
+TD#transOilTemp { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* OBD: Coolant */
+TD#coolantLevel { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#coolantTemp { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* OBD: Brake */
+TD#brakeGForce { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#brakeForce { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+TD#brakePressue { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* OBD: Acceleration/Deceleration */
+TD#acceleration { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* OBD: Vehicle Battery */
+TD#vBatteryVolts { 
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* check-in date/time */
+TD#checkinDateTime { 
+    font-family: monospace;
+    padding-top: 2px;
+}
+TD#checkinAge      { 
+    font-family: monospace;
+    padding-top: 2px;
+    text-align: right;
+}
+
+/* job number */
+TD#jobNumber  {
+    font-family: monospace;
+    padding-top: 2px;
+    text-align: center;
+}
+
+/* RFID Tag */
+TD#rfidTag  {
+    font-family: monospace;
+    padding-top: 2px;
+    text-align: center;
+}
+
+/* Sample Index */
+TD#sampleIndex  {
+    font-family: monospace;
+    padding-top: 2px;
+    text-align: right;
+}
+TD#sampleId  {
+    font-family: monospace;
+    padding-top: 2px;
+    text-align: center;
+}
+
+/* General applied pressure */
+TD#appliedPressure {
+    font-family: monospace;
+    padding-top: 2px; 
+    text-align: right;
+}
+
+/* Custom Attributes */
+TD#customField  {
+    text-align: center;
+}
+
+/* OBD Fault */
+TD#faultCode { 
+    font-family: monospace; 
+    text-align: left; 
+}

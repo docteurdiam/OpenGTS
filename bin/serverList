@@ -1,0 +1,27 @@
+# -----------------------------------------------------------------------------
+# Project: OpenGTS - Open GPS Tracking System
+# URL    : http://www.opengts.org
+# File   : serverList
+# -----------------------------------------------------------------------------
+# This file is sourced by the script 'startServers.sh', and should contain startup
+# commands in the following format:
+#    execServer "Server Description" "server"  "${option}"  "-altOpt=someOptionHere" 
+#       "Server Description"    = The description displayed when starting the server
+#       "server"                = The DCServerConfig name of the server
+#       "${option}"             = Options passed to 'runserver.pl' (before '--')
+#       "-altOpt=..."           = Other options passed to 'runserver.pl (after '--')
+# -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# --- Default servers
+#execServer "GTS OpenDMTP"              "gtsdmtp"   "${option}"  ""
+# ---
+#execServer "Example 'template' Server" "template"  "${option}"  ""
+#execServer "Apsicore"                  "aspicore"  "${option}"  ""
+#execServer "Sipgear"                   "sipgear"   "${option}"  ""
+#execServer "TAIP"                      "taip"      "${option}"  ""
+#execServer "I-Care G3300 Server"       "icare"     "${option}"  ""
+# ---
+
+# -----------------------------------------------------------------------------
+# Additional servers
