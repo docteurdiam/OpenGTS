@@ -28,14 +28,10 @@ package org.opengts.db.tables;
 
 import java.lang.*;
 import java.util.*;
-import java.math.*;
-import java.io.*;
-import java.sql.*;
 
 import org.opengts.util.*;
 import org.opengts.dbtools.*;
 
-import org.opengts.Version;
 import org.opengts.db.*;
 
 public class SystemProps
@@ -328,103 +324,4 @@ public class SystemProps
         }
     }
 
-    /* return the property value as an int */
-    public static boolean setIntValue(String propKey, int v)
-    {
-        return SystemProps.setStringValue(propKey, String.valueOf(v));
-    }
-
-    /* return the property value as a long */
-    public static boolean setLongValue(String propKey, long v)
-    {
-        return SystemProps.setStringValue(propKey, String.valueOf(v));
-    }
-
-    /* return the property value as a float */
-    public static boolean setFloatValue(String propKey, float v)
-    {
-        return SystemProps.setStringValue(propKey, String.valueOf(v));
-    }
-
-    /* return the property value as a double */
-    public static boolean setDoubleValue(String propKey, double v)
-    {
-        return SystemProps.setStringValue(propKey, String.valueOf(v));
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    /* get GTS version */
-    public static String getGTSVersion(String dft)
-    {
-        return SystemProps.getStringValue(SystemProps.GTS_VERSION, dft);
-    }
-
-    /* get GTS version */
-    public static String getGTSVersion()
-    {
-        return SystemProps.getGTSVersion("");
-    }
-
-    // ------------------------------------------------------------------------
-
-    /* get DMTP version */
-    public static String getDMTPVersion(String dft)
-    {
-        return SystemProps.getStringValue(SystemProps.DMTP_VERSION, dft);
-    }
-
-    /* get DMTP version */
-    public static String getDMTPVersion()
-    {
-        return SystemProps.getDMTPVersion("");
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    /* update version */
-    public static void updateVersions()
-    {
-
-        /* OpenGTS version */
-        String gtsCurrVersion = Version.getVersion();
-        String gtsPropVersion = SystemProps.getGTSVersion();
-        if (!gtsCurrVersion.equals(gtsPropVersion)) {
-            Print.logInfo("Updating GTS Version: " + gtsCurrVersion);
-            SystemProps.setStringValue(SystemProps.GTS_VERSION, gtsCurrVersion);
-        }
-
-        /* OpenDMTP version */
-        try { 
-            // lazily bind to OpenDMTP Version, in case it is not included in this installation
-            MethodAction dmtpVersMeth = new MethodAction("org.opendmtp.server.Version", "getVersion");
-            String dmtpCurrVersion = (String)dmtpVersMeth.invoke();
-            String dmtpPropVersion = SystemProps.getDMTPVersion();
-            if (!dmtpCurrVersion.equals(dmtpPropVersion)) {
-                Print.logInfo("Updating DMTP Version: " + dmtpCurrVersion);
-                SystemProps.setStringValue(SystemProps.DMTP_VERSION, dmtpCurrVersion);
-            }
-        } catch (Throwable th) {
-            // ignore
-        }
-            
-
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public static void main(String argv[])
-    {
-        DBConfig.cmdLineInit(argv,true);
-        Print.sysPrintln("Property '"+GTS_VERSION +"' value: " + SystemProps.getStringValue(SystemProps.GTS_VERSION ,"undefined"));
-        Print.sysPrintln("Property '"+DMTP_VERSION+"' value: " + SystemProps.getStringValue(SystemProps.DMTP_VERSION,"undefined"));
-        if (RTConfig.getBoolean("update",false)) {
-            SystemProps.updateVersions();
-        }
-    }
-    
 }

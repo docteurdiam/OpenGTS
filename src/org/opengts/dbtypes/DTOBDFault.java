@@ -28,13 +28,10 @@ package org.opengts.dbtypes;
 
 import java.lang.*;
 import java.util.*;
-import java.math.*;
-import java.io.*;
 import java.sql.*;
 
 import org.opengts.util.*;
 import org.opengts.dbtools.*;
-import org.opengts.db.DBConfig;
 
 public class DTOBDFault
     extends DBFieldType
@@ -416,49 +413,6 @@ public class DTOBDFault
         public Properties getJ1587Descriptions(long fault);
     }
 
-    public static boolean InitJ1587DescriptionProvider()
-    {
-        if (!j1587DidInit) {
-            j1587DidInit = true;
-            try {
-                j1587GetDescription = new MethodAction(DBConfig.PACKAGE_EXTRA_DBTOOLS_ + "J1587", "GetJ1587Description", Properties.class);
-                j1587DescProvider   = new DTOBDFault.J1587DescriptionProvider() {
-                    public Properties getJ1587Descriptions(long fault) {
-                        if (DTOBDFault.IsJ1708(fault)) {
-                            int     mid    = DTOBDFault.DecodeSystem(fault);    // MID
-                            boolean isSid  = DTOBDFault.IsJ1708_SID(fault);
-                            int     pidSid = DTOBDFault.DecodePidSid(fault);    // PID|SID "128/[s]123/1"
-                            int     fmi    = DTOBDFault.DecodeFMI(fault);       // FMI
-                            Properties p = new Properties();
-                            p.setProperty("MID", String.valueOf(mid));
-                            p.setProperty((isSid?"SID":"PID"), String.valueOf(pidSid));
-                            p.setProperty("FMI", String.valueOf(fmi));
-                            try {
-                                return (Properties)j1587GetDescription.invoke(p);
-                            } catch (Throwable th) {
-                                return null;
-                            }
-                        } else {
-                            return null;
-                        }
-                    }
-                };
-                Print.logDebug("J1587 Description Provider installed ...");
-            } catch (Throwable th) {
-                //Print.logException("J1587 Description Provider NOT installed!", th);
-            }
-        }
-        return (j1587DescProvider != null);
-    }
-    
-    public static boolean HasDescriptionProvider()
-    {
-        return (j1587DescProvider != null);
-    }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     public static String GetFaultDescription(long fault, Locale locale)
     {
         if (fault != 0L) {
@@ -597,7 +551,6 @@ public class DTOBDFault
     public static void main(String argv[])
     {
         RTConfig.setCommandLineArgs(argv);
-        InitJ1587DescriptionProvider();
         RTProperties cmdLineProps = RTConfig.getCommandLineProperties();
         long fault = EncodeFault(cmdLineProps);
         Print.sysPrintln("Fault : " + fault + " [0x" + StringTools.toHexString(fault) + "]");

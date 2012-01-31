@@ -1,41 +1,11 @@
-// ----------------------------------------------------------------------------
-// Copyright 2007-2011, GeoTelematic Solutions, Inc.
-// All rights reserved
-// ----------------------------------------------------------------------------
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-// http://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-// ----------------------------------------------------------------------------
-// Description:
-//  Server Initialization
-// ----------------------------------------------------------------------------
-// Change History:
-//  2006/06/30  Martin D. Flynn
-//     -Initial release
-//  2006/07/27  Martin D. Flynn
-//     -Moved constant information to 'Constants.java'
-// ----------------------------------------------------------------------------
 package org.opengts.servers.template;
 
 import java.lang.*;
 import java.util.*;
-import java.io.*;
 import java.net.*;
-import java.sql.*;
 
 import org.opengts.util.*;
 import org.opengts.db.*;
-import org.opengts.db.tables.*;
 
 public class TrackServer
 {
@@ -251,7 +221,6 @@ public class TrackServer
         }
         
         /* initialize */
-        //sst.setIncludePacketLineTerminator(true);
         sst.setTextPackets(Constants.ASCII_PACKETS);
         sst.setBackspaceChar(null); // no backspaces allowed
         sst.setLineTerminatorChar(Constants.ASCII_LINE_TERMINATOR);
@@ -303,24 +272,6 @@ public class TrackServer
         DCServerConfig.startServerSocketThread(sst,"Event");
         return sst;
 
-    }
-
-    public DatagramSocket getUdpDatagramSocket(int port)
-    {
-        if (ListTools.isEmpty(this.udpSocket)) {
-            return null;
-        } else
-        if (port <= 0) {
-            return this.udpSocket.getFirstValue();
-        } else {
-            DatagramSocket ds = this.udpSocket.get(new Integer(port));
-            if (ds != null) {
-                return ds;
-            } else {
-                Print.logWarn("'Listen' port["+port+"] not found, returning first DatagramSocket");
-                return this.udpSocket.getFirstValue();
-            }
-        }
     }
 
     // ------------------------------------------------------------------------

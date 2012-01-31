@@ -23,15 +23,11 @@
 package org.opengts.db;
 
 import java.lang.*;
-import java.util.*;
 import java.io.*;
 
 import org.opengts.util.*;
 import org.opengts.dbtools.*;
 
-import org.opengts.dbtypes.*;
-import org.opengts.db.*;
-import org.opengts.db.dmtp.*;
 import org.opengts.db.tables.*;
 
 public class ParseEvent

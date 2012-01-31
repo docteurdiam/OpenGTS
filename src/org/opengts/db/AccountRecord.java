@@ -25,17 +25,11 @@
 package org.opengts.db;
 
 import java.lang.*;
-import java.util.*;
-import java.math.*;
-import java.io.*;
-import java.sql.*;
 
 import org.opengts.util.*;
 import org.opengts.dbtools.*;
 
-import org.opengts.db.*;
 import org.opengts.db.tables.Account;
-import org.opengts.db.tables.SystemProps;
 
 public class AccountRecord<RT extends DBRecord>
     extends DBRecord<RT>

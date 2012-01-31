@@ -40,10 +40,6 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
-import org.xml.sax.*;
-
 import org.opengts.util.*;
 import org.opengts.dbtools.*;
 

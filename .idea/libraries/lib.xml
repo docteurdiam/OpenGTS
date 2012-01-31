@@ -1,0 +1,21 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/build/lib/aspicore.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/tk10x.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/template.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/gtsdb.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/sipgear.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/icare.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/warmaps.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/taip.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/dmtpserv.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/gtsdmtp.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/wartools.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/gtsutils.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/tools.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

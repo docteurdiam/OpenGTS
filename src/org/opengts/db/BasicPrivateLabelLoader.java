@@ -62,17 +62,12 @@ import java.util.*;
 import java.io.*;
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.awt.Color;
 
-import javax.xml.parsers.*;
 import org.w3c.dom.*;
-import org.xml.sax.*;
 
 import org.opengts.util.*;
 
-import org.opengts.db.DBConfig;
 import org.opengts.db.AclEntry.AccessLevel;
-import org.opengts.db.tables.*;
 import org.opengts.geocoder.*;
 import org.opengts.cellid.*;
 

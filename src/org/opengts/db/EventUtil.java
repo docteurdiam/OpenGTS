@@ -68,15 +68,11 @@ package org.opengts.db;
 
 import java.lang.*;
 import java.util.*;
-import java.math.*;
 import java.io.*;
-import java.sql.*;
 
 import org.opengts.util.*;
 import org.opengts.dbtools.*;
 
-import org.opengts.Version;
-import org.opengts.dbtypes.*;
 import org.opengts.geocoder.*;
 import org.opengts.db.tables.*;
 
@@ -2451,156 +2447,6 @@ public class EventUtil
 
     }
 
-    // ------------------------------------------------------------------------
-    // <?xml version="1.0" encoding="UTF-8"?>
-    // <gpx version="1.0"
-    //      creator="OpenGTS - http://www.opengts.org"
-    //      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    //      xmlns="http://www.topografix.com/GPX/1/0"
-    //      xsi:schemaLocation="http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd">
-    //    <time>2009-05-30T12:48:43Z</time>
-    //    <wpt lat="39.4431641" lon="-142.7295456">
-    //      <name>Device</name>
-    //      <ele>1234.5</ele>
-    //    </wpt>
-    //    <trk>
-    //      <name>Device</name>
-    //      <src>GPS Tracking Device</src>
-    //      <trkseg>
-    //        <trkpt lat="39.4431641" lon="-142.7295456">
-    //          <time>2009-05-30T12:48:43Z</time>
-    //          <ele>1234.5</ele>
-    //        </trkpt>
-    //        <trkpt lat="39.4431641" lon="-142.7295456">
-    //          <time>2009-05-30T12:48:43Z</time>
-    //          <ele>1234.5</ele>
-    //        </trkpt>
-    //      </trkseg>
-    //    </trk>
-    // </gpx>
-
-    private boolean writeEvents_GPX(PrintWriter pwout, 
-        Account account, Collection<Device> devList, 
-        BasicPrivateLabel privLabel)
-        throws IOException
-    {
-        String dateFmt = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-
-        /* account required */
-        if (account == null) {
-            return false;
-        }
-        String accountID = account.getAccountID();
-        TimeZone tz = DateTime.getGMTTimeZone();
-
-        /* header */
-        this.write(pwout, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-        this.write(pwout, "<gpx version=\"1.0\"\n");
-        this.write(pwout, "    creator=\"OpenGTS "+Version.getVersion()+" - http://www.opengts.org\"\n");
-        this.write(pwout, "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n");
-        this.write(pwout, "    xsi:schemaLocation=\"http://www.topografix.com/GPX/1/0 http://www.topografix.com/GPX/1/0/gpx.xsd\">\n");
-        this.write(pwout, "  <time>" + (new DateTime(tz)).format(dateFmt) + "</time>\n");
-        
-        /* track body */
-        if (!ListTools.isEmpty(devList)) {
-            for (Device dev : devList) {
-                String deviceID = dev.getDeviceID();
-    
-                /* check account ID */
-                if (!dev.getAccountID().equals(accountID)) {
-                    // mismatched AccountID
-                    continue;
-                }
-
-                /* Device start tag */
-                this.write(pwout, "  <trk>\n");
-                this.write(pwout, "  <name><![CDATA["+deviceID+"]]></name>\n");
-                this.write(pwout, "  <desc><![CDATA["+dev.getDescription()+"]]></desc>\n");
-                this.write(pwout, "  <trkseg>\n");
-
-                /* events */
-                EventData evList[] = dev.getSavedRangeEvents();
-                if (!ListTools.isEmpty(evList)) {
-                    for (EventData ev : evList) {
-                        this.write(pwout, "    <trkpt lat=\"" + ev.getLatitude() + "\" lon=\"" + ev.getLongitude() + "\">\n");
-                        this.write(pwout, "      <time>" + (new DateTime(ev.getTimestamp(),tz)).format(dateFmt) + "</time>\n");
-                        this.write(pwout, "      <ele>"+ev.getAltitude()+"</ele>\n"); // meters
-                        this.write(pwout, "    </trkpt>\n");
-                    }
-                }
-        
-                /* Device end tag */
-                this.write(pwout, "  </trkseg>\n");
-                this.write(pwout, "  </trk>\n");
-                
-            }
-            
-        }
-
-        /* footer */
-        this.write(pwout, "</gpx>\n");
-
-        return true;
-    }
-
-    // ------------------------------------------------------------------------
-    // {
-    //    "Account": "demo",
-    //    "Account_desc": "Demo Account",
-    //    "TimeZone": "US/Pacific",
-    //    "DeviceList": [
-    //       {
-    //          "Device": "demo",
-    //          "Device_desc": "New Device [demo]",
-    //          "EventData": [
-    //             {
-    //                "Device": "demo",
-    //                "Timestamp": 1268430461,
-    //                "Timestamp_date": "2010/03/12",
-    //                "Timestamp_time": "13:47:41",
-    //                "StatusCode": 12345,
-    //                "StatusCode_hex": "0xF112",
-    //                "StatusCode_desc": "InMotion",
-    //                "GPSPoint": "37.78340,-122.40246",
-    //                "GPSPoint_lat": 37.78340,
-    //                "GPSPoint_lon": -122.40246,
-    //                "Speed": 0.0,
-    //                "Speed_units": "mph",
-    //                "Altitude": 16,
-    //                "Altitude_units": "feet",
-    //                "Odometer": 711.3,
-    //                "Odometer_units": "Miles",
-    //                "Address": "789 Howard St, San Francisco, CA 94103",
-    //                "City": "San Francisco",
-    //                "PostalCode": "94103",
-    //                "Index": 0
-    //             },
-    //             {
-    //                "Device": "demo",
-    //                "Timestamp": 1268430766,
-    //                "Timestamp_date": "2010/03/12",
-    //                "Timestamp_time": "13:52:46",
-    //                "StatusCode": 12345,
-    //                "StatusCode_hex": "0xF113",
-    //                "StatusCode_desc": "Stop",
-    //                "GPSPoint": "37.78472,-122.39913",
-    //                "GPSPoint_lat": 37.78472,
-    //                "GPSPoint_lon": -122.39913,
-    //                "Speed": 0.0,
-    //                "Speed_units": "mph",
-    //                "Altitude": 52,
-    //                "Altitude_units": "feet",
-    //                "Odometer": 711.5,
-    //                "Odometer_units": "Miles",
-    //                "Address": "Clementina St, San Francisco, CA",
-    //                "City": "San Francisco",
-    //                "Index": 1
-    //             }
-    //          ]
-    //       }
-    //    ]
-    // }
-
     private static String JSON_INDENT = "   ";
     
     public boolean writeEvents_JSON(PrintWriter pwout, 
@@ -3056,11 +2902,7 @@ public class EventUtil
                         account, devList, 
                         allTags, dispTmz,
                         privLabel, (formatEnum == FORMAT_XMLOLD));
-                case FORMAT_GPX:
-                    return this.writeEvents_GPX(pwout, 
-                        account, devList, 
-                        privLabel);
-                case FORMAT_JSON:
+                 case FORMAT_JSON:
                 case FORMAT_JSONX:
                     return this.writeEvents_JSON(pwout, 
                         account, devList, 

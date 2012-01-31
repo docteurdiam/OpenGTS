@@ -24,15 +24,11 @@ package org.opengts.db.tables;
 
 import java.lang.*;
 import java.util.*;
-import java.math.*;
-import java.io.*;
-import java.sql.*;
 
 import org.opengts.util.*;
 import org.opengts.dbtools.*;
 
 import org.opengts.db.*;
-import org.opengts.db.tables.*;
 
 public class DeviceList
     extends DeviceRecord<DeviceList>

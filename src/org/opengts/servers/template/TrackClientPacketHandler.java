@@ -85,10 +85,8 @@ import java.lang.*;
 import java.util.*;
 import java.io.*;
 import java.net.*;
-import java.sql.*;
 
 import org.opengts.util.*;
-import org.opengts.dbtools.*;
 import org.opengts.db.*;
 import org.opengts.db.tables.*;
 
@@ -809,100 +807,4 @@ public class TrackClientPacketHandler
         Print.sysPrintln("  -parseFile=<file>       Parse data from specified file");
         return 1;
     }
-
-    /* debug entry point (does not return) */
-    public static int _main(boolean fromMain)
-    {
-
-        /* default options */
-        INSERT_EVENT = RTConfig.getBoolean(Main.ARG_INSERT, DFT_INSERT_EVENT);
-        if (!INSERT_EVENT) {
-            Print.sysPrintln("Warning: Data will NOT be inserted into the database");
-        }
-
-        /* create client packet handler */
-        TrackClientPacketHandler tcph = new TrackClientPacketHandler();
-
-        /* DEBUG sample data */
-        if (RTConfig.getBoolean(Main.ARG_DEBUG,false)) {
-            String data[] = null;
-            switch (DATA_FORMAT_OPTION) {
-                case  1: data = new String[] {
-                    "123456789012345,2006/09/05,07:47:26,35.3640,-142.2958,27.0,224.8",
-                }; break;
-                case  2: data = new String[] {
-                    "account/device/$GPRMC,025423.494,A,3709.0642,N,14207.8315,W,12.09,108.52,200505,,*2E",
-                    "/device/$GPRMC,025423.494,A,3709.0642,N,14207.8315,W,12.09,108.52,200505,,*2E",
-                }; break;
-                case  3: data = new String[] {
-                    "2,123,1234567890,0,20101223,110819,1,2.1,39.1234,-142.1234,33,227,1800",
-                }; break;
-                case  9: data = new String[] {
-                    "mid=123456789012345 lat=39.12345 lon=-142.12345 kph=123.0"
-                }; break;
-                default:
-                    Print.sysPrintln("Unrecognized Data Format: %d", DATA_FORMAT_OPTION);
-                    return _usage();
-            }
-            for (int i = 0; i < data.length; i++) {
-                tcph.getHandlePacket(data[i].getBytes());
-            }
-            return 0;
-        }
-
-        /* 'parseFile' specified? */
-        if (RTConfig.hasProperty(Main.ARG_PARSEFILE)) {
-
-            /* get input file */
-            File parseFile = RTConfig.getFile(Main.ARG_PARSEFILE,null);
-            if ((parseFile == null) || !parseFile.isFile()) {
-                Print.sysPrintln("Data source file not specified, or does not exist.");
-                return _usage();
-            }
-
-            /* open file */
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(parseFile);
-            } catch (IOException ioe) {
-                Print.logException("Error openning input file: " + parseFile, ioe);
-                return 2;
-            }
-
-            /* loop through file */
-            try {
-                // records are assumed to be terminated by CR/NL 
-                for (;;) {
-                    String data = FileTools.readLine(fis);
-                    if (!StringTools.isBlank(data)) {
-                        tcph.getHandlePacket(data.getBytes());
-                    }
-                }
-            } catch (EOFException eof) {
-                Print.sysPrintln("");
-                Print.sysPrintln("***** End-Of-File *****");
-            } catch (IOException ioe) {
-                Print.logException("Error reaading input file: " + parseFile, ioe);
-            } finally {
-                try { fis.close(); } catch (Throwable th) {/* ignore */}
-            }
-
-            /* done */
-            return 0;
-
-        }
-
-        /* no options? */
-        return _usage();
-
-    }
-    
-    /* debug entry point */
-    public static void main(String argv[])
-    {
-        DBConfig.cmdLineInit(argv,false);
-        TrackClientPacketHandler.configInit();
-        System.exit(TrackClientPacketHandler._main(false));
-    }
-    
 }

@@ -30,15 +30,11 @@
 package org.opengts.servers.template;
 
 import java.lang.*;
-import java.util.*;
-import java.io.*;
 
 import org.opengts.util.*;
 import org.opengts.dbtools.*;
-import org.opengts.dbtypes.*;
 
 import org.opengts.db.*;
-import org.opengts.db.tables.*;
 
 public class Main
 {
@@ -154,20 +150,6 @@ public class Main
     /* main entry point */
     public static void main(String argv[])
     {
-
-        /* configure server for MySQL data store */
-        DBConfig.cmdLineInit(argv,false);  // main
-        
-        /* device code */
-        /* obsolete
-        DEVICE_CODE = RTConfig.getString(ARG_DEVCODE, Constants.DEVICE_CODE);
-        if (StringTools.isBlank(DEVICE_CODE)) {
-            Print.logFatal("Invalid device-code specified");
-            Main.usage("");
-            System.exit(1);
-        }
-        */
-
         /* init configuration constants */
         TrackClientPacketHandler.configInit();
         TrackServer.configInit();

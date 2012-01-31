@@ -36,12 +36,8 @@ package org.opengts.db;
 
 import java.lang.*;
 import java.util.*;
-import java.math.*;
-import java.io.*;
-import java.sql.*;
 
 import org.opengts.util.*;
-import org.opengts.dbtools.*;
 import org.opengts.db.tables.*;
 
 public class RuleFactoryExample
