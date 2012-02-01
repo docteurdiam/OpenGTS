@@ -34,10 +34,6 @@ package org.opengts.servers;
 
 import java.lang.*;
 import java.util.*;
-import java.io.*;
-import java.net.*;
-import java.sql.*;
-
 import org.opengts.util.*;
 import org.opengts.dbtools.*;
 import org.opengts.db.*;
@@ -122,9 +118,6 @@ public class GPSEvent
         }
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
     protected boolean _setDevice(Device device, String ipAddress, int clientPort)
     {
 
@@ -156,11 +149,6 @@ public class GPSEvent
 
     }
     
-    public boolean hasDevice()
-    {
-        return (this.device != null);
-    }
-    
     public Device getDevice()
     {
         return this.device;
@@ -183,9 +171,6 @@ public class GPSEvent
         }
         return false;
     }
-    
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 
     public boolean insertEventData(long fixtime, int statusCode)
     {
@@ -239,11 +224,9 @@ public class GPSEvent
             if (this.hasLatitude()      ) { evdb.setLatitude(      this.getLatitude());         }
             if (this.hasLongitude()     ) { evdb.setLongitude(     this.getLongitude());        }
             if (this.hasGpsAge()        ) { evdb.setGpsAge(        this.getGpsAge());           }
-            if (this.hasHDOP()          ) { evdb.setHDOP(          this.getHDOP());             }
             if (this.hasSatelliteCount()) { evdb.setSatelliteCount(this.getSatelliteCount());   }
             if (this.hasSpeedKPH()      ) { evdb.setSpeedKPH(      this.getSpeedKPH());         }
             if (this.hasHeading()       ) { evdb.setHeading(       this.getHeading());          }
-            if (this.hasAltitude()      ) { evdb.setAltitude(      this.getAltitude());         }
             if (this.hasInputMask()     ) { evdb.setInputMask(     this.getInputMask());        }
             if (this.hasBatteryLevel()  ) { evdb.setBatteryLevel(  this.getBatteryLevel());     }
             if (this.hasSignalStrength()) { evdb.setSignalStrength(this.getSignalStrength());   }
@@ -281,10 +264,7 @@ public class GPSEvent
 
      }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public String getUniqueID() 
+    public String getUniqueID()
     {
         return (this.device != null)? this.device.getUniqueID() : "";
     }
@@ -299,9 +279,7 @@ public class GPSEvent
         return (this.device != null)? this.device.getDeviceID() : "";
     }
 
-    // ------------------------------------------------------------------------
-
-    public String getDeviceDescription() 
+    public String getDeviceDescription()
     {
         return (this.device != null)? this.device.getDescription() : "";
     }
@@ -311,26 +289,19 @@ public class GPSEvent
         return (this.device != null)? this.device.getDeviceVIN() : "";
     }
 
-    // ------------------------------------------------------------------------
-
-    public String getStatusCodeDescription(BasicPrivateLabel bpl) 
+    public String getStatusCodeDescription(BasicPrivateLabel bpl)
     {
         Device dev  = this.getDevice();
         int    code = this.getStatusCode();
         return StatusCode.getDescription(dev, code, bpl, null);
     }
 
-    // ------------------------------------------------------------------------
-
-    public int getPushpinIconIndex(String iconSelector, OrderedSet<String> iconKeys, 
+    public int getPushpinIconIndex(String iconSelector, OrderedSet<String> iconKeys,
         boolean isFleet, BasicPrivateLabel bpl) 
     {
         // not fully supported here
         return EventData.ICON_PUSHPIN_RED;
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 
     /**
     *** Returns the internal RTProperties instance which holds the EventData
@@ -362,36 +333,22 @@ public class GPSEvent
         this.fieldValues.setLong(EventData.FLD_timestamp, timestamp);
     }
     
-    public boolean hasTimestamp()
-    {
-        return this.fieldValues.hasProperty(EventData.FLD_timestamp);
-    }
-
-    public long getTimestamp() 
+    public long getTimestamp()
     {
         return this.fieldValues.getLong(EventData.FLD_timestamp, 0L);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setStatusCode(int code) 
+    public void setStatusCode(int code)
     {
         this.fieldValues.setInt(EventData.FLD_statusCode, code);
     }
     
-    public boolean hasStatusCode()
-    {
-        return this.fieldValues.hasProperty(EventData.FLD_statusCode);
-    }
-
-    public int getStatusCode() 
+    public int getStatusCode()
     {
         return this.fieldValues.getInt(EventData.FLD_statusCode, StatusCodes.STATUS_LOCATION);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setLatitude(double lat) 
+    public void setLatitude(double lat)
     {
         this.fieldValues.setDouble(EventData.FLD_latitude, lat);
     }
@@ -442,38 +399,12 @@ public class GPSEvent
         return GeoPoint.isValid(this.getLatitude(),this.getLongitude());
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setHorzAccuracy(double acc) 
-    {
-        this.fieldValues.setDouble(EventData.FLD_horzAccuracy, acc);
-    }
-
-    public boolean hasHorzAccuracy()
-    {
-        return this.fieldValues.hasProperty(EventData.FLD_horzAccuracy);
-    }
-
-    public double getHorzAccuracy()
-    {
-        return this.fieldValues.getDouble(EventData.FLD_horzAccuracy, 0.0);
-    }
-
-    // ------------------------------------------------------------------------
-   
     public GeoPoint getBestGeoPoint()
     {
         return this.getGeoPoint();
     }
-    
-    public double getBestAccuracy()
-    {
-        return this.getHorzAccuracy();
-    }
 
-    // ------------------------------------------------------------------------
-
-    public void setGpsAge(long ageSec) 
+    public void setGpsAge(long ageSec)
     {
         this.fieldValues.setLong(EventData.FLD_gpsAge, ageSec);
     }
@@ -488,26 +419,7 @@ public class GPSEvent
         return this.fieldValues.getLong(EventData.FLD_gpsAge, 0L);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setHDOP(double hdop) 
-    {
-        this.fieldValues.setDouble(EventData.FLD_HDOP, hdop);
-    }
-    
-    public boolean hasHDOP()
-    {
-        return this.fieldValues.hasProperty(EventData.FLD_HDOP);
-    }
-
-    public double getHDOP() 
-    {
-        return this.fieldValues.getDouble(EventData.FLD_HDOP, 0.0);
-    }
-
-    // ------------------------------------------------------------------------
-
-    public void setSatelliteCount(int count) 
+    public void setSatelliteCount(int count)
     {
         this.fieldValues.setInt(EventData.FLD_satelliteCount, count);
     }
@@ -522,13 +434,6 @@ public class GPSEvent
         return this.fieldValues.getInt(EventData.FLD_satelliteCount, -1);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setBatteryLevel(double level) 
-    {
-        this.fieldValues.setDouble(EventData.FLD_batteryLevel, level);
-    }
-    
     public boolean hasBatteryLevel()
     {
         return this.fieldValues.hasProperty(EventData.FLD_batteryLevel);
@@ -539,13 +444,6 @@ public class GPSEvent
         return this.fieldValues.getDouble(EventData.FLD_batteryLevel, 0.0);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setSignalStrength(double rssi) 
-    {
-        this.fieldValues.setDouble(EventData.FLD_signalStrength, rssi);
-    }
-    
     public boolean hasSignalStrength()
     {
         return this.fieldValues.hasProperty(EventData.FLD_signalStrength);
@@ -556,9 +454,7 @@ public class GPSEvent
         return this.fieldValues.getDouble(EventData.FLD_signalStrength, 0.0);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setSpeedKPH(double kph) 
+    public void setSpeedKPH(double kph)
     {
         this.fieldValues.setDouble(EventData.FLD_speedKPH, kph);
     }
@@ -573,9 +469,7 @@ public class GPSEvent
         return this.fieldValues.getDouble(EventData.FLD_speedKPH, 0.0);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setHeading(double heading) 
+     public void setHeading(double heading)
     {
         this.fieldValues.setDouble(EventData.FLD_heading, heading);
     }
@@ -590,26 +484,7 @@ public class GPSEvent
         return this.fieldValues.getDouble(EventData.FLD_heading, 0.0);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setAltitude(double altM) 
-    {
-        this.fieldValues.setDouble(EventData.FLD_altitude, altM);
-    }
-    
-    public boolean hasAltitude()
-    {
-        return this.fieldValues.hasProperty(EventData.FLD_altitude);
-    }
-
-    public double getAltitude() 
-    {
-        return this.fieldValues.getDouble(EventData.FLD_altitude, 0.0);
-    }
-
-    // ------------------------------------------------------------------------
-
-    public void setOdometerKM(double km) 
+    public void setOdometerKM(double km)
     {
         this.fieldValues.setDouble(EventData.FLD_odometerKM, km);
     }
@@ -623,8 +498,6 @@ public class GPSEvent
     {
         return this.fieldValues.getDouble(EventData.FLD_odometerKM, 0.0);
     }
-
-    // ------------------------------------------------------------------------
 
     public void setGeozoneID(String gzid) 
     {
@@ -650,20 +523,11 @@ public class GPSEvent
         return this.fieldValues.getString(EventData.FLD_geozoneID, "");
     }
 
-    // ------------------------------------------------------------------------
-    
-    public boolean hasAddress()
-    {
-        return this.fieldValues.hasProperty(EventData.FLD_address);
-    }
-
-    public String getAddress() 
+    public String getAddress()
     {
         // not fully supported here
         return "";
     }
-
-    // ------------------------------------------------------------------------
 
     public void setInputMask(long mask) 
     {
@@ -680,13 +544,6 @@ public class GPSEvent
         return this.fieldValues.getLong(EventData.FLD_inputMask, 0L);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setEngineHours(double hours) 
-    {
-        this.fieldValues.setDouble(EventData.FLD_engineHours, hours);
-    }
-    
     public boolean hasEngineHours()
     {
         return this.fieldValues.hasProperty(EventData.FLD_engineHours);
@@ -697,13 +554,6 @@ public class GPSEvent
         return this.fieldValues.getDouble(EventData.FLD_engineHours, 0.0);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setPtoHours(double hours) 
-    {
-        this.fieldValues.setDouble(EventData.FLD_ptoHours, hours);
-    }
-    
     public boolean hasPtoHours()
     {
         return this.fieldValues.hasProperty(EventData.FLD_ptoHours);
@@ -714,13 +564,6 @@ public class GPSEvent
         return this.fieldValues.getDouble(EventData.FLD_ptoHours, 0.0);
     }
 
-    // ------------------------------------------------------------------------
-
-    public void setFuelTotal(double fuel) 
-    {
-        this.fieldValues.setDouble(EventData.FLD_fuelTotal, fuel);
-    }
-    
     public boolean hasFuelTotal()
     {
         return this.fieldValues.hasProperty(EventData.FLD_fuelTotal);
@@ -730,8 +573,6 @@ public class GPSEvent
     {
         return this.fieldValues.getDouble(EventData.FLD_fuelTotal, 0.0);
     }
-
-    // ------------------------------------------------------------------------
 
     private int eventIndex = -1;
     public void setEventIndex(int ndx)
@@ -749,8 +590,6 @@ public class GPSEvent
         return (this.getEventIndex() == 0);
     }
 
-    // ------------------------------------------------------------------------
-
     /* icon selector properties */
     private boolean isLastEventInList = false;
     public void setIsLastEvent(boolean isLast)
@@ -763,12 +602,6 @@ public class GPSEvent
         return this.isLastEventInList;
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-    // Warning: this section does not perform type checking agains the corresponding
-    // column in the EventData table.  You must make sure that the values placed
-    // into this HashMap match the data types expected by the EventData table.
-    
     public Object getFieldValue(String fldName)
     {
         if ((this.otherValues != null) && this.otherValues.containsKey(fldName)) {
@@ -813,9 +646,6 @@ public class GPSEvent
     {
         this.setFieldValue(fldName, (Object)fldVal);
     }
-
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
 
     public String toString()
     {

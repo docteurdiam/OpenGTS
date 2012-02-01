@@ -2781,7 +2781,6 @@ public class DCServerFactory
     **/
     public static void main(String args[])
     {
-        DBConfig.cmdLineInit(args, true);
         String server    = RTConfig.getString(ARG_SERVER , "");
         String accountID = RTConfig.getString(ARG_ACCOUNT, "");
         String deviceID  = RTConfig.getString(ARG_DEVICE , "");

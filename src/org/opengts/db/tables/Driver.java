@@ -493,7 +493,6 @@ public class Driver
 
     public static void main(String args[])
     {
-        DBConfig.cmdLineInit(args,true);  // main
         String acctID  = RTConfig.getString(ARG_ACCOUNT, "");
         String drvID   = RTConfig.getString(ARG_DRIVER , "");
 

@@ -12,16 +12,4 @@
 #       "-altOpt=..."           = Other options passed to 'runserver.pl (after '--')
 # -----------------------------------------------------------------------------
 
-# -----------------------------------------------------------------------------
-# --- Default servers
-#execServer "GTS OpenDMTP"              "gtsdmtp"   "${option}"  ""
-# ---
-#execServer "Example 'template' Server" "template"  "${option}"  ""
-#execServer "Apsicore"                  "aspicore"  "${option}"  ""
-#execServer "Sipgear"                   "sipgear"   "${option}"  ""
-#execServer "TAIP"                      "taip"      "${option}"  ""
-#execServer "I-Care G3300 Server"       "icare"     "${option}"  ""
-# ---
-
-# -----------------------------------------------------------------------------
-# Additional servers
+execServer "Example 'template' Server" "template"  "${option}"  ""

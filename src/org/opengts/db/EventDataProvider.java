@@ -39,39 +39,22 @@ import org.opengts.util.*;
 
 public interface EventDataProvider
 {
-
-    // - Event ID
     public String   getAccountID();
     public String   getDeviceID();
-    public String   getDeviceDescription();
-    public String   getDeviceVIN();
-
     public long     getTimestamp();
     public int      getStatusCode();
     public String   getStatusCodeDescription(BasicPrivateLabel bpl);
-
-    public int      getPushpinIconIndex(String iconSelector, OrderedSet<String> iconKeys,
-                        boolean isFleet, BasicPrivateLabel bpl);
-
-    // - GPS based latitude/longitude
     public boolean  isValidGeoPoint();
     public double   getLatitude();
     public double   getLongitude();
     public GeoPoint getGeoPoint();
-    public double   getHorzAccuracy();
-    
+
     // - GPS based lat/lon if available, otherwise Cell lat/lon
     public GeoPoint getBestGeoPoint();
-    public double   getBestAccuracy();
-
-    public int      getSatelliteCount();
-
     public double   getBatteryLevel();
 
     public double   getSpeedKPH();
     public double   getHeading();
-
-    public double   getAltitude(); // meters
 
     public String   getGeozoneID();
     public String   getAddress();
@@ -80,13 +63,7 @@ public interface EventDataProvider
 
     public double   getOdometerKM();
 
-    /* icon selector properties */
-
-    public void     setEventIndex(int ndx);
     public int      getEventIndex();
-    public boolean  getIsFirstEvent();
-
-    public void     setIsLastEvent(boolean isLast);
     public boolean  getIsLastEvent();
 
 }

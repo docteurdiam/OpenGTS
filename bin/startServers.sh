@@ -6,8 +6,6 @@
 # -----------------------------------------------------------------------------
 if [ "${GTS_HOME}" = "" ]; then 
     echo "!!! ERROR: GTS_HOME not defined !!!"
-    #export GTS_HOME=`realpath .`;  # - default to current dir
-    # - WARNING: 'realpath' may not exist on some Linux distributions (ie. CentOS, Fedora, ...)
     export GTS_HOME=`/bin/pwd`;  # - default to current dir
     exit 99; # - exit anyway
 fi

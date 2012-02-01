@@ -234,13 +234,4 @@ public class DeviceList
 
     }
 
-    // ------------------------------------------------------------------------
-    // ------------------------------------------------------------------------
-
-    public static void main(String argv[])
-    {
-        DBConfig.cmdLineInit(argv,true);  // main
-        Print.logWarn("No command-line options available for this table");
-    }
-
 }

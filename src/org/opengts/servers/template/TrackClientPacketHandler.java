@@ -744,7 +744,6 @@ public class TrackClientPacketHandler
         gpsEvent.setSatelliteCount(satCount);
         gpsEvent.setSpeedKPH(speedKPH);
         gpsEvent.setHeading(heading);
-        gpsEvent.setAltitude(altitudeM);
         gpsEvent.setOdometerKM(odomKM);
         if (gpioInput >= 0L) { gpsEvent.setInputMask(gpioInput); }
 

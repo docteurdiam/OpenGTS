@@ -184,14 +184,6 @@ public class Main
             System.exit(1);
         }
 
-        /* 'parseFile'? */
-        if (RTConfig.hasProperty(ARG_PARSEFILE)) {
-            Print.sysPrintln("Attempting to parse data from file: " + RTConfig.getString(ARG_PARSEFILE));
-            RTConfig.setString("parseFile", RTConfig.getString(ARG_PARSEFILE));
-            int exit = TrackClientPacketHandler._main(true);
-            System.exit(exit);
-        }
-
         /* start server */
         if (RTConfig.getBoolean(ARG_START,false)) {
             

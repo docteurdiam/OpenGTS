@@ -657,31 +657,4 @@ public class RuleFactoryExample
     {
         Print.logInfo("Match: " + sel + " ==> " + ruleFact.isSelectorMatch(sel, event));
     }
-    
-    /* test example RuleFactory */
-    public static void main(String argv[])
-    {
-        DBConfig.cmdLineInit(argv,true);
-        RuleFactory ruleFact = new RuleFactoryExample();
-        
-        /* EventData */
-        EventData.Key evKey = new EventData.Key("demo","demo",DateTime.getCurrentTimeSec(),StatusCodes.STATUS_LOCATION);
-        EventData evRcd = evKey.getDBRecord();
-        evRcd.setAddress("1234 Somewhere Ln, Somewhere CA, 98765");
-        evRcd.setGeoPoint(new GeoPoint(35.12345, -142.12345));
-        evRcd.setSpeedKPH(105.0);
-        evRcd.setHeading(123.0);
-        evRcd.setAltitude(457.0);
-        evRcd.setOdometerKM(123456.0);
-        evRcd.setDistanceKM(3456.0);
-        
-        /* test match */
-        printMatch(ruleFact, evRcd, SEL_PANIC);
-        printMatch(ruleFact, evRcd, SEL_OVER_100_KPH);
-        printMatch(ruleFact, evRcd, SEL_IS_STOPPED);
-        printMatch(ruleFact, evRcd, SEL_OVER_SPEED + ":" + 99.0);
-        printMatch(ruleFact, evRcd, SEL_OVER_SPEED + ":" + 106.0);
-
-    }
-    
 }
