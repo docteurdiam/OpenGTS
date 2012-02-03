@@ -182,18 +182,6 @@ File     : build.xml
         <arg value="-version"/>
     </exec>
 
-    <!-- copy library 'jars' to build directory "build/lib/" -->
-    <copy todir="${build.lib}" failonerror="true" verbose="false">
-        <fileset dir="${basedir}/lib/opendmtp">
-           <include name="*.jar"/>
-           <include name="dmtpserv.sh"/>
-        </fileset>
-        <fileset dir="${basedir}/lib/gtsopt">
-           <include name="*.jar"/>
-        </fileset>
-    </copy>
-    <chmod file="${build.lib}/dmtpserv.sh" perm="a+x"/>
-
     <!-- copy 'war' files to build directory "build/" -->
     <copy todir="${build.home}" failonerror="false" verbose="false">
         <fileset dir="${basedir}/lib/gtsopt">

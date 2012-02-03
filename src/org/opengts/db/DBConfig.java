@@ -89,7 +89,7 @@ public class DBConfig
     // ------------------------------------------------------------------------
     // default SQL database name
 
-    private static final String DEFAULT_DB_NAME                 = "gts";
+    private static final String DEFAULT_DB_NAME                 = "gowane_production";
 
     // ------------------------------------------------------------------------
     // Runtime referenced package names
